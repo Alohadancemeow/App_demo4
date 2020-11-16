@@ -11,13 +11,14 @@ import com.example.app_demo4.R
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_profile_setting.*
 
 class ProfileSettingActivity : AppCompatActivity() {
 
     // Firebase Properties
     private lateinit var mAuth : FirebaseAuth
-    private lateinit var mDatabase : FirebaseDatabase
+    private lateinit var mDatabase : FirebaseFirestore
 
     // View Properties
     private lateinit var displayName : TextView
@@ -36,7 +37,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         //set firebase properties
         mAuth = FirebaseAuth.getInstance()
-        mDatabase = FirebaseDatabase.getInstance()
+        mDatabase = FirebaseFirestore.getInstance()
 
         //set view properties
         displayName = tv_display_name_setting
@@ -51,20 +52,23 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         //get current user
         val userId = mAuth.currentUser!!.uid
-        val userRef = mDatabase.reference.child("Users").child(userId)
-        userRef.addValueEventListener(object : ValueEventListener{
+        val userRef = mDatabase.collection("Users").document(userId)
+        userRef.addSnapshotListener { value, error ->
 
-            override fun onDataChange(snapshot: DataSnapshot) {
+            if (error != null) {
+                finish()
+            }
+            else {
 
                 /** -> ดึงข้อมูลของผู้ใช้ที่กำลัง login */
-                val displayNameFromDB = snapshot.child("display_name").value.toString()
-                val fullNameFromDB = snapshot.child("full_name").value.toString()
-                val statusFromDB = snapshot.child("status").value.toString()
-                val templeFromDB = snapshot.child("wat").value.toString()
-                val kanaFromDB = snapshot.child("kana").value.toString()
-                val ageFromDB = snapshot.child("age").value.toString()
-                val emailFromDB = snapshot.child("email").value.toString()
-                val phoneFromDB = snapshot.child("phone").value.toString()
+                val displayNameFromDB  = value?.get("display_name").toString()
+                val fullNameFromDB = value?.get("full_name").toString()
+                val statusFromDB = value?.get("status").toString()
+                val templeFromDB = value?.get("wat").toString()
+                val kanaFromDB = value?.get("kana").toString()
+                val ageFromDB = value?.get("age").toString()
+                val emailFromDB = value?.get("email").toString()
+                val phoneFromDB = value?.get("phone").toString()
 
                 /** -> ใส่ข้อมูลที่ดึงมาลงในแต่ละช่อง */
                 displayName.text = displayNameFromDB
@@ -75,14 +79,8 @@ class ProfileSettingActivity : AppCompatActivity() {
                 age.editText?.setText(ageFromDB)
                 email.editText?.setText(emailFromDB)
                 phone.editText?.setText(phoneFromDB)
-
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                finish()
-            }
-
-        })
+        }
 
         // # Update data and send to home
         btn_profile_update.setOnClickListener {
@@ -128,7 +126,7 @@ class ProfileSettingActivity : AppCompatActivity() {
             }
 
             /** -> อัพเดตข้อมูลขึ้น Firebase database */
-            mDatabase.reference.child("Users").child(userId).updateChildren(newData)
+            mDatabase.collection("Users").document(userId).update(newData)
                 .addOnCompleteListener {
                     if (it.isSuccessful){
                         Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show()

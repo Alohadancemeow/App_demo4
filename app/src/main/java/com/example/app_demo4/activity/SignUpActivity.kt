@@ -9,13 +9,13 @@ import android.widget.Button
 import android.widget.Toast
 import com.example.app_demo4.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
 
     // Firebase Properties
-    private lateinit var rootNode: FirebaseDatabase
+    private lateinit var mDatabase: FirebaseFirestore
     private lateinit var mAuth: FirebaseAuth
 
     // View Properties
@@ -34,7 +34,7 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
 
         //set firebase properties
-        rootNode = FirebaseDatabase.getInstance()
+        mDatabase = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
 
 
@@ -66,7 +66,8 @@ class SignUpActivity : AppCompatActivity() {
             !validateEmail(reqEmail) || !validatePhone(reqPhone) || !validatePassword(reqPassword)
         ) {
             return
-        } else {
+        }
+        else {
             /** # เมื่อกรอกข้อมูลถูกต้องตามที่ validate ให้ทำการ create user */
             mAuth.createUserWithEmailAndPassword(reqEmail, reqPassword)
                 .addOnCompleteListener { it ->
@@ -83,7 +84,7 @@ class SignUpActivity : AppCompatActivity() {
 
         val user = mAuth.currentUser
         val userId = user!!.uid
-        val userRef = rootNode.reference.child("Users").child(userId)
+        val userRef = mDatabase.collection("Users").document(userId)
 
         /** # Write Database Objects -ข้อมูลที่ต้องการจะส่งไปเก็บที่ database */
         val userObject = HashMap<String, String>().apply {
@@ -99,7 +100,7 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         /** # Let's go -พร้อมแล้วส่งก้อนข้อมูลไปโลด */
-        userRef.setValue(userObject).addOnCompleteListener {
+        userRef.set(userObject).addOnCompleteListener {
             if (it.isSuccessful) {
                 Toast.makeText(this, "Create account successful", Toast.LENGTH_SHORT).show()
 
