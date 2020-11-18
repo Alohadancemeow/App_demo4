@@ -93,10 +93,10 @@ class SignUpActivity : AppCompatActivity() {
             this["email"] = reqEmail
             this["phone"] = reqPhone
             this["password"] = reqPassword
-            this["wat"] = "default"
-            this["kana"] = "default"
-            this["status"] = "default"
-            this["age"] = "default"
+            this["wat"] = "Chana Songkram"
+            this["kana"] = "12"
+            this["status"] = ""
+            this["age"] = "20"
         }
 
         /** # Let's go -พร้อมแล้วส่งก้อนข้อมูลไปโลด */

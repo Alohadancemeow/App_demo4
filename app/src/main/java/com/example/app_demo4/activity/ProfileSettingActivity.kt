@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.app_demo4.R
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -49,6 +52,12 @@ class ProfileSettingActivity : AppCompatActivity() {
         email = email_setting
         phone = phone_setting
 
+        // dropdown options
+        val dropdownTextView = dropdown_text
+        val items = listOf("Monk", "Novice")
+        val adapter = ArrayAdapter(this, R.layout.dropdown_item, items)
+        dropdownTextView.setAdapter(adapter)
+
 
         //get current user
         val userId = mAuth.currentUser!!.uid
@@ -88,6 +97,10 @@ class ProfileSettingActivity : AppCompatActivity() {
             /** -> อัพเดตข้อมูลพร้อมโยน uid ไปด้วย */
             updateData(userId)
 
+        }
+
+        btn_back_setting.setOnClickListener {
+            finish()
         }
     }
 

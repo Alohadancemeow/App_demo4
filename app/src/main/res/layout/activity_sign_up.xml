@@ -63,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Display name"
                     app:counterEnabled="true"
+                    app:endIconMode="clear_text"
                     app:counterMaxLength="20">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -77,6 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Full name"
+                    app:endIconMode="clear_text"
                     android:transitionName="full_name_sign_up">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -90,6 +92,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:endIconMode="clear_text"
                     android:hint="Email">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -105,6 +108,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:endIconMode="clear_text"
                     android:hint="Phone">
 
                     <com.google.android.material.textfield.TextInputEditText

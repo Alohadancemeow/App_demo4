@@ -5,56 +5,60 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_demo4.R
+import com.example.app_demo4.model.UserData
+import com.example.app_demo4.model.UserHolder
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.fragment_user1.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [User2Fragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class User2Fragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    // Firebase Properties
+    private lateinit var mDatabase: FirebaseFirestore
+    private lateinit var userReference: CollectionReference
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user2, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment User2Fragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            User2Fragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        setUpRecyclerView()
+
     }
+
+    private fun setUpRecyclerView() {
+
+        //set properties
+        mDatabase = FirebaseFirestore.getInstance()
+        userReference = mDatabase.collection("Users")
+
+        /** # ดึง user ทั้งหมดที่มี status = novice */
+        val query  = userReference.whereEqualTo("status", "Novice").orderBy("display_name")
+        val options = FirestoreRecyclerOptions.Builder<UserData>()
+            .setQuery(query, UserData::class.java)
+            .setLifecycleOwner(this)
+            .build()
+
+        val adapter = object : FirestoreRecyclerAdapter<UserData, UserHolder>(options){
+
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserHolder {
+                return UserHolder(LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_user, parent, false))
+            }
+
+            override fun onBindViewHolder(holder: UserHolder, position: Int, model: UserData) {
+                holder.bind(model)
+            }
+        }
+
+        rv_user.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rv_user.adapter = adapter
+    }
+
 }

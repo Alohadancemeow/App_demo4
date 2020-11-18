@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +24,7 @@ class HomeRecyclerviewAdapter(var content: ArrayList<HomeData>) :
         var location: TextView = itemView.findViewById(R.id.tv_location)
         var time: TextView = itemView.findViewById(R.id.tv_time)
 
-        var expandButton: Button = itemView.findViewById(R.id.expand_btn)
+        var expandButton: ImageView = itemView.findViewById(R.id.expand_btn)
         var expandableLayout: LinearLayout = itemView.findViewById(R.id.expandable_layout)
     }
 

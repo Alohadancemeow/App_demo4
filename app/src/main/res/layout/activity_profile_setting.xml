@@ -12,12 +12,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:background="#FFC400"
             android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/btn_back_setting"
+                android:background="@color/colorAccent"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:clickable="true"
+                android:src="@drawable/ic_back_24"
+                android:focusable="true" />
 
             <ImageView
                 android:id="@+id/iv_profile_setting"
@@ -31,8 +39,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/iv_profile_setting"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/iv_profile_setting"
                 android:fontFamily="@font/chicle"
                 android:includeFontPadding="false"
                 android:text="Yukko"
@@ -43,8 +51,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_display_name_setting"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@id/iv_profile_setting"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/iv_profile_setting"
                 android:fontFamily="@font/antic"
                 android:includeFontPadding="false"
                 android:text="Yukko the B-rabbit"
@@ -184,15 +192,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                app:endIconMode="dropdown_menu"
+                app:boxBackgroundMode="outline"
                 android:hint="Status">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_user_status_yellow"
+                <AutoCompleteTextView
+                    android:id="@+id/dropdown_text"
+                    android:drawableStart="@drawable/ic_user_status_yellow"
                     android:drawablePadding="10dp"
-                    android:inputType="textEmailAddress"
-                    android:text="Monk" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:drawableStart="@drawable/ic_user_status_yellow"-->
+<!--                    android:drawablePadding="10dp"-->
+<!--                    android:inputType="textEmailAddress"-->
+<!--                    android:text="Monk" />-->
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -206,7 +223,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_location_yellow"
+                    android:drawableStart="@drawable/ic_location_yellow"
                     android:drawablePadding="10dp"
                     android:text="Chana Songkram" />
 
@@ -284,7 +301,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_email_yellow"
+                    android:drawableStart="@drawable/ic_email_yellow"
                     android:drawablePadding="10dp"
                     android:inputType="textEmailAddress"
                     android:text="rabbit@gmail.com" />
@@ -301,7 +318,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_phone_yellow"
+                    android:drawableStart="@drawable/ic_phone_yellow"
                     android:drawablePadding="10dp"
                     android:inputType="number"
                     android:text="1234567890" />

@@ -20,8 +20,9 @@ import kotlinx.android.synthetic.main.fragment_user1.*
 class User1Fragment : Fragment() {
 
 
-    // Properties
+    // Firebase Properties
     private lateinit var mDatabase: FirebaseFirestore
+    private lateinit var userReference: CollectionReference
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,12 +37,14 @@ class User1Fragment : Fragment() {
 
     private fun setUpRecyclerView() {
 
-        //set properties
-        mDatabase = FirebaseFirestore.getInstance()
-
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        val query  = mDatabase.collection("Users").orderBy("display_name")
+        //set properties
+        mDatabase = FirebaseFirestore.getInstance()
+        userReference = mDatabase.collection("Users")
+
+        /** # ดึง user ทั้งหมดที่มี status = monk */
+        val query  = userReference.whereEqualTo("status", "Monk").orderBy("display_name")
         val options = FirestoreRecyclerOptions.Builder<UserData>()
             .setQuery(query, UserData::class.java)
             .setLifecycleOwner(this)
