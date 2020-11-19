@@ -22,6 +22,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     // Firebase Properties
     private lateinit var mAuth : FirebaseAuth
     private lateinit var mDatabase : FirebaseFirestore
+    private lateinit var userId : String
 
     // View Properties
     private lateinit var displayName : TextView
@@ -41,6 +42,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         //set firebase properties
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseFirestore.getInstance()
+        userId = mAuth.currentUser!!.uid
 
         //set view properties
         displayName = tv_display_name_setting
@@ -52,15 +54,38 @@ class ProfileSettingActivity : AppCompatActivity() {
         email = email_setting
         phone = phone_setting
 
-        // dropdown options
+        dropDownOptions()
+
+        getCurrentUser()
+
+
+        // # Update data and send to home
+        btn_profile_update.setOnClickListener {
+
+            /** -> อัพเดตข้อมูลพร้อมโยน uid ไปด้วย */
+            updateData(userId)
+
+        }
+
+        // <- Back button
+        btn_back_setting.setOnClickListener {
+            finish()
+        }
+    }
+
+
+    /** # Functions here */
+
+    private fun dropDownOptions() {
+        //dropdown options
         val dropdownTextView = dropdown_text
         val items = listOf("Monk", "Novice")
         val adapter = ArrayAdapter(this, R.layout.dropdown_item, items)
         dropdownTextView.setAdapter(adapter)
+    }
 
-
+    private fun getCurrentUser() {
         //get current user
-        val userId = mAuth.currentUser!!.uid
         val userRef = mDatabase.collection("Users").document(userId)
         userRef.addSnapshotListener { value, error ->
 
@@ -90,22 +115,9 @@ class ProfileSettingActivity : AppCompatActivity() {
                 phone.editText?.setText(phoneFromDB)
             }
         }
-
-        // # Update data and send to home
-        btn_profile_update.setOnClickListener {
-
-            /** -> อัพเดตข้อมูลพร้อมโยน uid ไปด้วย */
-            updateData(userId)
-
-        }
-
-        btn_back_setting.setOnClickListener {
-            finish()
-        }
     }
 
 
-    /** # Functions here */
     private fun updateData(userId: String) {
 
         /** -> ดึงข้อมูลที่จะอัพเดต newData */
@@ -120,6 +132,7 @@ class ProfileSettingActivity : AppCompatActivity() {
         validateData(newStatus, newTemple, newKana, newAge, newEmail, newPhone, userId)
 
     }
+
 
     private fun validateData(newStatus: String, newTemple: String, newKana: String, newAge: String, newEmail: String, newPhone: String, userId: String) {
 
@@ -155,7 +168,7 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
 
-    /** Validations */
+    /** # Validations */
     private fun normalValidate(newStatus: String, newTemple: String, newKana: String, newAge: String): Boolean {
 
        return when {
