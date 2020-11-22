@@ -1,5 +1,6 @@
 package com.example.app_demo4.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_demo4.R
+import com.example.app_demo4.activity.ProfileReviewActivity
 import com.example.app_demo4.model.UserData
 import com.example.app_demo4.model.UserHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -14,6 +16,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_user1.*
+import kotlinx.android.synthetic.main.recyclerview_user.view.*
 
 class User2Fragment : Fragment() {
 
@@ -33,6 +36,7 @@ class User2Fragment : Fragment() {
 
     }
 
+    /** Functions here **/
     private fun setUpRecyclerView() {
 
         //set properties
@@ -54,11 +58,36 @@ class User2Fragment : Fragment() {
 
             override fun onBindViewHolder(holder: UserHolder, position: Int, model: UserData) {
                 holder.bind(model)
+
+                //get key (document ID) from FirestoreRecyclerAdapter
+                val userId = snapshots.getSnapshot(position).id
+
+                holder.itemView.apply {
+                    this.iv_user_contact.setOnClickListener {
+                        sendToProfile(userId)
+                    }
+                    this.tv_user_name_contact.setOnClickListener {
+                        sendToProfile(userId)
+                    }
+                    this.tv_user_full_name_contact.setOnClickListener {
+                        sendToProfile(userId)
+                    }
+                    this.iv_user_icon.setOnClickListener {
+                        TODO("call by phone")
+                    }
+
+                }
             }
         }
 
         rv_user.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_user.adapter = adapter
+    }
+
+    private fun sendToProfile(userId: String) {
+        val intent = Intent(context, ProfileReviewActivity::class.java)
+        intent.putExtra("userId", userId)
+        startActivity(intent)
     }
 
 }

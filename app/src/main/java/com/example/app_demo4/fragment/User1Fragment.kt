@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_demo4.R
 import com.example.app_demo4.activity.ProfileReviewActivity
@@ -13,16 +14,10 @@ import com.example.app_demo4.model.UserData
 import com.example.app_demo4.model.UserHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_user1.*
 import kotlinx.android.synthetic.main.recyclerview_user.*
 import kotlinx.android.synthetic.main.recyclerview_user.view.*
-import kotlinx.coroutines.Job
-import java.security.Key
-import kotlin.coroutines.ContinuationInterceptor
-import kotlin.math.sign
 
 
 class User1Fragment : Fragment() {
@@ -43,6 +38,7 @@ class User1Fragment : Fragment() {
 
     }
 
+    /** Functions here **/
     private fun setUpRecyclerView() {
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -52,44 +48,52 @@ class User1Fragment : Fragment() {
         userReference = mDatabase.collection("Users")
 
         /** # ดึง user ทั้งหมดที่มี status = monk */
-        val query  = userReference.whereEqualTo("status", "Monk").orderBy("display_name")
+        val query = userReference.whereEqualTo("status", "Monk").orderBy("display_name")
         val options = FirestoreRecyclerOptions.Builder<UserData>()
             .setQuery(query, UserData::class.java)
             .setLifecycleOwner(this)
             .build()
 
-        val adapter = object : FirestoreRecyclerAdapter<UserData, UserHolder>(options){
+        val adapter = object : FirestoreRecyclerAdapter<UserData, UserHolder>(options) {
 
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserHolder {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserHolder{
                 return UserHolder(LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_user, parent, false))
             }
 
             override fun onBindViewHolder(holder: UserHolder, position: Int, model: UserData) {
                 holder.bind(model)
 
-               val userId = getItem(position).toString()
+                //get key (document ID) from FirestoreRecyclerAdapter
+                val userId = snapshots.getSnapshot(position).id
+
                 holder.itemView.apply {
-                    iv_user_contact.setOnClickListener {
-                        val intent = Intent(context,ProfileReviewActivity::class.java)
-                        intent.putExtra("userId", userId)
-                        startActivity(intent)
+                    this.iv_user_contact.setOnClickListener {
+                        sendToProfile(userId)
                     }
-//                    iv_user_contact.setOnClickListener {
-//                        val intent = Intent(context,ProfileReviewActivity::class.java)
-//                        intent.putExtra("userId", userId)
-//                        startActivity(intent)
-//                    }
-//                    tv_user_full_name_contact.setOnClickListener {
-//                        val intent = Intent(context,ProfileReviewActivity::class.java)
-//                        intent.putExtra("userId", userId)
-//                        startActivity(intent)
-//                    }
+                    this.tv_user_name_contact.setOnClickListener {
+                        sendToProfile(userId)
+                    }
+                    this.tv_user_full_name_contact.setOnClickListener {
+                        sendToProfile(userId)
+                    }
+                    this.iv_user_icon.setOnClickListener {
+                        TODO("call by phone")
+                    }
+
                 }
             }
+
         }
 
+        //set recyclerView layout and adapter
         rv_user.layoutManager = linearLayoutManager
         rv_user.adapter = adapter
+    }
+
+    private fun sendToProfile(userId: String) {
+        val intent = Intent(context, ProfileReviewActivity::class.java)
+        intent.putExtra("userId", userId)
+        startActivity(intent)
     }
 
 }

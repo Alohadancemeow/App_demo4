@@ -3,6 +3,7 @@ package com.example.app_demo4.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.Toast
 import com.example.app_demo4.R
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_profile_review.*
@@ -20,6 +21,7 @@ class ProfileReviewActivity : AppCompatActivity() {
         // set property
         mDatabase = FirebaseFirestore.getInstance()
 
+        // Receive intent from User 1/2 Fragments
         if (intent.extras != null) {
 
             val userId = intent.extras!!.get("userId").toString()
@@ -27,6 +29,8 @@ class ProfileReviewActivity : AppCompatActivity() {
             userRef.addSnapshotListener { value, error ->
 
                 if (error != null) finish()
+
+                Toast.makeText(baseContext, "User id: $userId", Toast.LENGTH_LONG).show()
 
                 // else
                 val display_name = value?.get("display_name").toString()

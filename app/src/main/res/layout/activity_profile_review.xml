@@ -198,6 +198,10 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_user_status_yellow"
                     android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:textStyle="normal"
+                    android:enabled="false"
+                    android:textColor="@android:color/black"
                     android:text="Monk" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -214,6 +218,10 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_location_yellow"
                     android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:textStyle="normal"
+                    android:enabled="false"
+                    android:textColor="@android:color/black"
                     android:text="Chana Songkram" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -238,7 +246,10 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_location_drop_yellow"
                         android:drawablePadding="10dp"
-                        android:inputType="number"
+                        android:focusable="false"
+                        android:textStyle="normal"
+                        android:enabled="false"
+                        android:textColor="@android:color/black"
                         android:text="12" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -256,28 +267,15 @@
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_person_age_yellow"
                         android:drawablePadding="10dp"
-                        android:inputType="number"
+                        android:focusable="false"
+                        android:textStyle="normal"
+                        android:enabled="false"
+                        android:textColor="@android:color/black"
                         android:text="20" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
-
-            <!--            <com.google.android.material.textfield.TextInputLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginBottom="10dp"-->
-            <!--                android:hint="Kana">-->
-
-            <!--                <com.google.android.material.textfield.TextInputEditText-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:drawableLeft="@drawable/ic_info"-->
-            <!--                    android:drawablePadding="10dp"-->
-            <!--                    android:text="12" />-->
-
-            <!--            </com.google.android.material.textfield.TextInputLayout>-->
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/email_review"
@@ -291,7 +289,10 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_email_yellow"
                     android:drawablePadding="10dp"
-                    android:inputType="textEmailAddress"
+                    android:focusable="false"
+                    android:textStyle="normal"
+                    android:enabled="false"
+                    android:textColor="@android:color/black"
                     android:text="rabbit@gmail.com" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -308,7 +309,10 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_phone_yellow"
                     android:drawablePadding="10dp"
-                    android:inputType="number"
+                    android:focusable="false"
+                    android:textStyle="normal"
+                    android:enabled="false"
+                    android:textColor="@android:color/black"
                     android:text="1234567890" />
 
             </com.google.android.material.textfield.TextInputLayout>
