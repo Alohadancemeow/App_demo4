@@ -1,6 +1,7 @@
 package com.example.app_demo4.fragment
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -73,13 +74,18 @@ class User2Fragment : Fragment() {
                         sendToProfile(userId)
                     }
                     this.iv_user_icon.setOnClickListener {
-                        TODO("call by phone")
+                        //get phone number
+                        val phone = snapshots.getSnapshot(position)["phone"]
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+                        startActivity(intent)
+                        //send intent to user call app
                     }
 
                 }
             }
         }
 
+        //set recyclerView layout and adapter
         rv_user.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_user.adapter = adapter
     }

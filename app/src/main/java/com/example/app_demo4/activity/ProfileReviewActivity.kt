@@ -1,9 +1,14 @@
 package com.example.app_demo4.activity
 
+import android.Manifest.*
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.example.app_demo4.R
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_profile_review.*
@@ -12,6 +17,8 @@ class ProfileReviewActivity : AppCompatActivity() {
 
     // Firebase Property
     private lateinit var mDatabase: FirebaseFirestore
+
+    private val CALL_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,14 +40,14 @@ class ProfileReviewActivity : AppCompatActivity() {
                 Toast.makeText(baseContext, "User id: $userId", Toast.LENGTH_LONG).show()
 
                 // else
-                val display_name = value?.get("display_name").toString()
-                val full_name = value?.get("full_name").toString()
-                val status = value?.get("status").toString()
-                val wat = value?.get("wat").toString()
-                val kana = value?.get("kana").toString()
-                val age = value?.get("age").toString()
-                val email = value?.get("email").toString()
-                val phone = value?.get("phone").toString()
+                val display_name = value?.get("display_name").toString().trim()
+                val full_name = value?.get("full_name").toString().trim()
+                val status = value?.get("status").toString().trim()
+                val wat = value?.get("wat").toString().trim()
+                val kana = value?.get("kana").toString().trim()
+                val age = value?.get("age").toString().trim()
+                val email = value?.get("email").toString().trim()
+                val phone = value?.get("phone").toString().trim()
 
                 tv_display_name_review.text = display_name
                 tv_full_name_review.text = full_name
@@ -50,7 +57,13 @@ class ProfileReviewActivity : AppCompatActivity() {
                 age_review.editText?.setText(age)
                 email_review.editText?.setText(email)
                 phone_review.editText?.setText(phone)
+
+                // Call button
+                btn_profile_call.setOnClickListener {
+                    startCall(phone)
+                }
             }
+
         }
 
         // <- Back button
@@ -58,10 +71,15 @@ class ProfileReviewActivity : AppCompatActivity() {
             finish()
         }
 
-        // Call button
-        btn_profile_call.setOnClickListener {
-            TODO("phone call")
-        }
+    }
+
+    private fun startCall(phone: String) {
+        val intent = Intent(Intent.ACTION_DIAL)
+        intent.data = Uri.parse("tel: $phone")
+
+        if (intent.resolveActivity(packageManager) != null)  // หรือไม่ใช้ก็ได้ ?
+            startActivity(intent)
+
     }
 
 }

@@ -1,12 +1,17 @@
 package com.example.app_demo4.fragment
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.*
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_demo4.R
 import com.example.app_demo4.activity.ProfileReviewActivity
@@ -77,7 +82,11 @@ class User1Fragment : Fragment() {
                         sendToProfile(userId)
                     }
                     this.iv_user_icon.setOnClickListener {
-                        TODO("call by phone")
+                        //get phone number
+                        val phone = snapshots.getSnapshot(position)["phone"]
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phone"))
+                        startActivity(intent)
+                        //send intent to user call app
                     }
 
                 }
