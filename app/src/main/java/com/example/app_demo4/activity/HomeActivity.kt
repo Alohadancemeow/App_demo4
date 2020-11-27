@@ -172,13 +172,16 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
 
         return when (p0.itemId) {
+
+            // Home
             R.id.nav_profile -> {
                 val intent = Intent(this, ProfileSettingActivity::class.java)
                 startActivity(intent)
                 true
             }
-            R.id.nav_event -> {
-                // show all event
+            R.id.nav_your_name -> {
+                val intent = Intent(this, YourNameActivity::class.java)
+                startActivity(intent)
                 true
             }
             R.id.nav_logout -> {
@@ -188,6 +191,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 finish()
                 true
             }
+
+            // Communication
+//            R.id.nav_help -> {
+//                TODO("help ?")
+//            }
+//            R.id.nav_info -> {
+//                TODO("info ?")
+//            }
+//            R.id.nav_share -> {
+//                TODO("share ?")
+//            }
+
+            // error
             else -> {
                 drawerLayout?.closeDrawer(GravityCompat.START)
                 true

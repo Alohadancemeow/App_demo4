@@ -52,6 +52,8 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:transitionName="email_log_in"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_baseline_email_24"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"/>
@@ -70,6 +72,8 @@
                 android:transitionName="password_log_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_key_yellow"
                 android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>

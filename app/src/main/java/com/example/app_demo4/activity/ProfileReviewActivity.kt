@@ -18,7 +18,6 @@ class ProfileReviewActivity : AppCompatActivity() {
     // Firebase Property
     private lateinit var mDatabase: FirebaseFirestore
 
-    private val CALL_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +57,7 @@ class ProfileReviewActivity : AppCompatActivity() {
                 email_review.editText?.setText(email)
                 phone_review.editText?.setText(phone)
 
-                // Call button
+                // Call Now button
                 btn_profile_call.setOnClickListener {
                     startCall(phone)
                 }

@@ -6,14 +6,11 @@ import android.os.Bundle
 import android.util.Patterns
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.app_demo4.R
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_profile_setting.*
 
@@ -65,6 +62,12 @@ class ProfileSettingActivity : AppCompatActivity() {
             /** -> อัพเดตข้อมูลพร้อมโยน uid ไปด้วย */
             updateData(userId)
 
+        }
+
+        // -> Edit name button
+        iv_edit_setting.setOnClickListener {
+            val intent = Intent(this,YourNameActivity::class.java)
+            startActivity(intent)
         }
 
         // <- Back button

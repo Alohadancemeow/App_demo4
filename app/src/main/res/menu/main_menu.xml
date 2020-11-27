@@ -34,9 +34,9 @@
                     android:title="Profile" />
 
                 <item
-                    android:id="@+id/nav_event"
-                    android:icon="@drawable/ic_event_yellow"
-                    android:title="Event" />
+                    android:id="@+id/nav_your_name"
+                    android:icon="@drawable/ic_your_name_yellow"
+                    android:title="Your name" />
 
                 <item
                     android:id="@+id/nav_logout"
@@ -50,7 +50,7 @@
 
     </item>
 
-    <item android:title="About">
+    <item android:title="Communication">
         <menu>
 
             <group android:checkableBehavior="single">
@@ -63,6 +63,11 @@
                     android:id="@+id/nav_info"
                     android:icon="@drawable/ic_feedback_yellow"
                     android:title="Feedback" />
+
+                <item
+                    android:id="@+id/nav_share"
+                    android:icon="@drawable/ic_share_yellow"
+                    android:title="Share" />
 
             </group>
 

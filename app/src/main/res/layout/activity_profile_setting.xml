@@ -21,7 +21,7 @@
             <ImageView
                 android:id="@+id/btn_back_setting"
                 android:background="@color/colorAccent"
-                android:layout_width="40dp"
+                android:layout_width="30dp"
                 android:layout_height="40dp"
                 android:clickable="true"
                 android:src="@drawable/ic_back_24"
@@ -57,6 +57,17 @@
                 android:includeFontPadding="false"
                 android:text="Yukko the B-rabbit"
                 android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/iv_edit_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:clickable="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/tv_display_name_setting"
+                android:src="@drawable/ic_edit_24"
+                android:focusable="true" />
 
         </RelativeLayout>
 
