@@ -16,6 +16,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.app_demo4.R
+import com.example.app_demo4.fragment.Event1Fragment
 import com.example.app_demo4.fragment.EventFragment
 import com.example.app_demo4.fragment.HomeFragment
 import com.example.app_demo4.fragment.UsersFragment
@@ -80,11 +81,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fab1.setOnClickListener {
             onAddButtonClicked()
         }
+        // event 1
         fab2.setOnClickListener {
-            Toast.makeText(this, "fab1", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Event B", Toast.LENGTH_SHORT).show()
         }
+        //event 2
         fab3.setOnClickListener {
-            Toast.makeText(this, "fab2", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Event A", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, CreateEvent1Activity::class.java)
+            startActivity(intent)
         }
 
     }
