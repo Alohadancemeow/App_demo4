@@ -34,7 +34,7 @@
                 android:layout_below="@id/btn_back_event_create"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/ic_event_white" />
+                android:src="@drawable/ic_event1_white" />
 
             <TextView
                 android:id="@+id/tv_event_head"
@@ -118,24 +118,46 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tv_date_create"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Date"
-                app:endIconMode="clear_text">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tv_date_create"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_event_yellow"
-                    android:drawablePadding="10dp"
-                    android:inputType="date"
-                    android:text="" />
+                    android:layout_gravity="start"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:hint="Date"
+                    app:endIconMode="clear_text"
+                    app:helperText="Please click on icon to pick date">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_event_yellow"
+                        android:drawablePadding="10dp"
+                        android:enabled="false"
+                        android:textColor="@android:color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_date_pick"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_calendar_yellow" />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -143,48 +165,37 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tv_time_start_create"
+                    android:id="@+id/tv_time_create"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:hint="Time"
+                    app:endIconMode="clear_text"
+                    app:helperText="Please click on icon to pick time">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_event_yellow"
+                        android:drawablePadding="10dp"
+                        android:enabled="false"
+                        android:inputType="time"
+                        android:textColor="@android:color/black" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_time_pick"
+                    android:layout_width="70dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="end"
                     android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:hint="Time start"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_event_yellow"
-                        android:drawablePadding="10dp"
-                        android:inputType="time"
-                        android:text="" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tv_time_end_create"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:hint="Time end"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_event_yellow"
-                        android:drawablePadding="10dp"
-                        android:inputType="time"
-                        android:text="" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:src="@drawable/ic_time_yellow" />
 
             </LinearLayout>
 

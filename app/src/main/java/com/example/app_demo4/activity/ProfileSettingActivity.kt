@@ -165,7 +165,7 @@ class ProfileSettingActivity : AppCompatActivity() {
                         startActivity(intent)
                         finish()
                     }
-                    Toast.makeText(this, "Update Unsuccessful", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "Update Unsuccessful", Toast.LENGTH_SHORT).show()
                 }
         }
     }
