@@ -17,19 +17,19 @@ import kotlinx.android.synthetic.main.activity_profile_setting.*
 class ProfileSettingActivity : AppCompatActivity() {
 
     // Firebase Properties
-    private lateinit var mAuth : FirebaseAuth
-    private lateinit var mDatabase : FirebaseFirestore
-    private lateinit var userId : String
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mDatabase: FirebaseFirestore
+    private lateinit var userId: String
 
     // View Properties
-    private lateinit var displayName : TextView
-    private lateinit var fullName : TextView
-    private lateinit var status : TextInputLayout
-    private lateinit var temple : TextInputLayout
-    private lateinit var kana : TextInputLayout
-    private lateinit var age : TextInputLayout
-    private lateinit var email : TextInputLayout
-    private lateinit var phone : TextInputLayout
+    private lateinit var displayName: TextView
+    private lateinit var fullName: TextView
+    private lateinit var status: TextInputLayout
+    private lateinit var temple: TextInputLayout
+    private lateinit var kana: TextInputLayout
+    private lateinit var age: TextInputLayout
+    private lateinit var email: TextInputLayout
+    private lateinit var phone: TextInputLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +66,7 @@ class ProfileSettingActivity : AppCompatActivity() {
 
         // -> Edit name button
         iv_edit_setting.setOnClickListener {
-            val intent = Intent(this,YourNameActivity::class.java)
+            val intent = Intent(this, YourNameActivity::class.java)
             startActivity(intent)
         }
 
@@ -94,11 +94,10 @@ class ProfileSettingActivity : AppCompatActivity() {
 
             if (error != null) {
                 finish()
-            }
-            else {
+            } else {
 
                 /** -> ดึงข้อมูลของผู้ใช้ที่กำลัง login */
-                val displayNameFromDB  = value?.get("display_name").toString()
+                val displayNameFromDB = value?.get("display_name").toString()
                 val fullNameFromDB = value?.get("full_name").toString()
                 val statusFromDB = value?.get("status").toString()
                 val templeFromDB = value?.get("wat").toString()
@@ -137,12 +136,25 @@ class ProfileSettingActivity : AppCompatActivity() {
     }
 
 
-    private fun validateData(newStatus: String, newTemple: String, newKana: String, newAge: String, newEmail: String, newPhone: String, userId: String) {
+    private fun validateData(
+        newStatus: String,
+        newTemple: String,
+        newKana: String,
+        newAge: String,
+        newEmail: String,
+        newPhone: String,
+        userId: String
+    ) {
 
-        if (!normalValidate(newStatus, newTemple, newKana, newAge) || !validateEmail(newEmail) || !validatePhone(newPhone)){
+        if (!normalValidate(
+                newStatus,
+                newTemple,
+                newKana,
+                newAge
+            ) || !validateEmail(newEmail) || !validatePhone(newPhone)
+        ) {
             return
-        }
-        else {
+        } else {
 
             /** -> set new data ที่ผ่านการ validate แล้วลงในแต่ละช่อง */
             val newData = HashMap<String, Any>().apply {
@@ -157,24 +169,30 @@ class ProfileSettingActivity : AppCompatActivity() {
             /** -> อัพเดตข้อมูลขึ้น Firebase database */
             mDatabase.collection("Users").document(userId).update(newData)
                 .addOnCompleteListener {
-                    if (it.isSuccessful){
+                    if (it.isSuccessful) {
                         Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show()
 
                         /** -> เมื่ออัพเดตเสร็จแล้ว ส่งไปหน้าหลัก */
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
+                    } else {
+                        Toast.makeText(this, "Update Unsuccessful", Toast.LENGTH_SHORT).show()
                     }
-//                    Toast.makeText(this, "Update Unsuccessful", Toast.LENGTH_SHORT).show()
                 }
         }
     }
 
 
     /** # Validations */
-    private fun normalValidate(newStatus: String, newTemple: String, newKana: String, newAge: String): Boolean {
+    private fun normalValidate(
+        newStatus: String,
+        newTemple: String,
+        newKana: String,
+        newAge: String
+    ): Boolean {
 
-       return when {
+        return when {
             newStatus.isEmpty() -> {
                 status_setting.error = "Field cannot be empty"
                 false

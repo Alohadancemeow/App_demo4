@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.CreateEvent1Activity">
+    tools:context=".activity.CreateEvent2Activity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -18,7 +18,7 @@
             android:padding="20dp">
 
             <ImageView
-                android:id="@+id/btn_back_event_create"
+                android:id="@+id/btn_back_event_create2"
                 android:layout_width="30dp"
                 android:layout_height="40dp"
                 android:layout_marginBottom="10dp"
@@ -28,46 +28,46 @@
                 android:src="@drawable/ic_back_24" />
 
             <ImageView
-                android:id="@+id/iv_icon_event"
+                android:id="@+id/iv_icon_event2"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_below="@id/btn_back_event_create"
+                android:layout_below="@id/btn_back_event_create2"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/ic_event1_white" />
+                android:src="@drawable/ic_event_white" />
 
             <TextView
-                android:id="@+id/tv_event_head"
+                android:id="@+id/tv_event_head2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btn_back_event_create"
+                android:layout_below="@id/btn_back_event_create2"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_toEndOf="@id/iv_icon_event"
+                android:layout_toEndOf="@id/iv_icon_event2"
                 android:fontFamily="@font/chicle"
                 android:includeFontPadding="false"
-                android:text="Event A"
+                android:text="Event B"
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/tv_edit_title"
+                android:id="@+id/tv_edit_title2.1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_event_head"
+                android:layout_below="@id/tv_event_head2"
                 android:layout_marginStart="20dp"
-                android:layout_toEndOf="@id/iv_icon_event"
+                android:layout_toEndOf="@id/iv_icon_event2"
                 android:fontFamily="@font/antic"
                 android:includeFontPadding="false"
                 android:text="Create your event with details."
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/tv_edit_title2"
+                android:id="@+id/tv_edit_title2.2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_edit_title"
+                android:layout_below="@id/tv_edit_title2.1"
                 android:layout_marginStart="20dp"
-                android:layout_toEndOf="@id/iv_icon_event"
+                android:layout_toEndOf="@id/iv_icon_event2"
                 android:fontFamily="@font/antic"
                 android:includeFontPadding="false"
                 android:text="Let's do it"
@@ -83,7 +83,7 @@
             android:padding="20dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tv_event_name_create"
+                android:id="@+id/tv_event_name_create2"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,14 +94,14 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_event_yellow"
+                    android:drawableStart="@drawable/ic_event2_yellow"
                     android:drawablePadding="10dp"
                     android:text="" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tv_location_create"
+                android:id="@+id/tv_location_create2"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_event_yellow"
+                    android:drawableStart="@drawable/ic_event2_yellow"
                     android:drawablePadding="10dp"
                     android:text="" />
 
@@ -125,7 +125,7 @@
                 android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tv_date_create"
+                    android:id="@+id/tv_date_create2"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_event_yellow"
+                        android:drawableStart="@drawable/ic_event2_yellow"
                         android:drawablePadding="10dp"
                         android:enabled="false"
                         android:textColor="@android:color/black" />
@@ -148,7 +148,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_date_pick"
+                    android:id="@+id/iv_date_pick2"
                     android:layout_width="70dp"
                     android:layout_height="60dp"
                     android:layout_gravity="end"
@@ -159,7 +159,7 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tv_meet_create"
+                android:id="@+id/tv_meet_create2"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_event_yellow"
+                    android:drawableStart="@drawable/ic_event2_yellow"
                     android:drawablePadding="10dp"
                     android:text="" />
 
@@ -183,7 +183,7 @@
                 android:weightSum="2">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tv_time_create"
+                    android:id="@+id/tv_time_create2"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_event_yellow"
+                        android:drawableStart="@drawable/ic_event2_yellow"
                         android:drawablePadding="10dp"
                         android:enabled="false"
                         android:inputType="time"
@@ -206,7 +206,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_time_pick"
+                    android:id="@+id/iv_time_pick2"
                     android:layout_width="70dp"
                     android:layout_height="60dp"
                     android:layout_gravity="end"
@@ -217,7 +217,7 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tv_member_create"
+                android:id="@+id/tv_member_create2"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_event_yellow"
+                    android:drawableStart="@drawable/ic_event2_yellow"
                     android:drawablePadding="10dp"
                     android:inputType="number"
                     android:text="" />
@@ -236,7 +236,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_create_event"
+                android:id="@+id/btn_create_event2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

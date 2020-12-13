@@ -21,6 +21,8 @@ import kotlinx.android.synthetic.main.recyclerview_user.view.*
 
 class User2Fragment : Fragment() {
 
+    // #Note User2Fragment uses  same UserData, UserHolder as User1Fragment
+
     // Firebase Properties
     private lateinit var mDatabase: FirebaseFirestore
     private lateinit var userReference: CollectionReference

@@ -11,11 +11,11 @@ import android.widget.TimePicker
 import android.widget.Toast
 import com.example.app_demo4.R
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_create_event1.*
+import kotlinx.android.synthetic.main.activity_create_event2.*
 import java.util.*
 import kotlin.collections.HashMap
 
-class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
+class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 
     // Firebase Properties
@@ -47,7 +47,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(R.layout.activity_create_event1)
+        setContentView(R.layout.activity_create_event2)
 
         //set firebase properties
         mDatabase = FirebaseFirestore.getInstance()
@@ -56,20 +56,20 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         pickDateTime()
 
         // <-- Back
-        btn_back_event_create.setOnClickListener {
+        btn_back_event_create2.setOnClickListener {
             finish()
         }
 
         // Button Create event
-        btn_create_event.setOnClickListener {
+        btn_create_event2.setOnClickListener {
 
             //set view properties
-            eventName = tv_event_name_create.editText?.text.toString().trim()
-            eventLocation = tv_location_create.editText?.text.toString().trim()
-            eventDate = tv_date_create.editText?.text.toString().trim()
-            eventTime = tv_time_create.editText?.text.toString().trim()
-            eventMeet = tv_meet_create.editText?.text.toString().trim()
-            eventMember = tv_member_create.editText?.text.toString().trim()
+            eventName = tv_event_name_create2.editText?.text.toString().trim()
+            eventLocation = tv_location_create2.editText?.text.toString().trim()
+            eventDate = tv_date_create2.editText?.text.toString().trim()
+            eventTime = tv_time_create2.editText?.text.toString().trim()
+            eventMeet = tv_meet_create2.editText?.text.toString().trim()
+            eventMember = tv_member_create2.editText?.text.toString().trim()
 
             createEvent(
                 eventName,
@@ -101,13 +101,13 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     private fun pickDateTime() {
 
         //icon pick date
-        iv_date_pick.setOnClickListener {
+        iv_date_pick2.setOnClickListener {
             getDateTimeCalendar()
             DatePickerDialog(this, this, year, month, day).show()
         }
 
         //icon pick time
-        iv_time_pick.setOnClickListener {
+        iv_time_pick2.setOnClickListener {
             getDateTimeCalendar()
             TimePickerDialog(this, this, hour, minute, true).show()
             // true = 24 hour, false = AM-PM
@@ -120,7 +120,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         savedDay = dayOfMonth
         savedMonth = month +1 // month start at 0
         savedYear = year
-        tv_date_create.editText?.setText("$savedDay/$savedMonth/$savedYear")
+        tv_date_create2.editText?.setText("$savedDay/$savedMonth/$savedYear")
     }
 
     @SuppressLint("SetTextI18n")
@@ -128,7 +128,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
         savedHour = hourOfDay
         savedMinute = minute
-        tv_time_create.editText?.setText("$savedHour : $savedMinute")
+        tv_time_create2.editText?.setText("$savedHour : $savedMinute")
     }
 
 
@@ -184,7 +184,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             this["event_time"] = eventTime
             this["event_meet"] = eventMeet
             this["event_member"] = eventMember
-            this["event_type"] = "Event A"  //type A
+            this["event_type"] = "Event B"  //type B
         }
 
         // #use add() to collection, #use set() to document
@@ -194,7 +194,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             if (it.isSuccessful) {
                 Toast.makeText(this, "Create event successful", Toast.LENGTH_SHORT).show()
 
-                // todo -> than send to event1 (A) page
+                // todo -> than send to event1 (B) page
                 finish()
             }
             else {
@@ -216,36 +216,36 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     ): Boolean {
         return when {
             eventName.isEmpty() -> {
-                tv_event_name_create.error = "Field cannot be empty"
+                tv_event_name_create2.error = "Field cannot be empty"
                 false
             }
             eventLocation.isEmpty() -> {
-                tv_location_create.error = "Field cannot be empty"
+                tv_location_create2.error = "Field cannot be empty"
                 false
             }
             eventDate.isEmpty() -> {
-                tv_date_create.error = "Field cannot be empty"
+                tv_date_create2.error = "Field cannot be empty"
                 false
             }
             eventTime.isEmpty() -> {
-                tv_time_create.error = "Field cannot be empty"
+                tv_time_create2.error = "Field cannot be empty"
                 false
             }
             eventMeet.isEmpty() -> {
-                tv_meet_create.error = "Field cannot be empty"
+                tv_meet_create2.error = "Field cannot be empty"
                 false
             }
             eventMember.isEmpty() -> {
-                tv_member_create.error = "Field cannot be empty"
+                tv_member_create2.error = "Field cannot be empty"
                 false
             }
             else -> {
-                tv_event_name_create.error = null
-                tv_location_create.error = null
-                tv_date_create.error = null
-                tv_time_create.error = null
-                tv_meet_create.error = null
-                tv_member_create.error = null
+                tv_event_name_create2.error = null
+                tv_location_create2.error = null
+                tv_date_create2.error = null
+                tv_time_create2.error = null
+                tv_meet_create2.error = null
+                tv_member_create2.error = null
                 true
             }
         }

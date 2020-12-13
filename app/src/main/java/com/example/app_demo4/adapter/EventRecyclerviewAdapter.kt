@@ -19,8 +19,8 @@ class EventRecyclerviewAdapter(var content: ArrayList<EventData>): RecyclerView.
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvEventName.text = content[position].eventName
-        holder.tvLocation.text = content[position].location
+        holder.tvEventName.text = content[position].event_name
+//        holder.tvLocation.text = content[position].event_location
     }
 
     override fun getItemCount(): Int {
@@ -32,7 +32,7 @@ class EventRecyclerviewAdapter(var content: ArrayList<EventData>): RecyclerView.
     class ViewHolder (itemView :View, var mListener: OnItemClickListener) :RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         var tvEventName: TextView = itemView.findViewById(R.id.tv_event_name_list)
-        var tvLocation: TextView = itemView.findViewById(R.id.tv_event_location_list)
+//        var tvLocation: TextView = itemView.findViewById(R.id.tv_event_location_list)
 
         init {
             itemView.setOnClickListener(this)
@@ -55,3 +55,4 @@ class EventRecyclerviewAdapter(var content: ArrayList<EventData>): RecyclerView.
         this.mListener = mListener
     }
 }
+// Never used

@@ -36,7 +36,8 @@ class ProfileReviewActivity : AppCompatActivity() {
 
                 if (error != null) finish()
 
-                Toast.makeText(baseContext, "User id: $userId", Toast.LENGTH_LONG).show()
+                //show user's display name
+                Toast.makeText(baseContext, "${value?.get("display_name")}", Toast.LENGTH_LONG).show()
 
                 // else
                 val display_name = value?.get("display_name").toString().trim()

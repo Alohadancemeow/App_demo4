@@ -25,3 +25,5 @@ class MyAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         return pageTitle[position]
     }
 }
+
+// Never used

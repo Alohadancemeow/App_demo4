@@ -7,31 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.app_demo4.R
-import com.example.app_demo4.adapter.EventRecyclerviewAdapter
 import com.example.app_demo4.model.EventData
+import com.example.app_demo4.model.EventHolder
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter
+import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.fragment_event1.*
-import kotlinx.android.synthetic.main.fragment_user1.*
 
 class Event1Fragment : Fragment() {
 
-    //
-    private lateinit var rv: RecyclerView
-    private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var adapter: EventRecyclerviewAdapter
+    //Firebase Properties
+    private lateinit var mDatabase : FirebaseFirestore
+    private lateinit var eventReference: CollectionReference
 
-    // content :
-    private lateinit var content: ArrayList<EventData>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event1, container, false)
     }
@@ -39,43 +31,51 @@ class Event1Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        initContent()
-        initRecyclerView()
+        setUpRecyclerView()
+
     }
 
-    private fun initRecyclerView() {
-        rv = rv_event
-        layoutManager = LinearLayoutManager(this.context, RecyclerView.VERTICAL, false)
-        adapter = EventRecyclerviewAdapter(content)
+    private fun setUpRecyclerView() {
 
-        rv.layoutManager = layoutManager
-        rv.adapter = adapter
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        // add line
-//        rv.addItemDecoration(DividerItemDecoration(rv.context,layoutManager.orientation))
+        //set properties
+        mDatabase = FirebaseFirestore.getInstance()
+        eventReference = mDatabase.collection("Events")
 
-        // from interface
-        adapter.setOnItemClickListener(object : EventRecyclerviewAdapter.OnItemClickListener {
-            override fun setOnClickListener(adapterPosition: Int) {
-                Toast.makeText(context, "${content[adapterPosition].eventName} is clicked",
-                    Toast.LENGTH_SHORT).show()
+        /** # ดึง event ทั้งหมดที่มี event type = Event A โดยเรียงตามวันที่ */
+        val query = eventReference.whereEqualTo("event_type", "Event A").orderBy("event_date")
+        val options = FirestoreRecyclerOptions.Builder<EventData>()
+            .setQuery(query, EventData::class.java)
+            .setLifecycleOwner(this)
+            .build()
+
+        val adapter = object : FirestoreRecyclerAdapter<EventData, EventHolder>(options) {
+
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventHolder {
+                return EventHolder(LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_event,parent,false))
             }
-        })
 
-    }
+            override fun onBindViewHolder(holder: EventHolder, position: Int, model: EventData) {
 
-    private fun initContent() {
-        content = ArrayList()
-        content.add(EventData(content.size + 1, "Event1", "At the temple"))
-        content.add(EventData(content.size + 1, "Event2", "At the temple"))
-        content.add(EventData(content.size + 1, "Event3", "At the temple"))
-        content.add(EventData(content.size + 1, "Event4", "At the temple"))
-        content.add(EventData(content.size + 1, "Event5", "At the temple"))
-        content.add(EventData(content.size + 1, "Event6", "At the temple"))
-        content.add(EventData(content.size + 1, "Event7", "At the temple"))
-        content.add(EventData(content.size + 1, "Event8", "At the temple"))
-        content.add(EventData(content.size + 1, "Event9", "At the temple"))
-        content.add(EventData(content.size + 1, "Event10", "At the temple"))
+                holder.bind(model)
+
+                //get key (document ID) from FirestoreRecyclerAdapter
+                val userId = snapshots.getSnapshot(position).id
+
+                holder.itemView.apply {
+                    setOnClickListener {
+                        Toast.makeText(context, "${model.event_name} is clicked", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+        }
+
+        //set recyclerView layout and adapter
+        rv_event.layoutManager = linearLayoutManager
+        rv_event.adapter = adapter
+
     }
 
 }

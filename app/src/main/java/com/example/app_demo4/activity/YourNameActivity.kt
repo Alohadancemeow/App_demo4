@@ -87,7 +87,9 @@ class YourNameActivity : AppCompatActivity() {
 //                    startActivity(intent)
                     finish()
                 }
-                Toast.makeText(this, "Update Unsuccessful", Toast.LENGTH_SHORT).show()
+                else {
+                    Toast.makeText(this, "Your name is failed", Toast.LENGTH_SHORT).show()
+                }
             }
     }
 
