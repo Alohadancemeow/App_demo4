@@ -176,7 +176,7 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 //        val user = mAuth.currentUser
 //        val userId = user!!.uid
 
-        val eventRef = mDatabase.collection("Events")
+        val eventRef = mDatabase.collection("Events").document()
         val eventObject = HashMap<String, String>().apply {
             this["event_name"] = eventName
             this["event_location"] = eventLocation
@@ -190,7 +190,7 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         // #use add() to collection, #use set() to document
         // -> การเขียนข้อมูลด้วย Method add()
         // -> ทาง Cloud FireStore จะสร้าง Index ให้เราโดยอัตโนมัติ
-        eventRef.add(eventObject).addOnCompleteListener {
+        eventRef.set(eventObject).addOnCompleteListener {
             if (it.isSuccessful) {
                 Toast.makeText(this, "Create event successful", Toast.LENGTH_SHORT).show()
 

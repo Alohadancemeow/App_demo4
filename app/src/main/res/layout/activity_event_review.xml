@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.EventReviewActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="#FFC400"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/btn_back_event_review"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorAccent"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_back_24" />
+
+        <ImageView
+            android:id="@+id/iv_icon_event2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/btn_back_event_review"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_event_available_white" />
+
+        <TextView
+            android:id="@+id/tv_event_review_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_back_event_review"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_toEndOf="@id/iv_icon_event2"
+            android:fontFamily="@font/chicle"
+            android:includeFontPadding="false"
+            android:text="Event Type"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/tv_event_review_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_event_review_type"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/iv_icon_event2"
+            android:fontFamily="@font/antic"
+            android:includeFontPadding="false"
+            android:textStyle="bold"
+            android:text="Event name here."
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_event_review_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_event_review_name"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/iv_icon_event2"
+            android:fontFamily="@font/antic"
+            android:includeFontPadding="false"
+            android:text="1/1/1010"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/event_review_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Location">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_event_available_yellow"
+                android:drawablePadding="10dp"
+                android:focusable="false"
+                android:textStyle="normal"
+                android:enabled="false"
+                android:textColor="@android:color/black"
+                android:text="Temple" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/event_review_meet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Meet at">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_event_available_yellow"
+                android:drawablePadding="10dp"
+                android:focusable="false"
+                android:textStyle="normal"
+                android:enabled="false"
+                android:textColor="@android:color/black"
+                android:text="kana 12" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/event_review_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Time">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_event_available_yellow"
+                android:drawablePadding="10dp"
+                android:focusable="false"
+                android:textStyle="normal"
+                android:enabled="false"
+                android:textColor="@android:color/black"
+                android:text="00:00" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/event_review_member"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:hint="Member">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_event_available_yellow"
+                android:drawablePadding="10dp"
+                android:focusable="false"
+                android:textStyle="normal"
+                android:enabled="false"
+                android:textColor="@android:color/black"
+                android:text="10" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_event_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="@color/colorAccent"
+            app:icon="@drawable/ic_event_available"
+            app:iconGravity="textStart"
+            app:iconTint="@android:color/black"
+            android:textColor="@android:color/black"
+            android:text="Ok" />
+
+    </LinearLayout>
+
+</LinearLayout>

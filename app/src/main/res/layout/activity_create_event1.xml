@@ -70,7 +70,7 @@
                 android:layout_toEndOf="@id/iv_icon_event"
                 android:fontFamily="@font/antic"
                 android:includeFontPadding="false"
-                android:text="Let's do it"
+                android:text="Special event"
                 android:textSize="15sp" />
 
 

@@ -1,5 +1,6 @@
 package com.example.app_demo4.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_demo4.R
+import com.example.app_demo4.activity.EventReviewActivity
 import com.example.app_demo4.model.EventData
 import com.example.app_demo4.model.EventHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -61,11 +63,17 @@ class Event1Fragment : Fragment() {
                 holder.bind(model)
 
                 //get key (document ID) from FirestoreRecyclerAdapter
-                val userId = snapshots.getSnapshot(position).id
+                val eventId = snapshots.getSnapshot(position).id
 
                 holder.itemView.apply {
                     setOnClickListener {
-                        Toast.makeText(context, "${model.event_name} is clicked", Toast.LENGTH_SHORT).show()
+
+//                        Toast.makeText(context, "${model.event_name} is clicked", Toast.LENGTH_SHORT).show()
+
+                        //send to event review page
+                        val intent = Intent(context, EventReviewActivity::class.java)
+                        intent.putExtra("eventId", eventId)
+                        startActivity(intent)
                     }
                 }
             }

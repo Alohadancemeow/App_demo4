@@ -112,11 +112,11 @@
             android:layout_above="@id/fab2"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             android:visibility="invisible"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_event"
+            android:src="@drawable/ic_event1_white"
             android:tint="@android:color/white" />
 
 
