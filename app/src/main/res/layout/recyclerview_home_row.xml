@@ -66,13 +66,16 @@
 
                 <TextView
                     android:id="@+id/tv_location"
+                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_event_name"
                     android:layout_alignParentStart="true"
                     android:fontFamily="@font/antic"
                     android:text="Location"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:drawablePadding="5dp"
+                    app:drawableStartCompat="@drawable/ic_location_drop_yellow" />
 
                 <TextView
                     android:id="@+id/tv_time"
@@ -82,14 +85,16 @@
                     android:layout_alignParentStart="true"
                     android:fontFamily="@font/antic"
                     android:text="7:30AM - 8:00AM"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:drawablePadding="5dp"
+                    app:drawableStartCompat="@drawable/ic_time_yellow" />
 
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_event_yellow" />
+                    android:src="@drawable/ic_event_available_yellow" />
 
             </RelativeLayout>
 

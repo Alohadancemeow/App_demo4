@@ -3,15 +3,12 @@ package com.example.app_demo4.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_demo4.R
 import com.example.app_demo4.model.HomeData
-import kotlinx.android.synthetic.main.recyclerview_home_row.view.*
 
 class HomeRecyclerviewAdapter(var content: ArrayList<HomeData>) :
     RecyclerView.Adapter<HomeRecyclerviewAdapter.ViewHolder>() {
@@ -36,10 +33,10 @@ class HomeRecyclerviewAdapter(var content: ArrayList<HomeData>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cardData: HomeData = content[position]
-        holder.eventType.text = cardData.eventType
-        holder.eventName.text = cardData.eventName
-        holder.location.text = cardData.location
-        holder.time.text = cardData.time
+        holder.eventType.text = cardData.event_type
+        holder.eventName.text = cardData.event_name
+        holder.location.text = cardData.event_location
+        holder.time.text = cardData.event_time
 
 
         val isExpandable: Boolean = content[position].expandable
@@ -59,3 +56,5 @@ class HomeRecyclerviewAdapter(var content: ArrayList<HomeData>) :
         return content.size
     }
 }
+
+// Never used
