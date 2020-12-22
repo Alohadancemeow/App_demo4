@@ -5,32 +5,33 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_demo4.R
-import com.example.app_demo4.adapter.HomeRecyclerviewAdapter
-import com.example.app_demo4.model.EventData
 import com.example.app_demo4.model.HomeData
 import com.example.app_demo4.model.HomeHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.fragment_event1.*
+import com.google.firebase.firestore.SetOptions
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.recyclerview_home_row.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.view.*
+import java.sql.Ref
 import java.util.*
-import java.util.Calendar.MONTH
-import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class HomeFragment : Fragment() {
 
     //Firebase Properties
+    private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabase : FirebaseFirestore
     private lateinit var eventReference: CollectionReference
+    private lateinit var memberReference: DocumentReference
 
     // Date Properties
     private var day = 0
@@ -53,6 +54,7 @@ class HomeFragment : Fragment() {
 
         //set properties
         mDatabase = FirebaseFirestore.getInstance()
+        mAuth = FirebaseAuth.getInstance()
         eventReference = mDatabase.collection("Events")
 
         /** # ดึง event ทั้งหมดที่ตรงกับวันนี้ โดยเรียงตามเวลา */
@@ -87,6 +89,47 @@ class HomeFragment : Fragment() {
                         val eventCardList = snapshots[position]
                         eventCardList.expandable = !eventCardList.expandable
                         notifyItemChanged(position)
+                    }
+
+                    this.join_btn.setOnClickListener {
+
+                        val userId = mAuth.currentUser!!.uid
+                        val eventId = snapshots.getSnapshot(position).id
+
+                        memberReference = mDatabase.collection("Events").document(eventId)
+                            .collection("member_list").document(userId)
+
+
+                        // failed !!
+
+                        val userRef = mDatabase.collection("Users").document(userId)
+                        userRef.addSnapshotListener { value, error ->
+                            if (error != null) return@addSnapshotListener
+
+                            //get username from uid
+                            val name = value?.get("display_name").toString()
+                            val mId  = HashMap<String,Any>().apply {
+                                this["mid"] = name
+                            }
+
+                            //something went wrong here !!
+                            if (userId.equals(memberReference.collection("member_list").document(userId))){
+                                Toast.makeText(context, "You're joined already", Toast.LENGTH_SHORT).show()
+                            }
+                            else {
+
+                                memberReference.set(mId).addOnCompleteListener {
+                                    if (it.isSuccessful) {
+                                        Toast.makeText(context, "$userId joined", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(context, "error joined", Toast.LENGTH_SHORT).show()
+
+                                    }
+                                }
+                            }
+
+                        }
+
                     }
                 }
             }
