@@ -6,7 +6,9 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.example.app_demo4.R
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
 import kotlinx.android.synthetic.main.activity_event_review.*
+import kotlinx.android.synthetic.main.recyclerview_member_list_row.*
 
 class EventReviewActivity : AppCompatActivity() {
 
@@ -55,6 +57,9 @@ class EventReviewActivity : AppCompatActivity() {
                 val event_time = value?.get("event_time").toString()
                 val event_member = value?.get("event_member").toString()
 
+                val mem_list = value?.get("mem_list").toString()
+                val member_list = value?.get("member_list").toString()
+
                 //set event data to view
                 tv_event_review_type.text = event_type
                 tv_event_review_name.text = event_name
@@ -63,6 +68,9 @@ class EventReviewActivity : AppCompatActivity() {
                 event_review_meet.editText?.setText(event_meet)
                 event_review_time.editText?.setText(event_time)
                 event_review_member.editText?.setText(event_member)
+
+                tv_mem1.text = mem_list
+                tv_mem2.text = member_list
 
             }
         }
