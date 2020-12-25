@@ -16,11 +16,10 @@ import com.example.app_demo4.model.MemberData
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.firebase.ui.firestore.SnapshotParser
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.SnackbarContentLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.view.*
@@ -35,9 +34,10 @@ class HomeFragment : Fragment() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabase : FirebaseFirestore
     private lateinit var eventReference: CollectionReference
+//    private lateinit var memberReference: DocumentReference
     private lateinit var memberReference: DocumentReference
 
-    private lateinit var memberListReference: Query
+    private lateinit var memberListReference: CollectionReference
     private lateinit var memberNameReference: DocumentReference
 
     // Date Properties
@@ -52,6 +52,9 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        mDatabase = FirebaseFirestore.getInstance()
+        mAuth = FirebaseAuth.getInstance()
+
         setUpRecyclerView()
 
     }
@@ -62,8 +65,8 @@ class HomeFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         //set properties
-        mDatabase = FirebaseFirestore.getInstance()
-        mAuth = FirebaseAuth.getInstance()
+//        mDatabase = FirebaseFirestore.getInstance()
+//        mAuth = FirebaseAuth.getInstance()
         eventReference = mDatabase.collection("Events")
 
         /** # ดึง event ทั้งหมดที่ตรงกับวันนี้ โดยเรียงตามเวลา */
@@ -107,7 +110,13 @@ class HomeFragment : Fragment() {
 //                        memberReference = mDatabase.collection("Events").document(eventId)
 //                            .collection("member_list").document(userId)
 
-                        memberReference = mDatabase.collection("Events").document(eventId)
+                        val eventName = snapshots[position].event_name.toString()
+
+                        memberReference = mDatabase.collection("Event-mem-list").document(eventName)
+
+
+//                        memberReference = mDatabase.collection("Events").document(eventId)
+
 
                         val userRef = mDatabase.collection("Users").document(userId)
                         userRef.addSnapshotListener { value, error ->
@@ -116,33 +125,49 @@ class HomeFragment : Fragment() {
                             //get username from uid
                             val name = value?.get("display_name").toString()
 
-//                            val mId  = HashMap<String,Any>().apply {
-//                                this["mid"] = name
-//                            }
 
                             val mId  = HashMap<String,Any>().apply {
-                                this["mem_list"] = ArrayList<String>().apply {
-                                    this.add(name)
-                                }
+                                this[userId] = name
                             }
+
+//                            val mId  = HashMap<String,Any>().apply {
+//                                this["mem_list"] = ArrayList<String>().apply {
+//                                    this.add(name)
+//                                }
+//                            }
 
                             //Join without condition (if) !!
-                            memberReference.update(mId).addOnCompleteListener {
-                                if (it.isSuccessful) {
-                                    Toast.makeText(context, "You're joined ${snapshots[position].event_name}", Toast.LENGTH_SHORT).show()
+                            memberReference.apply {
+                                addSnapshotListener { value, error ->
+
+                                    error.let {
+
+                                        val memId = value?.get(userId) //userId in eventId
+
+                                        if (mId[userId] == memId) {
+                                            //Why always show ?
+                                            Snackbar.make(root_layout,"You're joined already",Snackbar.LENGTH_SHORT).show()
+                                        } else {
+                                            set(mId, SetOptions.mergeFields(userId)).addOnCompleteListener {
+                                                if (it.isSuccessful) {
+                                                    Toast.makeText(context, "You're joined ${snapshots[position].event_name}", Toast.LENGTH_SHORT).show()
 //                                    setUpMemberListRecyclerView(userId, eventId)
-                                } else {
-                                    Toast.makeText(context, "error joined", Toast.LENGTH_SHORT).show()
+                                                } else {
+                                                    Toast.makeText(context, "error join", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                            }
+                            } //end apply.
                         }
+                    } //end join btn.
 
-                    }
+
                 }
-            }
+            } //end onBindViewHolder.
+        } //end adapter.
 
-
-        }
 
         //set recyclerView layout and adapter
         rv_home.layoutManager = linearLayoutManager
@@ -156,7 +181,8 @@ class HomeFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
 
-        memberListReference = mDatabase.collectionGroup("member_list")
+        memberListReference = mDatabase.collection("Events").document(eventId)
+            .collection("member_list")
 
         val query = memberListReference.orderBy("mid")
         val options = FirestoreRecyclerOptions.Builder<MemberData>()
