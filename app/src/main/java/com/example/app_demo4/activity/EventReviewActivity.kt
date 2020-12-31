@@ -1,20 +1,23 @@
 package com.example.app_demo4.activity
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.app_demo4.R
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Source
+import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_event_review.*
-import kotlinx.android.synthetic.main.recyclerview_member_list_row.*
+
 
 class EventReviewActivity : AppCompatActivity() {
 
     //Firebase Property
     private lateinit var mDatabase: FirebaseFirestore
+    private lateinit var memberReference: DocumentReference
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -34,7 +37,7 @@ class EventReviewActivity : AppCompatActivity() {
             finish()
         }
 
-        // Receive intent from Event 1/2 Fragments
+        // Receive intent from Event 1/2 Fragments and HomeFragment
         if (intent.extras != null) {
 
             val eventId = intent.extras!!.get("eventId").toString()
@@ -43,6 +46,8 @@ class EventReviewActivity : AppCompatActivity() {
             eventRef.addSnapshotListener { value, error ->
 
                 if (error != null) finish()
+
+                val eventName = value?.get("event_name").toString()
 
                 //show event name
                 Toast.makeText(this, "${value?.get("event_name")}", Toast.LENGTH_SHORT).show()
@@ -56,9 +61,8 @@ class EventReviewActivity : AppCompatActivity() {
                 val event_meet = value?.get("event_meet").toString()
                 val event_time = value?.get("event_time").toString()
                 val event_member = value?.get("event_member").toString()
+                val event_creator = value?.get("event_creator").toString()
 
-                val mem_list = value?.get("mem_list").toString()
-                val member_list = value?.get("member_list").toString()
 
                 //set event data to view
                 tv_event_review_type.text = event_type
@@ -68,13 +72,33 @@ class EventReviewActivity : AppCompatActivity() {
                 event_review_meet.editText?.setText(event_meet)
                 event_review_time.editText?.setText(event_time)
                 event_review_member.editText?.setText(event_member)
+                tv_creator_review.text = "Creator : $event_creator"
 
-                tv_mem1.text = mem_list
-                tv_mem2.text = member_list
-
+                showEachMember(eventRef,eventId, eventName)
             }
         }
 
+    }
+
+    //Failed !!
+    @SuppressLint("SetTextI18n")
+    private fun showEachMember(eventRef: DocumentReference, eventId: String, eventName: String) {
+
+        Log.d("eventId", eventId)
+        Log.d("eventName", eventName)
+        memberReference = mDatabase.collection("Event-mem-list").document(eventName)
+
+        memberReference.addSnapshotListener { value, error ->
+
+            error.let {
+
+                val joiner = value?.data?.values
+                Log.d("eventListId", joiner.toString())
+
+                //Todo : show member list -> failed !!
+                tv_mem1.text = joiner.toString()
+            }
+        }
 
     }
 }

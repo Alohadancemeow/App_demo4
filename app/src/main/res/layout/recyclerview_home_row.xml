@@ -4,8 +4,8 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="2dp"
     android:layout_margin="10dp"
+    app:cardCornerRadius="2dp"
     app:cardElevation="10dp">
 
     <LinearLayout
@@ -66,15 +66,16 @@
 
                 <TextView
                     android:id="@+id/tv_location"
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_event_name"
                     android:layout_alignParentStart="true"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="5dp"
                     android:fontFamily="@font/antic"
+                    android:gravity="center_vertical"
                     android:text="Location"
                     android:textSize="16sp"
-                    android:drawablePadding="5dp"
                     app:drawableStartCompat="@drawable/ic_location_drop_yellow" />
 
                 <TextView
@@ -83,11 +84,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_location"
                     android:layout_alignParentStart="true"
+                    android:layout_marginTop="2dp"
+                    android:drawablePadding="5dp"
                     android:fontFamily="@font/antic"
+                    android:gravity="center_vertical"
                     android:text="7:30AM - 8:00AM"
                     android:textSize="16sp"
-                    android:drawablePadding="5dp"
-                    app:drawableStartCompat="@drawable/ic_time_yellow" />
+                    app:drawableStartCompat="@drawable/ic_alarm_on_yellow" />
 
                 <ImageView
                     android:layout_width="70dp"
@@ -105,22 +108,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="#000" />
+                <!--                <View-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="0.5dp"-->
+                <!--                    android:layout_marginBottom="10dp"-->
+                <!--                    android:background="#000" />-->
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/antic"
-                    android:text="Members :"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,30 +124,41 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_member_num"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="User1" />
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/antic"
+                        android:text="Members :"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_meet_at"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="User2" />
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/antic"
+                        android:text="Meet At :"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="User3" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_member_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_creator"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/antic"
+                    android:gravity="center_vertical"
+                    android:text="Create by :"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_user_status_yellow" />
 
                 <View
                     android:layout_width="match_parent"
@@ -168,6 +174,16 @@
                     android:background="#FFC400"
                     android:text="Join" />
 
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/details_btn"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_style"
+                    android:text="More details"
+                    android:textColor="@android:color/tertiary_text_dark" />
+
             </LinearLayout>
 
             <ImageView
@@ -175,8 +191,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="4dp"
-                android:clickable="true"
                 android:background="@drawable/ic_arrow_down_yellow"
+                android:clickable="true"
                 android:focusable="true" />
 
 

@@ -12,10 +12,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -45,12 +47,14 @@ class LoginActivity : AppCompatActivity() {
             val user = mAuth.currentUser
             if (user != null) {
                 Toast.makeText(this, "Already login", Toast.LENGTH_SHORT).show()
+//                Snackbar.make(root_layout_login,"Already login", Snackbar.LENGTH_SHORT).show()
 
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show()
+                Snackbar.make(root_layout_login,"Please login", Snackbar.LENGTH_SHORT).show()
             }
         }
 
@@ -108,11 +112,8 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener {
 
                 if (it.isSuccessful) {
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "Login successful",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
+//                Snackbar.make(root_layout_login,"Login successful", Snackbar.LENGTH_SHORT).show()
 
                     // send to Home page with uid*
                     val intent = Intent(this@LoginActivity, HomeActivity::class.java)

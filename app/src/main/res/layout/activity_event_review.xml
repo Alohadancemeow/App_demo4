@@ -201,35 +201,33 @@
                         android:layout_marginBottom="8dp"
                         android:text="User1" />
 
-                    <TextView
-                        android:id="@+id/tv_mem2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="User2" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="User3" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_review_member_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/tv_creator_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/antic"
+                    android:gravity="center_vertical"
+                    android:text="Creator :"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_user_status_yellow" />
+
 
             </LinearLayout>
+
 
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_event_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:background="@color/colorAccent"
                 android:text="Ok"

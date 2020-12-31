@@ -10,6 +10,7 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_event2.*
 import java.util.*
@@ -18,9 +19,11 @@ import kotlin.collections.HashMap
 class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 
+
+
     // Firebase Properties
     private lateinit var mDatabase: FirebaseFirestore
-//    private lateinit var mAuth : FirebaseAuth
+    private lateinit var mAuth : FirebaseAuth
 
     // View Properties
     private lateinit var eventName: String
@@ -29,6 +32,7 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     private lateinit var eventTime: String
     private lateinit var eventMeet: String
     private lateinit var eventMember: String
+    private lateinit var eventCreator: String
 
     // DateTime Properties
     private var day = 0
@@ -51,7 +55,7 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
         //set firebase properties
         mDatabase = FirebaseFirestore.getInstance()
-//        mAuth = FirebaseAuth.getInstance()
+        mAuth = FirebaseAuth.getInstance()
 
         pickDateTime()
 
@@ -63,22 +67,39 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         // Button Create event
         btn_create_event2.setOnClickListener {
 
-            //set view properties
-            eventName = tv_event_name_create2.editText?.text.toString().trim()
-            eventLocation = tv_location_create2.editText?.text.toString().trim()
-            eventDate = tv_date_create2.editText?.text.toString().trim()
-            eventTime = tv_time_create2.editText?.text.toString().trim()
-            eventMeet = tv_meet_create2.editText?.text.toString().trim()
-            eventMember = tv_member_create2.editText?.text.toString().trim()
+            val userId = mAuth.currentUser!!.uid
+            val userRef = mDatabase.collection("Users").document(userId)
+            userRef.addSnapshotListener { value, error ->
 
-            createEvent(
-                eventName,
-                eventLocation,
-                eventDate,
-                eventTime,
-                eventMeet,
-                eventMember
-            )
+                error.let {
+
+                    //get username
+                    val userName = value?.get("display_name").toString()
+
+                    //set view properties
+                    eventName = tv_event_name_create2.editText?.text.toString().trim()
+                    eventLocation = tv_location_create2.editText?.text.toString().trim()
+                    eventDate = tv_date_create2.editText?.text.toString().trim()
+                    eventTime = tv_time_create2.editText?.text.toString().trim()
+                    eventMeet = tv_meet_create2.editText?.text.toString().trim()
+                    eventMember = tv_member_create2.editText?.text.toString().trim()
+
+                    eventCreator = userName
+
+                    createEvent(
+                        eventName,
+                        eventLocation,
+                        eventDate,
+                        eventTime,
+                        eventMeet,
+                        eventMember,
+                        eventCreator
+                    )
+
+                }
+            }
+
+
         }
 
     }
@@ -138,7 +159,8 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         eventDate: String,
         eventTime: String,
         eventMeet: String,
-        eventMember: String
+        eventMember: String,
+        eventCreator: String
     ) {
 
         if (!validateEventData(
@@ -159,7 +181,8 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             eventDate,
             eventTime,
             eventMeet,
-            eventMember
+            eventMember,
+            eventCreator
         )
 
     }
@@ -170,7 +193,8 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         eventDate: String,
         eventTime: String,
         eventMeet: String,
-        eventMember: String
+        eventMember: String,
+        eventCreator: String
     ) {
 
 //        val user = mAuth.currentUser
@@ -185,6 +209,7 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             this["event_meet"] = eventMeet
             this["event_member"] = eventMember
             this["event_type"] = "Event B"  //type B
+            this["event_creator"] = eventCreator  //creator name
         }
 
         // #use add() to collection, #use set() to document
