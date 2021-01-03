@@ -3,7 +3,6 @@ package com.example.app_demo4.activity
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.app_demo4.R
@@ -74,31 +73,34 @@ class EventReviewActivity : AppCompatActivity() {
                 event_review_member.editText?.setText(event_member)
                 tv_creator_review.text = "Creator : $event_creator"
 
-                showEachMember(eventRef,eventId, eventName)
+                showAllMember(eventId, eventName)
             }
         }
 
     }
 
-    //Failed !!
+
     @SuppressLint("SetTextI18n")
-    private fun showEachMember(eventRef: DocumentReference, eventId: String, eventName: String) {
+    private fun showAllMember(eventId: String, eventName: String) {
 
-        Log.d("eventId", eventId)
-        Log.d("eventName", eventName)
+//        Log.d("eventId", eventId)
+//        Log.d("eventName", eventName)
         memberReference = mDatabase.collection("Event-mem-list").document(eventName)
-
         memberReference.addSnapshotListener { value, error ->
 
             error.let {
 
-                val joiner = value?.data?.values
-                Log.d("eventListId", joiner.toString())
+                value?.data?.values.apply {
+//                    Log.d("event-list-mem", this.toString())
 
-                //Todo : show member list -> failed !!
-                tv_mem1.text = joiner.toString()
+                    //Todo : show member list -> completed !!
+                    this?.forEachIndexed { index, value ->
+//                    Log.d("event-loop", "$index : $value")
+                        edt_list_name.editableText?.append("${index + 1}. $value \n")
+                    }
+                }
             }
-        }
 
+        }
     }
 }

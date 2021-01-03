@@ -48,6 +48,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        //set properties
         mDatabase = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
 
@@ -60,9 +61,6 @@ class HomeFragment : Fragment() {
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        //set properties
-//        mDatabase = FirebaseFirestore.getInstance()
-//        mAuth = FirebaseAuth.getInstance()
         eventReference = mDatabase.collection("Events")
 
         /** # ดึง event ทั้งหมดที่ตรงกับวันนี้ โดยเรียงตามเวลา */
@@ -89,8 +87,6 @@ class HomeFragment : Fragment() {
                 holder.bind(model)
 
                 val eventName = snapshots[position].event_name.toString()
-//                showMemberList(eventName)
-
 
                 holder.itemView.apply {
 
@@ -129,12 +125,11 @@ class HomeFragment : Fragment() {
                             //get username from uid
                             val name = value?.get("display_name").toString()
 
-
                             val mId = HashMap<String, Any>().apply {
                                 this[userId] = name
                             }
 
-                            //Join without condition (if) !!
+                            //Join with condition (if) !!
                             memberReference.apply {
                                 addSnapshotListener { value, error ->
 
@@ -154,7 +149,6 @@ class HomeFragment : Fragment() {
                                                 if (it.isSuccessful) {
                                                     Toast.makeText(context, "You're joined ${snapshots[position].event_name}", Toast.LENGTH_SHORT)
                                                         .show()
-
                                                 } else {
                                                     Toast.makeText(context, "error join", Toast.LENGTH_SHORT)
                                                         .show()
@@ -176,26 +170,6 @@ class HomeFragment : Fragment() {
         rv_home.layoutManager = linearLayoutManager
         rv_home.adapter = adapter
 
-    }
-
-
-    //Failed !!
-    private fun showMemberList(eventName : String) {
-
-        Log.d("eventName", eventName)
-        memberNameReference = mDatabase.collection("Event-mem-list").document(eventName)
-
-        memberNameReference.addSnapshotListener { value, error ->
-
-            if (error != null) return@addSnapshotListener
-
-            //else
-//            value?.get(eventName)
-            val memList = value?.data?.values.toString()
-            Log.d("memList", memList)
-
-            tv_member_num.text = memList
-        }
     }
 
 

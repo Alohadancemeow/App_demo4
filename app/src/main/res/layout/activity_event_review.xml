@@ -7,13 +7,13 @@
     tools:context=".activity.EventReviewActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="230dp"
             android:background="#FFC400"
             android:padding="20dp">
 
@@ -148,7 +148,6 @@
                 android:id="@+id/event_review_member"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:hint="Member">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -170,46 +169,21 @@
                 android:orientation="vertical"
                 android:padding="5dp">
 
-                <TextView
+                <EditText
+                    android:id="@+id/edt_list_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:drawablePadding="10dp"
+                    android:enabled="false"
                     android:fontFamily="@font/antic"
-                    android:text="Members List :"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:drawableStartCompat="@drawable/ic_event_available_yellow" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="#000" />
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_mem1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="User1" />
-
-
-                </LinearLayout>
+                    android:textColor="@android:color/tertiary_text_dark"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_creator_review"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/antic"
                     android:gravity="center_vertical"
@@ -218,9 +192,7 @@
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_user_status_yellow" />
 
-
             </LinearLayout>
-
 
 
             <com.google.android.material.button.MaterialButton
