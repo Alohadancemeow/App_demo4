@@ -9,8 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.EventReviewActivity"></activity>
-        <!-- Activities -->
+        <activity android:name=".notification.NotificationLibActivity"></activity>
+        <activity android:name=".notification.NotificationDemoActivity" />
+        <activity android:name=".notification.NotificationMainActivity" />
+        <activity android:name=".activity.EventReviewActivity" /> <!-- Activities -->
         <activity android:name=".activity.CreateEvent1Activity" />
         <activity android:name=".activity.CreateEvent2Activity" />
         <activity android:name=".activity.YourNameActivity" />
@@ -30,6 +32,8 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver android:name=".notification.AlarmReceiver" />
     </application>
 
 </manifest>
