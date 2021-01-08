@@ -65,7 +65,7 @@ class NotificationDemoActivity : AppCompatActivity() {
         day = cal.get(Calendar.DAY_OF_MONTH)
         month = cal.get(Calendar.MONTH) //Start at 0
         year = cal.get(Calendar.YEAR)
-        hour = cal.get(Calendar.HOUR)
+        hour = cal.get(Calendar.HOUR_OF_DAY) // 24 hr
         minute = cal.get(Calendar.MINUTE)
     }
 
@@ -119,15 +119,15 @@ class NotificationDemoActivity : AppCompatActivity() {
 
             error.let {
                 val memId = value?.data?.keys
-//                Log.d("user-memId", memId.toString())
+                Log.d("user-memId", memId.toString())
 
                 getToday()
                 val currentTime = "$hour : $minute" // 1 : 30
 
-//                Log.d("time-current", currentTime)
-//                Log.d("time-event", eventTime)
-//                val a = eventTime == currentTime
-//                Log.d("time-a", a.toString())
+                Log.d("time-current", currentTime)
+                Log.d("time-event", eventTime)
+                val a = eventTime == currentTime
+                Log.d("time-a", a.toString())
 
                 //todo : notify to member
                 //1.Check time.

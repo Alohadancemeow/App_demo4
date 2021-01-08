@@ -43,17 +43,17 @@ class NotificationMainActivity : AppCompatActivity() {
 
         alarmService = AlarmService(this)
 
-//        button.setOnClickListener {
-//            setAlarm { timeInMillis -> alarmService.setExactAlarm(timeInMillis)
-//            Log.d("it1", timeInMillis.toString())
-//            }
-//        }
-//
-//        button2.setOnClickListener {
-//            setAlarm { alarmService.setRepetitiveAlarm(it)
-//                Log.d("it2", it.toString())
-//            }
-//        }
+        button.setOnClickListener {
+            setAlarm { timeInMillis -> alarmService.setExactAlarm(timeInMillis)
+            Log.d("it1", timeInMillis.toString())
+            }
+        }
+
+        button2.setOnClickListener {
+            setAlarm { alarmService.setRepetitiveAlarm(it)
+                Log.d("it2", it.toString())
+            }
+        }
 
     }
 

@@ -13,6 +13,8 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.app_demo4.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import kotlinx.android.synthetic.main.activity_main.*
 import android.os.Handler as Handler
 
@@ -31,6 +33,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         window.addFlags(FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
+
+        // [START fcm_runtime_enable_auto_init]
+        Firebase.messaging.isAutoInitEnabled = true
 
 
         //Animations
