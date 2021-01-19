@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.app_demo4">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,18 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".activity.SendFeedbackActivity"></activity>
         <!-- [START fcm_disable_auto_init] -->
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
         <meta-data
             android:name="firebase_analytics_collection_enabled"
-            android:value="false" />
-        <!-- [END fcm_disable_auto_init] -->
-
+            android:value="false" /> <!-- [END fcm_disable_auto_init] -->
         <!-- Activities -->
-        <activity android:name=".notification.NotificationLibActivity"/>
+        <activity android:name=".notification.NotificationLibActivity" />
         <activity android:name=".notification.NotificationDemoActivity" />
         <activity android:name=".notification.NotificationMainActivity" />
         <activity android:name=".activity.EventReviewActivity" />
@@ -40,15 +38,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- End Activities -->
-
+        </activity> <!-- End Activities -->
         <meta-data
             android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-
-
-        <!-- FCM -->
+            android:resource="@array/preloaded_fonts" /> <!-- FCM -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_event_available_yellow" />
@@ -66,12 +59,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <!-- END FCM -->
-
-
-<!--        <receiver android:name=".notification.AlarmReceiver" />-->
-
     </application>
 
 </manifest>

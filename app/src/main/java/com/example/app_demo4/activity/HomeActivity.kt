@@ -16,13 +16,12 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.app_demo4.R
-import com.example.app_demo4.fragment.Event1Fragment
 import com.example.app_demo4.fragment.EventFragment
 import com.example.app_demo4.fragment.HomeFragment
 import com.example.app_demo4.fragment.UsersFragment
-import com.example.app_demo4.notification.NotificationDemoActivity
+//import com.example.app_demo4.notification.NotificationDemoActivity
 import com.example.app_demo4.notification.NotificationLibActivity
-import com.example.app_demo4.notification.NotificationMainActivity
+//import com.example.app_demo4.notification.NotificationMainActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.ismaeldivita.chipnavigation.ChipNavigationBar.OnItemSelectedListener
@@ -203,15 +202,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             // Communication
-            R.id.nav_help -> {
-                //TODO("help ?")
-                val intent = Intent(this, NotificationMainActivity::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.nav_info -> {
+//            R.id.nav_help -> {
+//                //TODO("help ?")
+//                val intent = Intent(this, NotificationMainActivity::class.java)
+//                startActivity(intent)
+//                true
+//            }
+            R.id.nav_feedback -> {
                 //TODO("info ?")
-                val intent = Intent(this, NotificationDemoActivity::class.java)
+                val intent = Intent(this, SendFeedbackActivity::class.java)
                 startActivity(intent)
                 true
             }
@@ -219,6 +218,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 //TODO("share ?")
                 val intent = Intent(this, NotificationLibActivity::class.java)
                 startActivity(intent)
+
+//                val shareIntent = Intent().apply {
+//                    this.action = Intent.ACTION_SEND
+//                    this.putExtra(Intent.EXTRA_TEXT, "Join us!")
+//                    this.type = "text/plain"
+//                }
+//                startActivity(shareIntent)
+//
                 true
             }
 

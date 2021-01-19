@@ -60,7 +60,7 @@
                     android:title="Help" />
 
                 <item
-                    android:id="@+id/nav_info"
+                    android:id="@+id/nav_feedback"
                     android:icon="@drawable/ic_feedback_yellow"
                     android:title="Feedback" />
 
