@@ -85,13 +85,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         // event 2
         fab2.setOnClickListener {
-            Toast.makeText(this, "Event B", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "Event B", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, CreateEvent2Activity::class.java)
             startActivity(intent)
         }
         //event 1
         fab3.setOnClickListener {
-            Toast.makeText(this, "Event A", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "Event A", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, CreateEvent1Activity::class.java)
             startActivity(intent)
         }

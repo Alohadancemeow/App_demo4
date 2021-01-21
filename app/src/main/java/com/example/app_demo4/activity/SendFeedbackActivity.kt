@@ -1,10 +1,12 @@
 package com.example.app_demo4.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -101,7 +103,13 @@ class SendFeedbackActivity : AppCompatActivity() {
                 edt_subject.editText?.text = null
                 edt_details.editText?.text = null
 
-                Snackbar.make(root_layout,"Thanks for feedback", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(root_layout_feedback,"Thanks for a good feedback", Snackbar.LENGTH_LONG)
+                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                    .setDuration(4000)
+                    .setAction("Go Home") {
+                        startActivity(Intent(this, HomeActivity::class.java))
+                    }
+                    .show()
 //                finish()
             } else {
                 Toast.makeText(this, "send failed!", Toast.LENGTH_SHORT).show()

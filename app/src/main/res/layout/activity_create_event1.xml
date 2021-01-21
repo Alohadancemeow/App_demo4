@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root_layout_event_a"
     tools:context=".activity.CreateEvent1Activity">
 
     <LinearLayout
@@ -235,12 +236,16 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_create_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@color/colorAccent"
+                app:icon="@drawable/ic_event_yellow"
+                app:iconGravity="textStart"
+                app:iconTint="@android:color/black"
+                android:textColor="@android:color/black"
                 android:text="Create event" />
 
         </LinearLayout>

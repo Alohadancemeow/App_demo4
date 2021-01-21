@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Pair
 import android.util.Patterns
+import android.view.View
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -47,14 +49,17 @@ class LoginActivity : AppCompatActivity() {
             val user = mAuth.currentUser
             if (user != null) {
                 Toast.makeText(this, "Already login", Toast.LENGTH_SHORT).show()
-//                Snackbar.make(root_layout_login,"Already login", Snackbar.LENGTH_SHORT).show()
 
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 finish()
-            } else {
+            }
+            else {
 //                Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show()
-                Snackbar.make(root_layout_login,"Please login", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(root_layout_login,"Please login", Snackbar.LENGTH_INDEFINITE)
+                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                    .setAction("Okay") {}
+                    .show()
             }
         }
 

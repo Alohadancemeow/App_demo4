@@ -10,8 +10,11 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.app_demo4.R
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_profile_review.*
+import kotlinx.android.synthetic.main.activity_send_feedback.*
 
 class ProfileReviewActivity : AppCompatActivity() {
 
@@ -37,7 +40,10 @@ class ProfileReviewActivity : AppCompatActivity() {
                 if (error != null) finish()
 
                 //show user's display name
-                Toast.makeText(baseContext, "${value?.get("display_name")}", Toast.LENGTH_LONG).show()
+//                Toast.makeText(baseContext, "${value?.get("display_name")}", Toast.LENGTH_LONG).show()
+                Snackbar.make(root_layout_profile,"${value?.get("display_name")}", Snackbar.LENGTH_SHORT)
+                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                    .show()
 
                 // else
                 val display_name = value?.get("display_name").toString().trim()

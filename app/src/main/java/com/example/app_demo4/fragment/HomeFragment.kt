@@ -15,9 +15,11 @@ import com.example.app_demo4.model.HomeData
 import com.example.app_demo4.model.HomeHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import kotlinx.android.synthetic.main.activity_event_review.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.view.*
@@ -140,15 +142,29 @@ class HomeFragment : Fragment() {
 //                                        Log.d("mId", userId)
 
                                         if (memId?.contains(userId) == true) {
+
                                             //Why always show ?
-                                            Snackbar.make(root_layout, "You're joined already", Snackbar.LENGTH_SHORT)
+                                            Snackbar.make(root_layout_home_fm,"You're joined already", Snackbar.LENGTH_LONG)
+                                                .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                                                .setAction("View") {
+                                                    val eventId = snapshots.getSnapshot(position).id
+                                                    val intent = Intent(context, EventReviewActivity::class.java)
+                                                    intent.putExtra("eventId", eventId)
+                                                    startActivity(intent)
+                                                }
                                                 .show()
+
                                         } else {
                                             //set data(mId) to firebase
                                             set(mId, SetOptions.mergeFields(userId)).addOnCompleteListener {
                                                 if (it.isSuccessful) {
-                                                    Toast.makeText(context, "You're joined ${snapshots[position].event_name}", Toast.LENGTH_SHORT)
+
+                                                    Snackbar.make(root_layout_home_fm,"You're joined ${snapshots[position].event_name}", Snackbar.LENGTH_LONG)
+                                                        .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                                                         .show()
+
+//                                                    Toast.makeText(context, "You're joined ${snapshots[position].event_name}", Toast.LENGTH_SHORT)
+//                                                        .show()
                                                 } else {
                                                     Toast.makeText(context, "error join", Toast.LENGTH_SHORT)
                                                         .show()

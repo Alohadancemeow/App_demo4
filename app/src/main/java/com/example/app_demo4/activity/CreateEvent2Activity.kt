@@ -10,8 +10,11 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.activity_create_event1.*
 import kotlinx.android.synthetic.main.activity_create_event2.*
 import java.util.*
 import kotlin.collections.HashMap
@@ -56,6 +59,14 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         //set firebase properties
         mDatabase = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
+
+        // show event type
+        Snackbar.make(root_layout_event_b,"Event B", Snackbar.LENGTH_LONG)
+            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+            .setAction("Back") {
+                finish()
+            }
+            .show()
 
         pickDateTime()
 

@@ -6,8 +6,11 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_event_review.*
+import kotlinx.android.synthetic.main.activity_profile_review.*
 
 
 class EventReviewActivity : AppCompatActivity() {
@@ -49,7 +52,9 @@ class EventReviewActivity : AppCompatActivity() {
                 val eventName = value?.get("event_name").toString()
 
                 //show event name
-                Toast.makeText(this, "${value?.get("event_name")}", Toast.LENGTH_SHORT).show()
+                Snackbar.make(root_layout_event,"${value?.get("event_name")}", Snackbar.LENGTH_SHORT)
+                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                    .show()
 
                 //get event data from firestore
                 //Must be same name as firestore

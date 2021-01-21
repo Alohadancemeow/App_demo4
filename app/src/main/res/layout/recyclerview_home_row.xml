@@ -160,13 +160,17 @@
                     android:layout_marginBottom="10dp"
                     android:background="#000" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/join_btn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
-                    android:background="#FFC400"
-                    android:text="Join" />
+                    android:background="@color/colorAccent"
+                    android:text="Join"
+                    android:textColor="@android:color/black"
+                    app:icon="@drawable/ic_check_white"
+                    app:iconGravity="textStart"
+                    app:iconTint="@android:color/black"/>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/details_btn"

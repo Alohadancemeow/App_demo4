@@ -337,13 +337,17 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_profile_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:background="@color/colorAccent"
-                android:text="Update" />
+                android:text="Update"
+                android:textColor="@android:color/black"
+                app:icon="@drawable/ic_verified_white"
+                app:iconGravity="textStart"
+                app:iconTint="@android:color/black"/>
 
         </LinearLayout>
 
