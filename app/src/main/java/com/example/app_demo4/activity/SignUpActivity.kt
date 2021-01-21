@@ -88,6 +88,7 @@ class SignUpActivity : AppCompatActivity() {
 
         /** # Write Database Objects -ข้อมูลที่ต้องการจะส่งไปเก็บที่ database */
         val userObject = HashMap<String, String>().apply {
+            this["UID"] = userId
             this["display_name"] = reqDisplayName
             this["full_name"] = reqFullName
             this["email"] = reqEmail
@@ -96,7 +97,7 @@ class SignUpActivity : AppCompatActivity() {
             this["wat"] = "Chana Songkram"
             this["kana"] = "12"
             this["status"] = ""
-            this["age"] = "20"
+            this["age"] = ""
         }
 
         /** # Let's go -พร้อมแล้วส่งก้อนข้อมูลไปโลด */

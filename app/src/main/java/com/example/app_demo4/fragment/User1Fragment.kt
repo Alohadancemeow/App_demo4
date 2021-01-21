@@ -1,32 +1,28 @@
 package com.example.app_demo4.fragment
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.content.pm.PackageManager.*
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_demo4.R
 import com.example.app_demo4.activity.ProfileReviewActivity
+import com.example.app_demo4.adapter.UserRecyclerViewAdapter
 import com.example.app_demo4.model.UserData
 import com.example.app_demo4.model.UserHolder
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.fragment_user1.*
-import kotlinx.android.synthetic.main.recyclerview_user.*
 import kotlinx.android.synthetic.main.recyclerview_user.view.*
 
 
 class User1Fragment : Fragment() {
-
 
     // Firebase Properties
     private lateinit var mDatabase: FirebaseFirestore
@@ -39,12 +35,23 @@ class User1Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        setUpRecyclerView()
+        val me = FirebaseAuth.getInstance().currentUser!!.uid
+        val userRef = FirebaseFirestore.getInstance().collection("Users").document(me)
+        userRef.addSnapshotListener { value, error ->
+
+            error.let {
+                val userName = value?.get("display_name")
+                Log.d("name", userName.toString())
+
+                setUpRecyclerView(userName)
+            }
+        }
 
     }
 
+
     /** Functions here **/
-    private fun setUpRecyclerView() {
+    private fun setUpRecyclerView(userName: Any?) {
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -52,8 +59,9 @@ class User1Fragment : Fragment() {
         mDatabase = FirebaseFirestore.getInstance()
         userReference = mDatabase.collection("Users")
 
+
         /** # ดึง user ทั้งหมดที่มี status = monk */
-        val query = userReference.whereEqualTo("status", "Monk").orderBy("display_name")
+        val query = userReference.whereNotEqualTo("display_name", userName).whereEqualTo("status", "Monk").orderBy("display_name")
         val options = FirestoreRecyclerOptions.Builder<UserData>()
             .setQuery(query, UserData::class.java)
             .setLifecycleOwner(this)
@@ -66,6 +74,7 @@ class User1Fragment : Fragment() {
             }
 
             override fun onBindViewHolder(holder: UserHolder, position: Int, model: UserData) {
+
                 holder.bind(model)
 
                 //get key (document ID) from FirestoreRecyclerAdapter
