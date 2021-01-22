@@ -215,24 +215,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                startActivity(intent)
 //                true
 //            }
+
             R.id.nav_feedback -> {
                 //TODO("info ?")
                 val intent = Intent(this, SendFeedbackActivity::class.java)
                 startActivity(intent)
-                true
-            }
-            R.id.nav_share -> {
-                //TODO("share ?")
-                val intent = Intent(this, NotificationLibActivity::class.java)
-                startActivity(intent)
-
-//                val shareIntent = Intent().apply {
-//                    this.action = Intent.ACTION_SEND
-//                    this.putExtra(Intent.EXTRA_TEXT, "Join us!")
-//                    this.type = "text/plain"
-//                }
-//                startActivity(shareIntent)
-//
                 true
             }
 

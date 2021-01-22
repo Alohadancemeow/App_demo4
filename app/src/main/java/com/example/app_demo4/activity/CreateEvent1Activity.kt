@@ -59,7 +59,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         mAuth = FirebaseAuth.getInstance()
 
         // show event type
-        Snackbar.make(root_layout_event_a,"Event A", Snackbar.LENGTH_LONG)
+        Snackbar.make(root_layout_event_a,"General Event", Snackbar.LENGTH_LONG)
             .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
             .setAction("Back") {
                 finish()
@@ -217,7 +217,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             this["event_time"] = eventTime
             this["event_meet"] = eventMeet
             this["event_member"] = eventMember
-            this["event_type"] = "Event A"  //type A
+            this["event_type"] = "General"  //type A
             this["event_creator"] = eventCreator  //creator name
         }
 

@@ -46,7 +46,7 @@ class Event2Fragment : Fragment() {
         eventReference = mDatabase.collection("Events")
 
         /** # ดึง event ทั้งหมดที่มี event type = Event B โดยเรียงตามวันที่ */
-        val query = eventReference.whereEqualTo("event_type", "Event B").orderBy("event_date")
+        val query = eventReference.whereEqualTo("event_type", "Special").orderBy("event_date")
         val options = FirestoreRecyclerOptions.Builder<EventData>()
             .setQuery(query, EventData::class.java)
             .setLifecycleOwner(this)

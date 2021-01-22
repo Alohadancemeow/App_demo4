@@ -47,7 +47,7 @@
                 android:layout_toEndOf="@id/iv_icon_event2"
                 android:fontFamily="@font/chicle"
                 android:includeFontPadding="false"
-                android:text="Event B"
+                android:text="Special Event"
                 android:textSize="30sp" />
 
             <TextView
@@ -71,7 +71,7 @@
                 android:layout_toEndOf="@id/iv_icon_event2"
                 android:fontFamily="@font/antic"
                 android:includeFontPadding="false"
-                android:text="General event"
+                android:text="Special event"
                 android:textSize="15sp" />
 
 
@@ -242,7 +242,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@color/colorAccent"
-                android:text="Create event"
+                android:text="Create"
                 app:icon="@drawable/ic_event2_yellow"
                 app:iconGravity="textStart"
                 app:iconTint="@android:color/black"

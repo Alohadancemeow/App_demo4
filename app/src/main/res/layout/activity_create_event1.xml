@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -47,7 +47,7 @@
                 android:layout_toEndOf="@id/iv_icon_event"
                 android:fontFamily="@font/chicle"
                 android:includeFontPadding="false"
-                android:text="Event A"
+                android:text="General Event"
                 android:textSize="30sp" />
 
             <TextView
@@ -71,7 +71,7 @@
                 android:layout_toEndOf="@id/iv_icon_event"
                 android:fontFamily="@font/antic"
                 android:includeFontPadding="false"
-                android:text="Special event"
+                android:text="General event"
                 android:textSize="15sp" />
 
 
@@ -246,7 +246,7 @@
                 app:iconGravity="textStart"
                 app:iconTint="@android:color/black"
                 android:textColor="@android:color/black"
-                android:text="Create event" />
+                android:text="Create" />
 
         </LinearLayout>
 

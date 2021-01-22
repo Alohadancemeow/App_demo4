@@ -20,8 +20,8 @@ class UserAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         }
     }
 
-    override fun getPageTitle(position: Int): CharSequence? {
-        val pagerTitle = arrayOf("User1", "User2")
+    override fun getPageTitle(position: Int): CharSequence {
+        val pagerTitle = arrayOf("Monk", "Novice")
         return pagerTitle[position]
     }
 

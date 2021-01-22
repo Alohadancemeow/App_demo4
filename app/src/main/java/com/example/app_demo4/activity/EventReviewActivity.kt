@@ -52,9 +52,11 @@ class EventReviewActivity : AppCompatActivity() {
                 val eventName = value?.get("event_name").toString()
 
                 //show event name
-                Snackbar.make(root_layout_event,"${value?.get("event_name")}", Snackbar.LENGTH_SHORT)
-                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
-                    .show()
+
+                Toast.makeText(this, "${value?.get("event_name")}", Toast.LENGTH_SHORT).show()
+//                Snackbar.make(root_layout_event,"${value?.get("event_name")}", Snackbar.LENGTH_SHORT)
+//                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+//                    .show()
 
                 //get event data from firestore
                 //Must be same name as firestore
@@ -69,7 +71,7 @@ class EventReviewActivity : AppCompatActivity() {
 
 
                 //set event data to view
-                tv_event_review_type.text = event_type
+                tv_event_review_type.text = "$event_type Event"
                 tv_event_review_name.text = event_name
                 tv_event_review_date.text = event_date
                 event_review_location.editText?.setText(event_location)

@@ -76,7 +76,8 @@
             app:cnb_menuResource="@menu/bottom_nav_menu"
             app:cnb_orientationMode="horizontal"
             app:cnb_radius="8dp"
-            app:cnb_unselectedColor="@android:color/black" />
+            app:cnb_unselectedColor="@android:color/black"
+            app:hideOnScroll="true"/>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -103,6 +104,7 @@
             android:focusable="true"
             android:src="@drawable/ic_event"
             android:tint="@android:color/white"
+            app:hideOnScroll="true"
             android:visibility="invisible" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -137,7 +139,8 @@
             android:paddingEnd="16dp"
             android:paddingBottom="6dp"
             android:visibility="invisible"
-            android:text="Event A" />
+            android:textStyle="bold"
+            android:text="General Event" />
 
         <TextView
             android:id="@+id/tv_event_b"
@@ -157,7 +160,8 @@
             android:paddingEnd="16dp"
             android:paddingBottom="6dp"
             android:visibility="invisible"
-            android:text="Event B" />
+            android:textStyle="bold"
+            android:text="Special Event" />
 
 
     </RelativeLayout>

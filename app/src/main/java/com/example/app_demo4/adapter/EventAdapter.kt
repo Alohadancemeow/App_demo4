@@ -22,7 +22,7 @@ class EventAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        val pagerTitle = arrayOf("Event A", "Event B")
+        val pagerTitle = arrayOf("General", "Special")
         return pagerTitle[position]
     }
 
