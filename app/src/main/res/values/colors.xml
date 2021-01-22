@@ -5,4 +5,6 @@
     <color name="colorAccent">#FFC400</color>
 
     <color name="colorHome">#FF3D00</color>
+
+    <color name="lightGray">#ededed</color>
 </resources>

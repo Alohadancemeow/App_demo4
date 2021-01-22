@@ -39,16 +39,18 @@
         </RelativeLayout>
 
         <FrameLayout
+            android:id="@+id/frame_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/frame_layout"/>
+            android:layout_height="match_parent">
 
-<!--        <androidx.viewpager.widget.ViewPager-->
-<!--            android:id="@+id/view_pager"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
+        </FrameLayout>
 
-<!--        </androidx.viewpager.widget.ViewPager>-->
+        <!--        <androidx.viewpager.widget.ViewPager-->
+        <!--            android:id="@+id/view_pager"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content">-->
+
+        <!--        </androidx.viewpager.widget.ViewPager>-->
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
@@ -64,11 +66,11 @@
             android:id="@+id/bottom_nav_menu_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="30dp"
-            android:layout_marginEnd="30dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="30dp"
             android:background="@drawable/round_corners"
             android:elevation="8dp"
             app:cnb_menuResource="@menu/bottom_nav_menu"
@@ -78,32 +80,30 @@
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/fab1"
-            android:layout_marginEnd="30dp"
             android:layout_above="@id/bottom_nav_menu_home"
             android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_add"
-            android:tint="@android:color/white"
-            />
+            android:tint="@android:color/white" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/fab2"
-            android:layout_marginBottom="15dp"
-            android:layout_marginEnd="30dp"
             android:layout_above="@id/fab1"
             android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="15dp"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="invisible"
             android:src="@drawable/ic_event"
             android:tint="@android:color/white"
-            />
+            android:visibility="invisible" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab3"
@@ -113,11 +113,51 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="10dp"
-            android:visibility="invisible"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_event1_white"
-            android:tint="@android:color/white" />
+            android:tint="@android:color/white"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_event_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/fab3"
+            android:layout_alignBottom="@+id/fab3"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/fab_text_bg"
+            android:fontFamily="@font/antic"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="6dp"
+            android:visibility="invisible"
+            android:text="Event A" />
+
+        <TextView
+            android:id="@+id/tv_event_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/fab2"
+            android:layout_alignBottom="@+id/fab2"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/fab_text_bg"
+            android:fontFamily="@font/antic"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="6dp"
+            android:visibility="invisible"
+            android:text="Event B" />
 
 
     </RelativeLayout>

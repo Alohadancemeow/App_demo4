@@ -11,7 +11,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -44,7 +43,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var bottomNavMenuHome: ChipNavigationBar? = null
 
     // FAB Properties
-    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_copen_anim) }
+    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim) }
     private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim) }
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anim) }
     private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim) }
@@ -114,9 +113,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (!clicked) {
             fab2.visibility = View.VISIBLE
             fab3.visibility = View.VISIBLE
+            tv_event_a.visibility = View.VISIBLE
+            tv_event_b.visibility = View.VISIBLE
         } else {
             fab2.visibility = View.INVISIBLE
             fab3.visibility = View.INVISIBLE
+            tv_event_a.visibility = View.INVISIBLE
+            tv_event_b.visibility = View.INVISIBLE
         }
 
     }
@@ -125,10 +128,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (!clicked) {
             fab2.startAnimation(fromBottom)
             fab3.startAnimation(fromBottom)
+            tv_event_a.startAnimation(fromBottom)
+            tv_event_b.startAnimation(fromBottom)
             fab1.startAnimation(rotateOpen)
         } else {
             fab2.startAnimation(toBottom)
             fab3.startAnimation(toBottom)
+            tv_event_a.startAnimation(toBottom)
+            tv_event_b.startAnimation(toBottom)
             fab1.startAnimation(rotateClose)
         }
     }
