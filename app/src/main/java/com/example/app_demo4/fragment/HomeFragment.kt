@@ -35,8 +35,6 @@ class HomeFragment : Fragment() {
     private lateinit var eventReference: CollectionReference
     private lateinit var memberReference: DocumentReference
 
-    private lateinit var memberListReference: CollectionReference
-    private lateinit var memberNameReference: DocumentReference
 
     // Date Properties
     private var day = 0

@@ -27,6 +27,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
     }
 
+
     private fun buildNotification(context: Context, title: String, message: String) {
         Notify
             .with(context)
@@ -38,7 +39,7 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     private fun convertDate(timeInMillis: Long): String =
-        android.text.format.DateFormat.format("dd//MM/yyyy hh:mm:ss", timeInMillis).toString()
+        android.text.format.DateFormat.format("dd/MM/yyyy hh:mm:ss", timeInMillis).toString()
 
 
 }

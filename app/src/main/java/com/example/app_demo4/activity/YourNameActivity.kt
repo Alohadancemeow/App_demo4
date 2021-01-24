@@ -1,6 +1,5 @@
 package com.example.app_demo4.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
@@ -8,8 +7,6 @@ import android.widget.Toast
 import com.example.app_demo4.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_profile_setting.*
-import kotlinx.android.synthetic.main.activity_sign_up.*
 import kotlinx.android.synthetic.main.activity_your_name.*
 
 class YourNameActivity : AppCompatActivity() {
@@ -31,7 +28,7 @@ class YourNameActivity : AppCompatActivity() {
 
         getCurrentUser()
 
-        btn_edit_apply.setOnClickListener {
+        btn_edit_save.setOnClickListener {
             updateData(userId)
         }
 
@@ -80,11 +77,7 @@ class YourNameActivity : AppCompatActivity() {
         mDatabase.collection("Users").document(userId).update(newData)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    Toast.makeText(this, "Your name is updated", Toast.LENGTH_SHORT).show()
-
-                    /** -> เมื่ออัพเดตเสร็จแล้ว ส่งไปหน้าหลัก */
-//                    val intent = Intent(this, HomeActivity::class.java)
-//                    startActivity(intent)
+                    Toast.makeText(this, "Your name is saved", Toast.LENGTH_SHORT).show()
                     finish()
                 }
                 else {

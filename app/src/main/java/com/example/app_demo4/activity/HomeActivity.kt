@@ -20,6 +20,7 @@ import com.example.app_demo4.fragment.HomeFragment
 import com.example.app_demo4.fragment.UsersFragment
 //import com.example.app_demo4.notification.NotificationDemoActivity
 import com.example.app_demo4.notification.NotificationLibActivity
+import com.example.app_demo4.notification.NotificationMainActivity
 //import com.example.app_demo4.notification.NotificationMainActivity
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -209,12 +210,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             // Communication
-//            R.id.nav_help -> {
-//                //TODO("help ?")
-//                val intent = Intent(this, NotificationMainActivity::class.java)
-//                startActivity(intent)
-//                true
-//            }
+            R.id.nav_notify -> {
+                //TODO("help ?")
+                val intent = Intent(this, NotificationMainActivity::class.java)
+                startActivity(intent)
+                true
+            }
 
             R.id.nav_feedback -> {
                 //TODO("info ?")

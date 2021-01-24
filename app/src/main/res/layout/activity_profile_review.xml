@@ -80,10 +80,11 @@
                     android:padding="5dp">
 
                     <ImageView
+                        android:layout_marginTop="5dp"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_event_white" />
+                        android:src="@drawable/ic_event1_white" />
 
                     <TextView
                         android:id="@+id/tv_card_event1"
@@ -92,7 +93,7 @@
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/chicle"
                         android:includeFontPadding="false"
-                        android:text="Event 1"
+                        android:text="General"
                         android:textSize="20sp" />
 
                     <TextView
@@ -136,6 +137,7 @@
                     android:padding="5dp">
 
                     <ImageView
+                        android:layout_marginTop="5dp"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerHorizontal="true"
@@ -148,7 +150,7 @@
                         android:layout_centerInParent="true"
                         android:fontFamily="@font/chicle"
                         android:includeFontPadding="false"
-                        android:text="Event 2"
+                        android:text="Special"
                         android:textSize="20sp" />
 
                     <TextView
