@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_event1.*
 import kotlinx.android.synthetic.main.activity_create_event2.*
+import java.text.DateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -23,10 +24,9 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     TimePickerDialog.OnTimeSetListener {
 
 
-
     // Firebase Properties
     private lateinit var mDatabase: FirebaseFirestore
-    private lateinit var mAuth : FirebaseAuth
+    private lateinit var mAuth: FirebaseAuth
 
     // View Properties
     private lateinit var eventName: String
@@ -61,19 +61,21 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         mAuth = FirebaseAuth.getInstance()
 
         // show event type
-        Snackbar.make(root_layout_event_b,"Special Event", Snackbar.LENGTH_LONG)
+        Snackbar.make(root_layout_event_b, "Special Event", Snackbar.LENGTH_LONG)
             .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
             .setAction("Back") {
                 finish()
             }
             .show()
 
-        pickDateTime()
 
         // <-- Back
         btn_back_event_create2.setOnClickListener {
             finish()
         }
+
+        // Select date and time
+        pickDateTime()
 
         // Button Create event
         btn_create_event2.setOnClickListener {
@@ -115,7 +117,8 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
     }
 
-    /** Functions here */
+
+    /** # Start DateTime Section */
 
     private fun getDateTimeCalendar() {
 
@@ -146,22 +149,39 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         }
     }
 
-    @SuppressLint("SetTextI18n")
+    //set date
     override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
-        savedDay = dayOfMonth
-        savedMonth = month +1 // month start at 0
-        savedYear = year
-        tv_date_create2.editText?.setText("$savedDay/$savedMonth/$savedYear")
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.YEAR, year)
+        cal.set(Calendar.MONTH, month)
+        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+        formatDate(cal)
     }
 
-    @SuppressLint("SetTextI18n")
+    private fun formatDate(cal: Calendar) {
+        val dateTxt = DateFormat.getDateInstance(DateFormat.MEDIUM).format(cal.time)
+        tv_date_create2.editText?.setText(dateTxt)
+    }
+
+    //set time
     override fun onTimeSet(p0: TimePicker?, hourOfDay: Int, minute: Int) {
 
-        savedHour = hourOfDay
-        savedMinute = minute
-        tv_time_create2.editText?.setText("$savedHour : $savedMinute")
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        cal.set(Calendar.MINUTE, minute)
+        cal.set(Calendar.SECOND, 0)
+
+        formatTime(cal)
     }
+
+    private fun formatTime(cal: Calendar) {
+        val timeTxt = DateFormat.getTimeInstance(DateFormat.SHORT).format(cal.time)
+        tv_time_create2.editText?.setText(timeTxt)
+    }
+
+    /** # End DateTime Section */
 
 
     private fun createEvent(
@@ -208,9 +228,6 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         eventCreator: String
     ) {
 
-//        val user = mAuth.currentUser
-//        val userId = user!!.uid
-
         val eventRef = mDatabase.collection("Events").document()
         val eventObject = HashMap<String, String>().apply {
             this["event_name"] = eventName
@@ -232,8 +249,7 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
                 // todo -> than send to event1 (B) page
                 finish()
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Create event unsuccessful", Toast.LENGTH_SHORT).show()
             }
         }

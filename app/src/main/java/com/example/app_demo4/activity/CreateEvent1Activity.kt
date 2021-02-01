@@ -5,8 +5,9 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
+import android.widget.DatePicker
+import android.widget.TimePicker
 import android.widget.Toast
 import com.example.app_demo4.R
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -14,18 +15,17 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_event1.*
-import kotlinx.android.synthetic.main.activity_event_review.*
+import java.text.DateFormat
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.time.ExperimentalTime
-import kotlin.time.hours
-import kotlin.time.minutes
 
-class CreateEvent1Activity : AppCompatActivity() {
+class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
 
     // Firebase Properties
     private lateinit var mDatabase: FirebaseFirestore
-    private lateinit var mAuth : FirebaseAuth
+    private lateinit var mAuth: FirebaseAuth
 
     // View Properties
     private lateinit var eventName: String
@@ -44,11 +44,11 @@ class CreateEvent1Activity : AppCompatActivity() {
     private var minute = 0
 
     //saved
-    private var savedDay = 0
-    private var savedMonth = 0
-    private var savedYear = 0
-    private var savedHour = 0
-    private var savedMinute = 0
+//    private var savedDay = 0
+//    private var savedMonth = 0
+//    private var savedYear = 0
+//    private var savedHour = 0
+//    private var savedMinute = 0
 
     @ExperimentalTime
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,122 +60,23 @@ class CreateEvent1Activity : AppCompatActivity() {
         mDatabase = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
 
+
         // show event type
-        Snackbar.make(root_layout_event_a,"General Event", Snackbar.LENGTH_LONG)
+        Snackbar.make(root_layout_event_a, "General Event", Snackbar.LENGTH_LONG)
             .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
             .setAction("Back") {
                 finish()
             }
             .show()
 
-//        pickDateTime()
 
         // <-- Back
         btn_back_event_create.setOnClickListener {
             finish()
         }
 
-
-
-
-        //new date
-        getDate()
-
-        //new
-        getTime{ timeInMillis ->
-            setEvent(timeInMillis)
-        }
-
-
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun getDate() {
-        iv_date_pick.setOnClickListener {
-
-            Calendar.getInstance().apply {
-                this.set(Calendar.SECOND, 0)
-                this.set(Calendar.MILLISECOND, 0)
-
-                //get date
-                DatePickerDialog(
-                    this@CreateEvent1Activity,
-                    0,
-                    { _, year, month, day ->
-                        this.set(Calendar.YEAR, year)
-                        this.set(Calendar.MONTH, month)
-                        this.set(Calendar.DAY_OF_MONTH, day)
-
-
-                        //set date to edit text
-                        savedDay = day
-                        savedMonth = month +1 // month start at 0
-                        savedYear = year
-                        tv_date_create.editText?.setText("$savedDay/$savedMonth/$savedYear")
-
-                    },
-                    this.get(Calendar.YEAR),
-                    this.get(Calendar.MONTH),
-                    this.get(Calendar.DAY_OF_MONTH)
-                ).show()
-            }
-
-        }
-    }
-
-
-    //get timeInMillis
-    @SuppressLint("SetTextI18n")
-    @ExperimentalTime
-   fun getTime(callback: (Long) -> Unit) {
-
-        iv_time_pick.setOnClickListener {
-            Calendar.getInstance().apply {
-                this.set(Calendar.SECOND, 0)
-                this.set(Calendar.MILLISECOND, 0)
-
-                TimePickerDialog(
-                    this@CreateEvent1Activity,
-                    0,
-                    { _, hour, minute  ->
-
-                        this.set(Calendar.HOUR_OF_DAY, hour)
-                        this.set(Calendar.MINUTE, minute)
-
-
-                        val str = "$hour:$minute"
-                        val str2 = hour.hours.inMilliseconds.toLong()
-                        val str3 = minute.minutes.inMilliseconds.toLong()
-                        val str4 = str2 + str3
-
-                        Toast.makeText(this@CreateEvent1Activity, str, Toast.LENGTH_SHORT).show()
-
-                        Log.d("time", str2.toString())
-                        Log.d("time2", str3.toString())
-                        Log.d("time4", str4.toString())
-
-                        //set time to edit text
-                        savedHour = hour
-                        savedMinute = minute
-                        tv_time_create.editText?.setText("$savedHour : $savedMinute")
-
-
-                        callback(this.timeInMillis) //return
-
-                    },
-                    this.get(Calendar.HOUR_OF_DAY),
-                    this.get(Calendar.MINUTE),
-                    true  // true = 24 hour, false = AM-PM
-                ).show()
-
-            }
-        }
-    }
-
-    private fun setEvent(timeInMillis: Long) {
-
-        Log.d("time-it",timeInMillis.toString())
-
+        // Select date and time
+        pickDateTime()
 
         // Button Create event
         btn_create_event.setOnClickListener {
@@ -206,8 +107,7 @@ class CreateEvent1Activity : AppCompatActivity() {
                         eventTime,
                         eventMeet,
                         eventMember,
-                        eventCreator,
-                        timeInMillis
+                        eventCreator
                     )
 
                 }
@@ -217,53 +117,71 @@ class CreateEvent1Activity : AppCompatActivity() {
         }
     }
 
-    /** Functions here */
 
-//    private fun getDateTimeCalendar() {
-//
-//        val cal = Calendar.getInstance()
-//
-//        //set current datetime
-//        day = cal.get(Calendar.DAY_OF_MONTH)
-//        month = cal.get(Calendar.MONTH)
-//        year = cal.get(Calendar.YEAR)
-//        hour = cal.get(Calendar.HOUR)
-//        minute = cal.get(Calendar.MINUTE)
-//
-//    }
+    /** # Start DateTime Section */
 
-//    private fun pickDateTime() {
-//
-//        //icon pick date
-//        iv_date_pick.setOnClickListener {
-//            getDateTimeCalendar()
-//            DatePickerDialog(this, this, year, month, day).show()
-//        }
-//
-//        //icon pick time
-//        iv_time_pick.setOnClickListener {
-//            getDateTimeCalendar()
-//            TimePickerDialog(this, this, hour, minute, true).show()
-//            // true = 24 hour, false = AM-PM
-//        }
-//    }
-//
-//    @SuppressLint("SetTextI18n")
-//    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-//
-//        savedDay = dayOfMonth
-//        savedMonth = month +1 // month start at 0
-//        savedYear = year
-//        tv_date_create.editText?.setText("$savedDay/$savedMonth/$savedYear")
-//    }
-//
-//    @SuppressLint("SetTextI18n")
-//    override fun onTimeSet(p0: TimePicker?, hourOfDay: Int, minute: Int) {
-//
-//        savedHour = hourOfDay
-//        savedMinute = minute
-//        tv_time_create.editText?.setText("$savedHour : $savedMinute")
-//    }
+    private fun getDateTimeCalendar() {
+
+        val cal = Calendar.getInstance()
+
+        //set current datetime
+        day = cal.get(Calendar.DAY_OF_MONTH)
+        month = cal.get(Calendar.MONTH)
+        year = cal.get(Calendar.YEAR)
+        hour = cal.get(Calendar.HOUR)
+        minute = cal.get(Calendar.MINUTE)
+
+    }
+
+    private fun pickDateTime() {
+
+        //icon pick date
+        iv_date_pick.setOnClickListener {
+            getDateTimeCalendar()
+            DatePickerDialog(this, this, year, month, day).show()
+        }
+
+        //icon pick time
+        iv_time_pick.setOnClickListener {
+            getDateTimeCalendar()
+            TimePickerDialog(this, this, hour, minute, true).show()
+            // true = 24 hour, false = AM-PM
+        }
+    }
+
+    //set date
+    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.YEAR, year)
+        cal.set(Calendar.MONTH, month)
+        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+        formatDate(cal)
+    }
+
+    private fun formatDate(cal: Calendar) {
+        val dateTxt = DateFormat.getDateInstance(DateFormat.MEDIUM).format(cal.time)
+        tv_date_create.editText?.setText(dateTxt)
+    }
+
+    //set time
+    override fun onTimeSet(p0: TimePicker?, hourOfDay: Int, minute: Int) {
+
+        val cal = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        cal.set(Calendar.MINUTE, minute)
+        cal.set(Calendar.SECOND, 0)
+
+        formatTime(cal)
+    }
+
+    private fun formatTime(cal: Calendar) {
+        val timeTxt = DateFormat.getTimeInstance(DateFormat.SHORT).format(cal.time)
+        tv_time_create.editText?.setText(timeTxt)
+    }
+
+    /** # End DateTime Section */
 
 
     private fun createEvent(
@@ -273,8 +191,7 @@ class CreateEvent1Activity : AppCompatActivity() {
         eventTime: String,
         eventMeet: String,
         eventMember: String,
-        eventCreator: String,
-        timeInMillis: Long
+        eventCreator: String
     ) {
 
         if (!validateEventData(
@@ -296,8 +213,7 @@ class CreateEvent1Activity : AppCompatActivity() {
             eventTime,
             eventMeet,
             eventMember,
-            eventCreator,
-            timeInMillis
+            eventCreator
         )
 
     }
@@ -309,12 +225,8 @@ class CreateEvent1Activity : AppCompatActivity() {
         eventTime: String,
         eventMeet: String,
         eventMember: String,
-        eventCreator: String,
-        timeInMillis: Long
+        eventCreator: String
     ) {
-
-//        val user = mAuth.currentUser
-//        val userId = user!!.uid
 
         val eventRef = mDatabase.collection("Events")
         val eventObject = HashMap<String, String>().apply {
@@ -326,7 +238,6 @@ class CreateEvent1Activity : AppCompatActivity() {
             this["event_member"] = eventMember
             this["event_type"] = "General"  //type A
             this["event_creator"] = eventCreator  //creator name
-            this["timeInMillis"] = timeInMillis.toString()
         }
 
         // #use add() to collection, #use set() to document
@@ -338,8 +249,7 @@ class CreateEvent1Activity : AppCompatActivity() {
 
                 // todo -> than send to event1 (A) page
                 finish()
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Create event unsuccessful", Toast.LENGTH_SHORT).show()
             }
         }
