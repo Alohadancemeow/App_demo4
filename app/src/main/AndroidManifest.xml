@@ -68,19 +68,25 @@
 
 
 <!--    AlarmManager-->
-        <receiver android:name=".notification.AlarmReceiver" />
+<!--        <receiver android:name=".notification.AlarmReceiver" />-->
 
 
-<!--        #My receiver -->
-        <receiver android:name=".service.MyBroadcastReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
+<!--&lt;!&ndash;        #My receiver &ndash;&gt;-->
+<!--        <receiver android:name=".service.MyBroadcastReceiver"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.BOOT_COMPLETED"/>-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
 
-<!--        #My service -->
-        <service android:name=".service.MyService"/>
+<!--&lt;!&ndash;        #My service &ndash;&gt;-->
+<!--        <service android:name=".service.MyService"/>-->
+
+
+<!--     receiver of reminder -->
+        <receiver android:name=".notification.ReminderBroadcast"
+            android:enabled="true"
+            android:exported="false"/>
 
 
     </application>

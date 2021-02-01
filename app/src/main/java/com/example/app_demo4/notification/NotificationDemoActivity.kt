@@ -3,8 +3,11 @@ package com.example.app_demo4.notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,12 +15,14 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.app_demo4.R
 import com.example.app_demo4.activity.EventReviewActivity
 import com.example.app_demo4.activity.ProfileReviewActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tapadoo.alerter.Alerter
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_notification_demo.*
 import java.util.*
 
@@ -48,8 +53,7 @@ class NotificationDemoActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         userId = mAuth.currentUser!!.uid
 
-        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
+        //Create Notification channel if device is using API 26+
         createNotificationChannel(channelID, "DemoChannel", "This is notification demo")
 
 
@@ -57,7 +61,7 @@ class NotificationDemoActivity : AppCompatActivity() {
 
 //        Button notify
         notify_btn.setOnClickListener {
-//            displayNotification("Today" ,"eventId")
+            displayNotification("Today" ,"eventId")
 //            alertNotify("eventName", "eventId")
         }
 
@@ -173,6 +177,7 @@ class NotificationDemoActivity : AppCompatActivity() {
     }
 
 
+    // Display Notification.
     private fun displayNotification(eventName: String, eventId: String) {
 
         val notificationId = 45
@@ -180,6 +185,7 @@ class NotificationDemoActivity : AppCompatActivity() {
         //Action
         val intent = Intent(this, EventReviewActivity::class.java).apply {
             this.putExtra("eventId", eventId)
+            this.putExtra("eventName", eventName)
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(
             this,
@@ -188,31 +194,47 @@ class NotificationDemoActivity : AppCompatActivity() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val action: NotificationCompat.Action =
-            NotificationCompat.Action.Builder(0, "Go to event", pendingIntent).build()
+//        val action: NotificationCompat.Action =
+//            NotificationCompat.Action.Builder(0, "Go to event", pendingIntent).build()
 
+        //LargeIcon.
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.event)
+
+        //Builder.
         val notification = NotificationCompat.Builder(this, channelID)
             .setContentTitle(eventName)  //show eventName
-            .setContentText("$eventName is starting")
-            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
-            .setAutoCancel(true)
+            .setContentText("$eventName is ongoing now")
             .setSubText("Notification")
+            .setAutoCancel(true)
+            .setSmallIcon(android.R.drawable.star_off)
+            .setLargeIcon(bitmap)
+//            .setStyle(NotificationCompat.BigPictureStyle()
+//                .bigPicture(bitmap)
+//                .bigLargeIcon(null))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 //            .setContentIntent(pendingIntent)
-            .addAction(action)
+//            .addAction(action)
+            .addAction(R.mipmap.ic_launcher, "Go to event", pendingIntent)
+            .setColor(resources.getColor(R.color.colorAccent))
             .build()
-        notificationManager.notify(notificationId, notification)
+
+        val notificationManagerCompat = NotificationManagerCompat.from(this)
+        notificationManagerCompat.notify(notificationId, notification)
 
     }
 
     private fun createNotificationChannel(id: String, name: String, desc: String) {
 
+        //Create Notification channel only on API 26+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(id, name, importance).apply {
                 description = desc
             }
+            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
+
+
 }
