@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_event_review.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.view.*
+import java.text.DateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -35,11 +36,6 @@ class HomeFragment : Fragment() {
     private lateinit var eventReference: CollectionReference
     private lateinit var memberReference: DocumentReference
 
-
-    // Date Properties
-    private var day = 0
-    private var month = 0
-    private var year = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -65,9 +61,17 @@ class HomeFragment : Fragment() {
 
         /** # ดึง event ทั้งหมดที่ตรงกับวันนี้ โดยเรียงตามเวลา */
 
-        getToday()
-        val today = "$day/${month + 1}/$year"
+        //get current date
+        val cal = Calendar.getInstance()
+        cal.get(Calendar.DAY_OF_MONTH)
+        cal.get(Calendar.MONTH)
+        cal.get(Calendar.YEAR)
+        //format date as 'Fab 2, 2021'
+        val today = DateFormat.getDateInstance(DateFormat.MEDIUM).format(cal.time)
+//        Log.d("TAG", "setUpRecyclerView: $today")
 
+
+        // Use FirebaseRecyclerAdapter for RecyclerView
         val query = eventReference.whereEqualTo("event_date", today).orderBy("event_time")
         val options = FirestoreRecyclerOptions.Builder<HomeData>()
             .setQuery(query, HomeData::class.java)
@@ -184,14 +188,6 @@ class HomeFragment : Fragment() {
         rv_home.layoutManager = linearLayoutManager
         rv_home.adapter = adapter
 
-    }
-
-
-    private fun getToday() {
-        val cal = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
     }
 
 }
