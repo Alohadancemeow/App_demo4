@@ -1,9 +1,14 @@
 package com.example.app_demo4.activity
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -11,6 +16,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -18,21 +24,34 @@ import com.example.app_demo4.R
 import com.example.app_demo4.fragment.EventFragment
 import com.example.app_demo4.fragment.HomeFragment
 import com.example.app_demo4.fragment.UsersFragment
-//import com.example.app_demo4.notification.NotificationDemoActivity
-import com.example.app_demo4.notification.NotificationLibActivity
-import com.example.app_demo4.notification.NotificationMainActivity
-//import com.example.app_demo4.notification.NotificationMainActivity
+import com.example.app_demo4.notification.AlarmService
+import com.example.app_demo4.notification.NotificationDemoActivity
+import com.example.app_demo4.notification.ReminderBroadcast
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.ismaeldivita.chipnavigation.ChipNavigationBar.OnItemSelectedListener
 import kotlinx.android.synthetic.main.activity_home.*
+import java.security.Timestamp
+import java.text.DateFormat
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
+import kotlin.time.ExperimentalTime
 import com.ismaeldivita.chipnavigation.ChipNavigationBar as ChipNavigationBar
 
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    // Firebase Property
+    lateinit var alarmService: AlarmService
+
+    // Firebase Properties
+    private lateinit var  mDatabase: FirebaseFirestore
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var userId: String
+
 
     // Nav-Drawer Properties
     private var drawerLayout: DrawerLayout? = null
@@ -52,13 +71,23 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var clicked = false
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    @ExperimentalTime
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(FLAG_FULLSCREEN)
         setContentView(R.layout.activity_home)
 
-        //set firebase property
+        alarmService = AlarmService(this)
+
+
+        //set firebase properties
+        mDatabase = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
+        userId = mAuth.currentUser!!.uid
+
+
+
 
 //        val viewPager = view_pager
 //        viewPager.adapter = MyAdapter(supportFragmentManager)
@@ -95,6 +124,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val intent = Intent(this, CreateEvent1Activity::class.java)
             startActivity(intent)
         }
+
 
     }
 
@@ -212,7 +242,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // Communication
             R.id.nav_notify -> {
                 //TODO("help ?")
-                val intent = Intent(this, NotificationMainActivity::class.java)
+                val intent = Intent(this, NotificationDemoActivity::class.java)
                 startActivity(intent)
                 true
             }
@@ -231,6 +261,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
     }
+
 
 }
 

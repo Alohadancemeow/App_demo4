@@ -1,6 +1,10 @@
 package com.example.app_demo4.fragment
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,11 +12,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_demo4.R
 import com.example.app_demo4.activity.EventReviewActivity
+import com.example.app_demo4.activity.HomeActivity
 import com.example.app_demo4.model.HomeData
 import com.example.app_demo4.model.HomeHolder
+import com.example.app_demo4.notification.ReminderBroadcast
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -87,6 +95,7 @@ class HomeFragment : Fragment() {
                 )
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onBindViewHolder(holder: HomeHolder, position: Int, model: HomeData) {
                 holder.bind(model)
 
@@ -143,13 +152,15 @@ class HomeFragment : Fragment() {
 //                                        Log.d("memId", memId.toString())
 //                                        Log.d("mId", userId)
 
+                                        val eventId = snapshots.getSnapshot(position).id
+
                                         if (memId?.contains(userId) == true) {
 
                                             //Why always show ?
                                             Snackbar.make(root_layout_home_fm,"You're joined already", Snackbar.LENGTH_LONG)
                                                 .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                                                 .setAction("View") {
-                                                    val eventId = snapshots.getSnapshot(position).id
+
                                                     val intent = Intent(context, EventReviewActivity::class.java)
                                                     intent.putExtra("eventId", eventId)
                                                     startActivity(intent)
@@ -165,8 +176,11 @@ class HomeFragment : Fragment() {
                                                         .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                                                         .show()
 
-//                                                    Toast.makeText(context, "You're joined ${snapshots[position].event_name}", Toast.LENGTH_SHORT)
-//                                                        .show()
+                                                    //call startAlarm
+//                                                    val start = HomeActivity()
+//                                                    start.startAlarm(eventId)
+
+
                                                 } else {
                                                     Toast.makeText(context, "error join", Toast.LENGTH_SHORT)
                                                         .show()
@@ -189,5 +203,6 @@ class HomeFragment : Fragment() {
         rv_home.adapter = adapter
 
     }
+
 
 }

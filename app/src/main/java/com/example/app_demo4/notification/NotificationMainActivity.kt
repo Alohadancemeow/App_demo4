@@ -17,116 +17,28 @@ class NotificationMainActivity : AppCompatActivity() {
 
     lateinit var alarmService: AlarmService
 
-    private lateinit var mDatabase: FirebaseFirestore
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var userId: String
-
-
-    // Date Properties
-    private var day = 0
-    private var month = 0
-    private var year = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_notification_main)
 
-        mDatabase = FirebaseFirestore.getInstance()
-        mAuth = FirebaseAuth.getInstance()
-        userId = mAuth.currentUser!!.uid
-
-//        getUserId()
-
-//        getEventId()
-
 
         alarmService = AlarmService(this)
 
         button.setOnClickListener {
-            setAlarm { alarmService.setExactAlarm(it)
-                Log.d("it1", it.toString())
-            }
+//            setAlarm {
+//                alarmService.setExactAlarm(it)
+//            }
         }
 
         button2.setOnClickListener {
-            setAlarm { alarmService.setRepetitiveAlarm(it)
-                Log.d("it2", it.toString())
-            }
+//            setAlarm {
+//                alarmService.setRepetitiveAlarm(it)
+//            }
         }
 
     }
-
-    //1
-    private fun getEventId() {
-
-        getToday()
-        val today = "$day/${month + 1}/$year"
-
-        val eventRef = mDatabase.collection("Events")
-            .whereEqualTo("event_date", today).orderBy("event_time")
-
-        eventRef.addSnapshotListener { value, error ->
-            error.let {
-
-                value?.forEach {
-//                    val e = it.data.values
-//                    Log.d("event-e", e.toString())
-
-                    val eventId = it.id
-                    Log.d("event-id", it.id)
-
-                    getEventName(eventId)
-                }
-
-            }
-        }
-    }
-
-    //2
-    private fun getEventName(eventId: String) {
-        val eventRef = mDatabase.collection("Events").document(eventId)
-        eventRef.addSnapshotListener { value, error ->
-
-            error.let {
-                val eventName = value?.data?.get("event_name").toString()
-                val eventTime = value?.data?.get("event_time").toString()
-                Log.d("event-name","$eventName + $eventTime")
-
-                getEventMemList(eventName,eventTime)
-            }
-        }
-    }
-
-    //3
-    private fun getEventMemList(eventName: String, eventTime: String) {
-        Log.d("userId",userId)
-        Log.d("userName",eventName)
-        Log.d("userTime",eventTime)
-
-        val eventMemListRef = mDatabase.collection("Event-mem-list").document(eventName)
-        eventMemListRef.addSnapshotListener { value, error ->
-
-            error.let {
-               val memId = value?.data?.keys
-                Log.d("user-memId", memId.toString())
-
-                if (memId?.contains(userId) == true) {
-//                    alarmService.setExactAlarm(eventTime)
-                }
-            }
-        }
-    }
-
-    //4
-    private fun getToday() {
-        val cal = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH)
-        year = cal.get(Calendar.YEAR)
-    }
-
-
 
 
     // Alarm
@@ -151,7 +63,7 @@ class NotificationMainActivity : AppCompatActivity() {
                         { _, hour, min ->
                             this.set(Calendar.HOUR_OF_DAY, hour)
                             this.set(Calendar.MINUTE, min)
-                            callback(this.timeInMillis)
+                            callback(this.timeInMillis) //use callback
                         },
                         this.get(Calendar.HOUR_OF_DAY),
                         this.get(Calendar.MINUTE),

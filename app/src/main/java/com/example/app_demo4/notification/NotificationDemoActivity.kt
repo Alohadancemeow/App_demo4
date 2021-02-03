@@ -1,9 +1,6 @@
 package com.example.app_demo4.notification
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -12,8 +9,10 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.app_demo4.R
@@ -24,7 +23,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.tapadoo.alerter.Alerter
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_notification_demo.*
+import java.text.DateFormat
 import java.util.*
+import kotlin.time.ExperimentalTime
 
 class NotificationDemoActivity : AppCompatActivity() {
 
@@ -44,8 +45,11 @@ class NotificationDemoActivity : AppCompatActivity() {
     private val channelID = "NotificationDemo"
     private lateinit var notificationManager: NotificationManager
 
+    @ExperimentalTime
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_notification_demo)
 
         //set firebase properties
@@ -54,34 +58,34 @@ class NotificationDemoActivity : AppCompatActivity() {
         userId = mAuth.currentUser!!.uid
 
         //Create Notification channel if device is using API 26+
-        createNotificationChannel(channelID, "DemoChannel", "This is notification demo")
+//        createNotificationChannel(channelID, "DemoChannel", "This is notification demo")
 
 
         getEventId()
 
 //        Button notify
         notify_btn.setOnClickListener {
-            displayNotification("Today" ,"eventId")
+            displayNotification("Notification Demo" ,"eventId")
 //            alertNotify("eventName", "eventId")
+//            startAlarm("eventId")
         }
 
     }
 
 
-    private fun getToday() {
 
-        val cal = Calendar.getInstance()
-        day = cal.get(Calendar.DAY_OF_MONTH)
-        month = cal.get(Calendar.MONTH) //Start at 0
-        year = cal.get(Calendar.YEAR)
-        hour = cal.get(Calendar.HOUR_OF_DAY) // 24 hr
-        minute = cal.get(Calendar.MINUTE)
-    }
-
+    @RequiresApi(Build.VERSION_CODES.O)
+    @ExperimentalTime
     private fun getEventId() {
 
-        getToday()
-        val today = "$day/${month + 1}/$year"  // 6/1/2021
+        //get current date
+        val cal = Calendar.getInstance()
+        cal.get(Calendar.DAY_OF_MONTH)
+        cal.get(Calendar.MONTH)
+        cal.get(Calendar.YEAR)
+        //format date as 'Fab 2, 2021'
+        val today = DateFormat.getDateInstance(DateFormat.MEDIUM).format(cal.time)
+        Log.d("TAG", "getEventId:today $today")
 
         val eventRef = mDatabase.collection("Events")
             .whereEqualTo("event_date", today).orderBy("event_time")
@@ -102,51 +106,60 @@ class NotificationDemoActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    @ExperimentalTime
     private fun getEventName(eventId: String) {
+
+        Log.d("TAG", "getEventName: eventId $eventId")
+
         val eventRef = mDatabase.collection("Events").document(eventId)
         eventRef.addSnapshotListener { value, error ->
 
             error.let {
                 val eventName = value?.data?.get("event_name").toString()
                 val eventTime = value?.data?.get("event_time").toString()
-//                Log.d("event-name", "$eventName + $eventTime")
+
+                Log.d("TAG", "getEventName: eventName $eventName")
+                Log.d("TAG", "getEventName: eventTime $eventTime")
 
                 getEventMemList(eventName, eventTime, eventId)
             }
         }
     }
 
-    private fun getEventMemList(eventName: String, eventTime: String, eventId: String) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    @ExperimentalTime
+    private fun getEventMemList(eventName: String, eventTime: String, eventId: String, ) {
 
-//        Log.d("userId", userId)
-//        Log.d("eventId", eventId)
-//        Log.d("eventName", eventName)
-//        Log.d("eventTime", eventTime)
+        Log.d("TAG", "getEventMemList: $eventId, $eventName, $eventTime")
 
         val eventMemListRef = mDatabase.collection("Event-mem-list").document(eventName)
         eventMemListRef.addSnapshotListener { value, error ->
 
             error.let {
                 val memId = value?.data?.keys
-                Log.d("user-memId", memId.toString())
+                Log.d("TAG", "getEventMemList: memIdOf($eventName) $memId")
 
-                getToday()
-                val currentTime = "$hour : $minute" // 1 : 30
+                //get current time
+                val cal = Calendar.getInstance()
+                cal.get(Calendar.HOUR_OF_DAY)
+                cal.get(Calendar.MINUTE)
+                //format time as '1:45 AM'
+                val currentTime = DateFormat.getTimeInstance(DateFormat.SHORT).format(cal.time)
 
-                Log.d("time-current", currentTime)
-                Log.d("time-event", eventTime)
+                Log.d("TAG", "getEventMemList: currentTime $currentTime")
+                Log.d("TAG", "getEventMemList: eventTimeOf($eventName) $eventTime")
                 val a = eventTime == currentTime
-                Log.d("time-a", a.toString())
+                Log.d("TAG", "getEventMemList: ==? $a")
 
                 //todo : notify to member
-                //1.Check time.
+                //Check time.
                 if (eventTime == currentTime && memId?.contains(userId) == true) {
 
-                    //2.Call notify.
-                    displayNotification(eventName, eventId)
+                    Log.d("TAG", "getEventMemList: (if) true")
 
-                    //Lib.
-//                    alertNotify(eventName, eventId)
+                    //call startAlarm
+                    startAlarm(eventId)
 
                 } else {
 
@@ -157,27 +170,71 @@ class NotificationDemoActivity : AppCompatActivity() {
         }
     }
 
-    private fun alertNotify(eventName: String, eventId: String) {
+    private fun startReminder(timeInMillis: Long, eventId: String, eventName: String) {
 
-        Alerter.Companion.create(this)
-            .setTitle(eventName)
-            .setText("Notification from $eventName")
-            .setIcon(R.drawable.ic_event_available_white)
-            .setBackgroundColorRes(R.color.colorAccent)
-            .setDuration(4000)
-            .setOnClickListener {
-//                Toast.makeText(applicationContext, "Alert clicked", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, EventReviewActivity::class.java)
-                intent.putExtra("eventId",eventId)
-                startActivity(intent)
-            }
-            .setSound()
-            .enableSwipeToDismiss()
-            .show()
+        val intent = Intent(this, ReminderBroadcast::class.java).apply {
+            this.putExtra("eventName", eventName)
+            this.putExtra("eventId", eventId)
+        }
+
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
+
+        val alarmMan = getSystemService(ALARM_SERVICE) as AlarmManager
+
+        alarmMan.set(
+            AlarmManager.RTC_WAKEUP,
+            timeInMillis,
+            pendingIntent
+        )
     }
 
 
-    // Display Notification.
+
+    //startAlarm.
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun startAlarm(eventId: String) {
+        Log.d("TAG", "startAlarm:eventId $eventId")
+
+        val eventRef = mDatabase.collection("Events").document(eventId)
+        eventRef.addSnapshotListener { value, error ->
+
+            error.let {
+
+                val eventName = value?.data?.get("event_name").toString()
+                val eventTime = value?.data?.get("event_time")
+                Log.d("TAG", "startAlarm:eventTime $eventTime")
+
+                val formatter = DateFormat.getTimeInstance(DateFormat.SHORT)
+                val timestamp = formatter.parse(eventTime as String)
+
+                val cal = Calendar.getInstance()
+                cal.time = timestamp!!
+                Log.d("TAG", "startAlarm:cal $cal")
+
+
+                val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                val intent = Intent(this, ReminderBroadcast::class.java).apply {
+                    this.putExtra("eventName", eventName)
+                    this.putExtra("eventId", eventId)
+                }
+                val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+
+                if (cal.before(Calendar.getInstance())) {
+                    cal.add(Calendar.DATE, 1)
+                }
+
+                Log.d("TAG", "startAlarm:cal2 ${cal.timeInMillis} ")
+
+                alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP,
+                    cal.timeInMillis,
+                    pendingIntent)
+            }
+        }
+    }
+
+
+    // Display Notification. Push
     private fun displayNotification(eventName: String, eventId: String) {
 
         val notificationId = 45
@@ -203,10 +260,10 @@ class NotificationDemoActivity : AppCompatActivity() {
         //Builder.
         val notification = NotificationCompat.Builder(this, channelID)
             .setContentTitle(eventName)  //show eventName
-            .setContentText("$eventName is ongoing now")
-            .setSubText("Notification")
+            .setContentText("Your event is ongoing now")
+//            .setSubText("Notification")
             .setAutoCancel(true)
-            .setSmallIcon(android.R.drawable.star_off)
+            .setSmallIcon(R.drawable.ic_event_available_yellow)
             .setLargeIcon(bitmap)
 //            .setStyle(NotificationCompat.BigPictureStyle()
 //                .bigPicture(bitmap)
@@ -214,26 +271,13 @@ class NotificationDemoActivity : AppCompatActivity() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 //            .setContentIntent(pendingIntent)
 //            .addAction(action)
-            .addAction(R.mipmap.ic_launcher, "Go to event", pendingIntent)
+            .addAction(0, "Go to event", pendingIntent)
             .setColor(resources.getColor(R.color.colorAccent))
             .build()
 
         val notificationManagerCompat = NotificationManagerCompat.from(this)
         notificationManagerCompat.notify(notificationId, notification)
 
-    }
-
-    private fun createNotificationChannel(id: String, name: String, desc: String) {
-
-        //Create Notification channel only on API 26+
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(id, name, importance).apply {
-                description = desc
-            }
-            notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
     }
 
 
