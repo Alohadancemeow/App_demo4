@@ -71,7 +71,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
 
         // <-- Back
-        btn_back_event_create.setOnClickListener {
+        iv_cancel_event_create.setOnClickListener {
             finish()
         }
 
@@ -92,11 +92,11 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
                     //set view properties
                     eventName = tv_event_name_create.editText?.text.toString().trim()
-                    eventLocation = tv_location_create.editText?.text.toString().trim()
-                    eventDate = tv_date_create.editText?.text.toString().trim()
-                    eventTime = tv_time_create.editText?.text.toString().trim()
-                    eventMeet = tv_meet_create.editText?.text.toString().trim()
-                    eventMember = tv_member_create.editText?.text.toString().trim()
+                    eventLocation = tv_location_create.text.toString().trim()
+                    eventDate = tv_date_create.text.toString().trim()
+                    eventTime = tv_time_create.text.toString().trim()
+                    eventMeet = tv_meet_create.text.toString().trim()
+                    eventMember = tv_member_create.text.toString().trim()
 
                     eventCreator = userName
 
@@ -136,13 +136,13 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     private fun pickDateTime() {
 
         //icon pick date
-        iv_date_pick.setOnClickListener {
+        tv_date_create.setOnClickListener {
             getDateTimeCalendar()
             DatePickerDialog(this, this, year, month, day).show()
         }
 
         //icon pick time
-        iv_time_pick.setOnClickListener {
+        tv_time_create.setOnClickListener {
             getDateTimeCalendar()
             TimePickerDialog(this, this, hour, minute, true).show()
             // true = 24 hour, false = AM-PM
@@ -162,7 +162,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
     private fun formatDate(cal: Calendar) {
         val dateTxt = DateFormat.getDateInstance(DateFormat.MEDIUM).format(cal.time)
-        tv_date_create.editText?.setText(dateTxt)
+        tv_date_create.text = dateTxt
     }
 
     //set time
@@ -178,7 +178,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
     private fun formatTime(cal: Calendar) {
         val timeTxt = DateFormat.getTimeInstance(DateFormat.SHORT).format(cal.time)
-        tv_time_create.editText?.setText(timeTxt)
+        tv_time_create.text = timeTxt
     }
 
     /** # End DateTime Section */

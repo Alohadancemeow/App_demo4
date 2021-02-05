@@ -35,7 +35,7 @@ class EventReviewActivity : AppCompatActivity() {
         }
 
         // Button OK
-        btn_event_review.setOnClickListener {
+        btn_ok_event_review.setOnClickListener {
             finish()
         }
 
@@ -74,11 +74,11 @@ class EventReviewActivity : AppCompatActivity() {
                 tv_event_review_type.text = "$event_type Event"
                 tv_event_review_name.text = event_name
                 tv_event_review_date.text = event_date
-                event_review_location.editText?.setText(event_location)
-                event_review_meet.editText?.setText(event_meet)
-                event_review_time.editText?.setText(event_time)
-                event_review_member.editText?.setText(event_member)
-                tv_creator_review.text = "Creator : $event_creator"
+                event_review_location.text = event_location
+                event_review_meet.text = event_meet
+                event_review_time.text = event_time
+                event_review_member.text = event_member
+                tv_creator_review.text = event_creator
 
                 showAllMember(eventId, eventName)
             }

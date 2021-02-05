@@ -2,9 +2,9 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout_event"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/root_layout_event"
     tools:context=".activity.EventReviewActivity">
 
     <LinearLayout
@@ -14,7 +14,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="180dp"
             android:background="#FFC400"
             android:padding="20dp">
 
@@ -30,41 +30,27 @@
 
             <ImageView
                 android:id="@+id/iv_icon_event2"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:layout_below="@id/btn_back_event_review"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
                 android:src="@drawable/ic_event_available_white" />
-
-            <TextView
-                android:id="@+id/tv_event_review_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btn_back_event_review"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_toEndOf="@id/iv_icon_event2"
-                android:fontFamily="@font/chicle"
-                android:includeFontPadding="false"
-                android:text="Event Type"
-                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/tv_event_review_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_event_review_type"
+                android:layout_below="@id/btn_back_event_review"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_toEndOf="@id/iv_icon_event2"
-                android:fontFamily="@font/antic"
+                android:fontFamily="@font/chicle"
                 android:includeFontPadding="false"
-                android:text="Event name here."
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:text="Event Name"
+                android:textSize="25sp" />
 
             <TextView
-                android:id="@+id/tv_event_review_date"
+                android:id="@+id/tv_event_review_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_event_review_name"
@@ -72,10 +58,12 @@
                 android:layout_toEndOf="@id/iv_icon_event2"
                 android:fontFamily="@font/antic"
                 android:includeFontPadding="false"
-                android:text="1/1/1010"
-                android:textSize="15sp" />
+                android:text="Event type"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,101 +71,134 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/event_review_location"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Location">
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:padding="5dp">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_event_available_yellow"
-                    android:drawablePadding="10dp"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:text="Temple"
-                    android:textColor="@android:color/black"
-                    android:textStyle="normal" />
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/antic"
+                    android:hint="Date and Time"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/event_review_meet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Meet at">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_event_review_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_event_available_yellow"
+                    android:layout_marginBottom="10dp"
+                    android:clickable="false"
                     android:drawablePadding="10dp"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:text="kana 12"
-                    android:textColor="@android:color/black"
-                    android:textStyle="normal" />
+                    android:hint="Date"
+                    app:drawableStartCompat="@drawable/custom_calendar_icon" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/event_review_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Time">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/event_review_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_event_available_yellow"
+                    android:layout_marginBottom="10dp"
                     android:drawablePadding="10dp"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:text="00:00"
-                    android:textColor="@android:color/black"
-                    android:textStyle="normal" />
+                    android:hint="Time"
+                    app:drawableStartCompat="@drawable/custom_time_icon" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/event_review_member"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Member">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_event_available_yellow"
-                    android:drawablePadding="10dp"
-                    android:enabled="false"
-                    android:focusable="false"
-                    android:text="10"
-                    android:textColor="@android:color/black"
-                    android:textStyle="normal" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical"
                 android:padding="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/antic"
+                    android:hint="Location"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/event_review_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:clickable="false"
+                    android:drawablePadding="10dp"
+                    android:hint="Location"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/custom_location_icon" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/event_review_meet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:drawablePadding="10dp"
+                    android:hint="Meet at"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/custom_meet_at_icon" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/antic"
+                    android:hint="Number Of Members"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/event_review_member"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:drawablePadding="10dp"
+                    android:hint="Members"
+                    android:textSize="16sp"
+                    app:drawableStartCompat="@drawable/custom_member_icon" />
 
                 <EditText
                     android:id="@+id/edt_list_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
-                    android:hint="Member-name-list"
                     android:fontFamily="@font/antic"
+                    android:hint="Member list"
                     android:textColor="@android:color/tertiary_text_dark"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/antic"
+                    android:hint="Creator"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -189,20 +210,19 @@
                     android:drawablePadding="5dp"
                     android:fontFamily="@font/antic"
                     android:gravity="center_vertical"
-                    android:text="Creator :"
+                    android:text="Creator name"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:drawableStartCompat="@drawable/ic_user_status_yellow" />
+                    app:drawableStartCompat="@drawable/ic_user_status" />
+
 
             </LinearLayout>
 
-
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_event_review"
+                android:id="@+id/btn_ok_event_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="25dp"
                 android:background="@color/colorAccent"
                 android:text="Ok"
                 android:textColor="@android:color/black"
