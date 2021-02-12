@@ -15,20 +15,28 @@ class ReminderBroadcast : BroadcastReceiver() {
 
         intent.let {
 
-//            val eventId = intent.extras!!.get("eventId").toString()
-            val eventName = intent.extras!!.get("eventName").toString()
-//            Log.d("TAG", "onReceive:eventId $eventId")
-            Log.d("TAG", "onReceive:eventName $eventName")
+            val eventId = intent.extras!!.get("eventId").toString()
+            Log.d("TAG", "onReceive:eventId $eventId")
+
+            val mDatabase = FirebaseFirestore.getInstance()
+            val eventRef = mDatabase.collection("Events").document(eventId)
+            eventRef.addSnapshotListener { value, _ ->
+
+                value.let {
+
+                    val eventName = value?.get("event_name").toString()
+                    Log.d("TAG", "onReceive: eventName $eventName")
 
 
-            val notificationHelper = NotificationHelper(context)
-            val nb: NotificationCompat.Builder? =
-                notificationHelper.getChannelNotification(
-                    eventName,
-                    "eventId"
-                )
-            notificationHelper.getManager().notify(1, nb?.build())
-
+                    val notificationHelper = NotificationHelper(context)
+                    val nb: NotificationCompat.Builder? =
+                        notificationHelper.getChannelNotification(
+                            eventName,
+                            eventId
+                        )
+                    notificationHelper.getManager().notify(1, nb?.build())
+                }
+            }
         }
 
     }

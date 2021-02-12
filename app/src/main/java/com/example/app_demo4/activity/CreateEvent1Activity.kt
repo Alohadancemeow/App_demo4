@@ -18,7 +18,6 @@ import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import kotlinx.android.synthetic.main.activity_create_event1.*
 import java.text.DateFormat
 import java.util.*
@@ -136,7 +135,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             val userRef = mDatabase.collection("Users").document(userId)
             userRef.addSnapshotListener { value, error ->
 
-                error.let {
+                value.let {
 
                     //get username for event creator
                     val userName = value?.get("display_name").toString()
@@ -151,59 +150,15 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
                     eventCreator = userName
 
-                    createEvent(eventName, eventLocation, eventDate, eventTime, eventMeet, eventMember, eventCreator)
+                    createEvent(eventName, eventLocation, eventDate, eventTime, eventMeet, eventMember, eventCreator, timeInMillis)
 
-                    //startAlarm
-                    startAlarm(timeInMillis, eventName)
+
 
                 }
             }
 
 
         }
-
-    }
-
-    private fun startAlarm(timeInMillis: Long, eventName: String) {
-
-//        Log.d("TAG", "startAlarm:eventId $eventId")
-        Log.d("TAG", "startAlarm:timeInMillis $timeInMillis")
-        Log.d("TAG", "startAlarm:eventName $eventName")
-
-
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, ReminderBroadcast::class.java).apply {
-            this.putExtra("eventName", eventName)
-//                    this.putExtra("eventId", eventId)
-        }
-        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
-
-
-        //check that current user is in ?
-        val eventMemListRef = mDatabase.collection("Event-mem-list").document(eventName)
-        eventMemListRef.addSnapshotListener { value, error ->
-
-            error.let {
-
-                val memId = value?.data?.keys
-                Log.d("TAG", "startAlarm: memIdOf($eventName) $memId")
-
-                if (memId?.contains(userId) == true) {
-
-                    //set alarm
-                    alarmManager.setExact(
-                        AlarmManager.RTC_WAKEUP,
-                        timeInMillis,
-                        pendingIntent
-                    )
-
-                } else {
-                    Log.d("TAG", "startAlarm: else")
-                }
-            }
-        }
-
-
 
     }
 
@@ -310,7 +265,8 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         eventTime: String,
         eventMeet: String,
         eventMember: String,
-        eventCreator: String
+        eventCreator: String,
+        timeInMillis: Long
     ) {
 
         if (!validateEventData(
@@ -332,7 +288,8 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             eventTime,
             eventMeet,
             eventMember,
-            eventCreator
+            eventCreator,
+            timeInMillis
         )
 
     }
@@ -344,7 +301,8 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         eventTime: String,
         eventMeet: String,
         eventMember: String,
-        eventCreator: String
+        eventCreator: String,
+        timeInMillis: Long
     ) {
 
         val eventRef = mDatabase.collection("Events")
@@ -362,17 +320,64 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         // #use add() to collection, #use set() to document
         // -> การเขียนข้อมูลด้วย Method add()
         // -> ทาง Cloud FireStore จะสร้าง Index ให้เราโดยอัตโนมัติ
-        eventRef.add(eventObject).addOnCompleteListener {
-            if (it.isSuccessful) {
-                Toast.makeText(this, "Create event successful", Toast.LENGTH_SHORT).show()
+        eventRef.add(eventObject).addOnSuccessListener {
 
-                // todo -> than send to event1 (A) page
-                finish()
-            } else {
-                Toast.makeText(this, "Create event unsuccessful", Toast.LENGTH_SHORT).show()
-            }
+            //new
+            Toast.makeText(this, "Create event successful", Toast.LENGTH_SHORT).show()
+
+            //get eventId
+            val eventId = it.id
+            Log.d("TAG", "sendEventDataToFirebase: ID $eventId")
+
+            //startAlarm
+            startAlarm(timeInMillis, eventId)
+
+            finish()
+
         }
 
+    }
+
+    private fun startAlarm(timeInMillis: Long, eventId: String) {
+
+//        Log.d("TAG", "startAlarm:eventId $eventId")
+        Log.d("TAG", "startAlarm:timeInMillis $timeInMillis")
+        Log.d("TAG", "startAlarm:eventId $eventId")
+
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(this, ReminderBroadcast::class.java).apply {
+            this.putExtra("eventId", eventId)
+        }
+
+        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+
+
+        //check that current user is in ?
+        val eventMemListRef = mDatabase.collection("Event-mem-list").document(eventName)
+        eventMemListRef.addSnapshotListener { value, _ ->
+
+            value.let {
+
+                val memId = value?.data?.keys
+                Log.d("TAG", "startAlarm: memIdOf($eventName) $memId")
+
+                if (memId?.contains(userId) == true) {
+                    Log.d("TAG", "startAlarm: true")
+
+                    //set alarm
+                    alarmManager.setExact(
+                        AlarmManager.RTC_WAKEUP,
+                        timeInMillis,
+                        pendingIntent
+                    )
+
+                } else {
+                    Log.d("TAG", "startAlarm: else")
+                }
+            }
+        }
     }
 
 

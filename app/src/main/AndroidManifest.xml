@@ -84,9 +84,7 @@
 
 
 <!--     receiver of reminder -->
-        <receiver android:name=".notification.ReminderBroadcast"
-            android:enabled="true"
-            android:exported="false"/>
+        <receiver android:name=".notification.ReminderBroadcast" />
 
 
     </application>

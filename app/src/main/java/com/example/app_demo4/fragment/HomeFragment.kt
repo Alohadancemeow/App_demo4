@@ -161,7 +161,11 @@ class HomeFragment : Fragment() {
         memberReference.apply {
             addSnapshotListener { value, error ->
 
-                error.let {
+                if (error != null) {
+                    Log.d("TAG", "createEventMember: error ${error.message}")
+                }
+
+                value.let {
 
                     val memId = value?.data?.keys //userId in eventId
                     Log.d("TAG", "createEventMember: memID $memId")
