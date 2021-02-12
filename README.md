@@ -1,2 +1,2 @@
-# App_demo4
+# MyEvent (Graduation Project)
 Project it16-009
