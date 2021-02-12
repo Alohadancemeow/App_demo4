@@ -104,7 +104,7 @@ class User1Fragment : Fragment() {
         }
 
         //set recyclerView layout and adapter
-        rv_user.layoutManager = linearLayoutManager
+        rv_user?.layoutManager = linearLayoutManager
         rv_user.adapter = adapter
     }
 

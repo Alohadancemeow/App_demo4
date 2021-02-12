@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.google.firebase.firestore.FirebaseFirestore
+import java.security.Key
 
 class ReminderBroadcast : BroadcastReceiver() {
 
@@ -13,19 +15,24 @@ class ReminderBroadcast : BroadcastReceiver() {
 
         intent.let {
 
-            val eventId = intent.extras!!.get("eventId").toString()
+//            val eventId = intent.extras!!.get("eventId").toString()
             val eventName = intent.extras!!.get("eventName").toString()
-            Log.d("TAG", "onReceive:eventId $eventId")
+//            Log.d("TAG", "onReceive:eventId $eventId")
             Log.d("TAG", "onReceive:eventName $eventName")
 
+
             val notificationHelper = NotificationHelper(context)
-            val nb: NotificationCompat.Builder? = notificationHelper.getChannelNotification(
-                eventName,
-                eventId
-            )
+            val nb: NotificationCompat.Builder? =
+                notificationHelper.getChannelNotification(
+                    eventName,
+                    "eventId"
+                )
             notificationHelper.getManager().notify(1, nb?.build())
 
         }
 
     }
+
+
 }
+

@@ -1,8 +1,5 @@
 package com.example.app_demo4.fragment
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,14 +10,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app_demo4.R
 import com.example.app_demo4.activity.EventReviewActivity
-import com.example.app_demo4.activity.HomeActivity
 import com.example.app_demo4.model.HomeData
 import com.example.app_demo4.model.HomeHolder
-import com.example.app_demo4.notification.ReminderBroadcast
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -43,6 +37,7 @@ class HomeFragment : Fragment() {
     private lateinit var mDatabase: FirebaseFirestore
     private lateinit var eventReference: CollectionReference
     private lateinit var memberReference: DocumentReference
+    private lateinit var userId: String
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,6 +50,7 @@ class HomeFragment : Fragment() {
         //set properties
         mDatabase = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
+        userId = mAuth.currentUser!!.uid
 
         setUpRecyclerView()
 
@@ -99,7 +95,14 @@ class HomeFragment : Fragment() {
             override fun onBindViewHolder(holder: HomeHolder, position: Int, model: HomeData) {
                 holder.bind(model)
 
+                //get eventName
                 val eventName = snapshots[position].event_name.toString()
+                Log.d("TAG", "onBindViewHolder: $eventName")
+
+                //get event ID
+                val eventId = snapshots.getSnapshot(position).id
+                Log.d("TAG", "onBindViewHolder: $eventId")
+
 
                 holder.itemView.apply {
 
@@ -116,7 +119,7 @@ class HomeFragment : Fragment() {
 
                     //Button More Details
                     this.details_btn.setOnClickListener {
-                        val eventId = snapshots.getSnapshot(position).id
+//                        val eventId = snapshots.getSnapshot(position).id
                         val intent = Intent(context, EventReviewActivity::class.java)
                         intent.putExtra("eventId", eventId)
                         startActivity(intent)
@@ -125,83 +128,84 @@ class HomeFragment : Fragment() {
                     //Button join
                     this.join_btn.setOnClickListener {
 
-                        val userId = mAuth.currentUser!!.uid
-
-                        //Create Event-mem-list by event name
-                        memberReference = mDatabase.collection("Event-mem-list").document(eventName)
-
-
-                        val userRef = mDatabase.collection("Users").document(userId)
-                        userRef.addSnapshotListener { value, error ->
-                            if (error != null) return@addSnapshotListener
-
-                            //get username from uid
-                            val name = value?.get("display_name").toString()
-
-                            val mId = HashMap<String, Any>().apply {
-                                this[userId] = name
-                            }
-
-                            //Join with condition (if) !!
-                            memberReference.apply {
-                                addSnapshotListener { value, error ->
-
-                                    error.let {
-
-                                        val memId = value?.data?.keys //userId in eventId
-//                                        Log.d("memId", memId.toString())
-//                                        Log.d("mId", userId)
-
-                                        val eventId = snapshots.getSnapshot(position).id
-
-                                        if (memId?.contains(userId) == true) {
-
-                                            //Why always show ?
-                                            Snackbar.make(root_layout_home_fm,"You're joined already", Snackbar.LENGTH_LONG)
-                                                .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
-                                                .setAction("View") {
-
-                                                    val intent = Intent(context, EventReviewActivity::class.java)
-                                                    intent.putExtra("eventId", eventId)
-                                                    startActivity(intent)
-                                                }
-                                                .show()
-
-                                        } else {
-                                            //set data(mId) to firebase
-                                            set(mId, SetOptions.mergeFields(userId)).addOnCompleteListener {
-                                                if (it.isSuccessful) {
-
-                                                    Snackbar.make(root_layout_home_fm,"You're joined ${snapshots[position].event_name}", Snackbar.LENGTH_LONG)
-                                                        .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
-                                                        .show()
-
-                                                    //call startAlarm
-//                                                    val start = HomeActivity()
-//                                                    start.startAlarm(eventId)
-
-
-                                                } else {
-                                                    Toast.makeText(context, "error join", Toast.LENGTH_SHORT)
-                                                        .show()
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            } //end apply.
+                        //get userName
+                        getUserName {
+                            createEventMember(it, eventName, eventId)
                         }
+
                     } //end join btn.
 
                 }
-            } //end onBindViewHolder.
-        } //end adapter.
+            }
+        }
 
 
         //set recyclerView layout and adapter
         rv_home.layoutManager = linearLayoutManager
         rv_home.adapter = adapter
 
+    }
+
+    private fun createEventMember(userName: String, eventName: String, eventId: String) {
+
+        Log.d("TAG", "createEventMember: userName $userName")
+        Log.d("TAG", "createEventMember: eventName $eventName")
+        Log.d("TAG", "createEventMember: eventId $eventId")
+
+        val mId = HashMap<String, Any>().apply {
+            this[userId] = userName
+        }
+
+        //Create Event-mem-list by event name
+        memberReference = mDatabase.collection("Event-mem-list").document(eventName)
+        memberReference.apply {
+            addSnapshotListener { value, error ->
+
+                error.let {
+
+                    val memId = value?.data?.keys //userId in eventId
+                    Log.d("TAG", "createEventMember: memID $memId")
+
+                    //check that memId contains userId (current user) ?
+                    if (memId == null || !memId.contains(userId)) {
+
+                        //set data(mId) to Event-mem-list
+                        set(mId, SetOptions.mergeFields(userId)).addOnCompleteListener {
+                            if (it.isSuccessful) {
+
+                                Snackbar.make(root_layout_home_fm,"You're joined $eventName", Snackbar.LENGTH_LONG)
+                                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                                    .show()
+                            }
+                        }
+                    } else {
+                        //Why always show ?
+                        Snackbar.make(root_layout_home_fm,"You're joined already", Snackbar.LENGTH_LONG)
+                            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                            .setAction("View") {
+                                val intent = Intent(context, EventReviewActivity::class.java)
+                                intent.putExtra("eventId", eventId)
+                                startActivity(intent)
+                            }
+                            .show()
+                    }
+                }
+            }
+        } //end apply.
+    }
+
+    private fun getUserName(callback: (String) -> Unit) {
+
+        val userRef = mDatabase.collection("Users").document(userId)
+        userRef.addSnapshotListener { value, error ->
+
+            error.let {
+                //get username from uid
+                val userName = value?.get("display_name").toString()
+                Log.d("TAG", "getUserName: $userName")
+                callback(userName)
+            }
+        }
     }
 
 
