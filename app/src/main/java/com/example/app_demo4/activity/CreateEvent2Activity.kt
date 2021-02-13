@@ -4,11 +4,13 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.example.app_demo4.notification.AlarmService
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -19,13 +21,15 @@ import java.text.DateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
-class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
-    TimePickerDialog.OnTimeSetListener {
+class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
+    //AlarmService
+    lateinit var alarmService: AlarmService
 
     // Firebase Properties
     private lateinit var mDatabase: FirebaseFirestore
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var userId: String
 
     // View Properties
     private lateinit var eventName: String
@@ -44,11 +48,11 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     private var minute = 0
 
     //saved
-    private var savedDay = 0
-    private var savedMonth = 0
-    private var savedYear = 0
-    private var savedHour = 0
-    private var savedMinute = 0
+//    private var savedDay = 0
+//    private var savedMonth = 0
+//    private var savedYear = 0
+//    private var savedHour = 0
+//    private var savedMinute = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +62,11 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         //set firebase properties
         mDatabase = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
+        userId = mAuth.currentUser!!.uid
+
+        //alarm
+        alarmService = AlarmService(this)
+
 
         // show event type
         Snackbar.make(root_layout_event_b, "Special Event", Snackbar.LENGTH_LONG)
@@ -74,18 +83,62 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         }
 
         // Select date and time
-        pickDateTime()
+        pickDateTime {
+            //callback, then send it to create
+            clickToCreate(it)
+        }
+
+        // Button Create event
+//        btn_create_event2.setOnClickListener {
+//
+//            val userId = mAuth.currentUser!!.uid
+//            val userRef = mDatabase.collection("Users").document(userId)
+//            userRef.addSnapshotListener { value, error ->
+//
+//                error.let {
+//
+//                    //get username
+//                    val userName = value?.get("display_name").toString()
+//
+//                    //set view properties
+//                    eventName = tv_event_name_create2.editText?.text.toString().trim()
+//                    eventLocation = tv_location_create2.text.toString().trim()
+//                    eventDate = tv_date_create2.text.toString().trim()
+//                    eventTime = tv_time_create2.text.toString().trim()
+//                    eventMeet = tv_meet_create2.text.toString().trim()
+//                    eventMember = tv_member_create2.text.toString().trim()
+//
+//                    eventCreator = userName
+//
+//                    createEvent(
+//                        eventName,
+//                        eventLocation,
+//                        eventDate,
+//                        eventTime,
+//                        eventMeet,
+//                        eventMember,
+//                        eventCreator
+//                    )
+//
+//                }
+//            }
+//
+//
+//        }
+
+    }
+
+    private fun clickToCreate(timeInMillis: Long) {
 
         // Button Create event
         btn_create_event2.setOnClickListener {
 
-            val userId = mAuth.currentUser!!.uid
             val userRef = mDatabase.collection("Users").document(userId)
-            userRef.addSnapshotListener { value, error ->
+            userRef.addSnapshotListener { value, _ ->
 
-                error.let {
+                value.let {
 
-                    //get username
+                    //get username for even creator
                     val userName = value?.get("display_name").toString()
 
                     //set view properties
@@ -105,15 +158,13 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
                         eventTime,
                         eventMeet,
                         eventMember,
-                        eventCreator
+                        eventCreator,
+                        timeInMillis
                     )
 
                 }
             }
-
-
         }
-
     }
 
 
@@ -132,7 +183,7 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
     }
 
-    private fun pickDateTime() {
+    private fun pickDateTime(callback: (Long) -> Unit) {
 
         //icon pick date
         tv_date_create2.setOnClickListener {
@@ -142,9 +193,36 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
         //icon pick time
         tv_time_create2.setOnClickListener {
-            getDateTimeCalendar()
-            TimePickerDialog(this, this, hour, minute, true).show()
+//            getDateTimeCalendar()
+//            TimePickerDialog(this, this, hour, minute, true).show()
             // true = 24 hour, false = AM-PM
+
+            //new
+            Calendar.getInstance().apply {
+
+                this.set(Calendar.SECOND, 0)
+                this.set(Calendar.MILLISECOND, 0)
+
+                //get time
+                TimePickerDialog(
+                    this@CreateEvent2Activity,
+                    0,
+                    { _, hour, min ->
+                        this.set(Calendar.HOUR_OF_DAY, hour)
+                        this.set(Calendar.MINUTE, min)
+
+//                        formatTime(cal)
+                        val timeTxt = DateFormat.getTimeInstance(DateFormat.SHORT).format(this.time)
+                        tv_time_create2.text = timeTxt
+
+                        callback(this.timeInMillis) //use callback
+                    },
+                    this.get(Calendar.HOUR_OF_DAY),
+                    this.get(Calendar.MINUTE),
+                    true
+                ).show()
+
+            }
         }
     }
 
@@ -165,20 +243,20 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     }
 
     //set time
-    override fun onTimeSet(p0: TimePicker?, hourOfDay: Int, minute: Int) {
-
-        val cal = Calendar.getInstance()
-        cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
-        cal.set(Calendar.MINUTE, minute)
-        cal.set(Calendar.SECOND, 0)
-
-        formatTime(cal)
-    }
-
-    private fun formatTime(cal: Calendar) {
-        val timeTxt = DateFormat.getTimeInstance(DateFormat.SHORT).format(cal.time)
-        tv_time_create2.text = timeTxt
-    }
+//    override fun onTimeSet(p0: TimePicker?, hourOfDay: Int, minute: Int) {
+//
+//        val cal = Calendar.getInstance()
+//        cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
+//        cal.set(Calendar.MINUTE, minute)
+//        cal.set(Calendar.SECOND, 0)
+//
+//        formatTime(cal)
+//    }
+//
+//    private fun formatTime(cal: Calendar) {
+//        val timeTxt = DateFormat.getTimeInstance(DateFormat.SHORT).format(cal.time)
+//        tv_time_create2.text = timeTxt
+//    }
 
     /** # End DateTime Section */
 
@@ -190,7 +268,8 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         eventTime: String,
         eventMeet: String,
         eventMember: String,
-        eventCreator: String
+        eventCreator: String,
+        timeInMillis: Long
     ) {
 
         if (!validateEventData(
@@ -212,7 +291,8 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             eventTime,
             eventMeet,
             eventMember,
-            eventCreator
+            eventCreator,
+            timeInMillis
         )
 
     }
@@ -224,10 +304,11 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         eventTime: String,
         eventMeet: String,
         eventMember: String,
-        eventCreator: String
+        eventCreator: String,
+        timeInMillis: Long
     ) {
 
-        val eventRef = mDatabase.collection("Events").document()
+        val eventRef = mDatabase.collection("Events")
         val eventObject = HashMap<String, String>().apply {
             this["event_name"] = eventName
             this["event_location"] = eventLocation
@@ -242,17 +323,56 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         // #use add() to collection, #use set() to document
         // -> การเขียนข้อมูลด้วย Method add()
         // -> ทาง Cloud FireStore จะสร้าง Index ให้เราโดยอัตโนมัติ
-        eventRef.set(eventObject).addOnCompleteListener {
-            if (it.isSuccessful) {
-                Toast.makeText(this, "Create event successful", Toast.LENGTH_SHORT).show()
+        eventRef.add(eventObject).addOnSuccessListener {
 
-                // todo -> than send to event1 (B) page
-                finish()
-            } else {
-                Toast.makeText(this, "Create event unsuccessful", Toast.LENGTH_SHORT).show()
-            }
+            //new
+            Toast.makeText(this, "Create event successful", Toast.LENGTH_SHORT).show()
+
+            //get eventId
+            val eventId = it.id
+            Log.d("TAG", "sendEventDataToFirebase: ID $eventId")
+
+            //startAlarm
+            startAlarm(timeInMillis, eventId)
+
+            finish()
         }
 
+    }
+
+    private fun startAlarm(timeInMillis: Long, eventId: String) {
+
+        Log.d("TAG", "startAlarm:timeInMillis $timeInMillis")
+        Log.d("TAG", "startAlarm:eventId $eventId")
+
+        //check that current user is in ?
+        val eventMemListRef = mDatabase.collection("Event-mem-list").document(eventName)
+        eventMemListRef.addSnapshotListener { value, _ ->
+
+            value.let {
+
+                val memId = value?.data?.keys
+                Log.d("TAG", "startAlarm: memIdOf($eventName) $memId")
+
+                if (memId?.contains(userId) == true) {
+                    Log.d("TAG", "startAlarm: true")
+
+                    //set alarm
+//                    alarmManager.setExact(
+//                        AlarmManager.RTC_WAKEUP,
+//                        timeInMillis,
+//                        pendingIntent
+//                    )
+
+                    //new
+                    alarmService.setExactAlarm(timeInMillis, eventId)
+
+
+                } else {
+                    Log.d("TAG", "startAlarm: else")
+                }
+            }
+        }
     }
 
 

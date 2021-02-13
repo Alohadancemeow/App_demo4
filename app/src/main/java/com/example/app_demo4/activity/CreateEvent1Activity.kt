@@ -13,6 +13,7 @@ import android.view.WindowManager
 import android.widget.DatePicker
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.example.app_demo4.notification.AlarmService
 import com.example.app_demo4.notification.ReminderBroadcast
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -25,6 +26,9 @@ import kotlin.collections.HashMap
 import kotlin.time.ExperimentalTime
 
 class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
+
+    //AlarmService
+    lateinit var alarmService: AlarmService
 
     // Firebase Properties
     private lateinit var mDatabase: FirebaseFirestore
@@ -65,6 +69,9 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         mAuth = FirebaseAuth.getInstance()
         userId = mAuth.currentUser!!.uid
 
+        //alarm
+        alarmService = AlarmService(this)
+
 
         // show event type
         Snackbar.make(root_layout_event_a, "General Event", Snackbar.LENGTH_LONG)
@@ -83,8 +90,8 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         // Select date and time
         pickDateTime {
 //            startAlarm(it)
+            //callback, then send it to create
             clickToCreate(it)
-
 
         }
 
@@ -133,7 +140,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         btn_create_event.setOnClickListener {
 
             val userRef = mDatabase.collection("Users").document(userId)
-            userRef.addSnapshotListener { value, error ->
+            userRef.addSnapshotListener { value, _ ->
 
                 value.let {
 
@@ -150,10 +157,16 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
                     eventCreator = userName
 
-                    createEvent(eventName, eventLocation, eventDate, eventTime, eventMeet, eventMember, eventCreator, timeInMillis)
-
-
-
+                    createEvent(
+                        eventName,
+                        eventLocation,
+                        eventDate,
+                        eventTime,
+                        eventMeet,
+                        eventMember,
+                        eventCreator,
+                        timeInMillis
+                    )
                 }
             }
 
@@ -178,7 +191,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
     }
 
-    private fun pickDateTime(callback: (Long) -> Unit)  {
+    private fun pickDateTime(callback: (Long) -> Unit) {
 
         //icon pick date
         tv_date_create.setOnClickListener {
@@ -340,18 +353,17 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
     private fun startAlarm(timeInMillis: Long, eventId: String) {
 
-//        Log.d("TAG", "startAlarm:eventId $eventId")
         Log.d("TAG", "startAlarm:timeInMillis $timeInMillis")
         Log.d("TAG", "startAlarm:eventId $eventId")
 
 
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        val intent = Intent(this, ReminderBroadcast::class.java).apply {
-            this.putExtra("eventId", eventId)
-        }
-
-        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
+//        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//
+//        val intent = Intent(this, ReminderBroadcast::class.java).apply {
+//            this.putExtra("eventId", eventId)
+//        }
+//
+//        val pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0)
 
 
         //check that current user is in ?
@@ -367,11 +379,15 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
                     Log.d("TAG", "startAlarm: true")
 
                     //set alarm
-                    alarmManager.setExact(
-                        AlarmManager.RTC_WAKEUP,
-                        timeInMillis,
-                        pendingIntent
-                    )
+//                    alarmManager.setExact(
+//                        AlarmManager.RTC_WAKEUP,
+//                        timeInMillis,
+//                        pendingIntent
+//                    )
+
+                    //new
+                    alarmService.setExactAlarm(timeInMillis, eventId)
+
 
                 } else {
                     Log.d("TAG", "startAlarm: else")

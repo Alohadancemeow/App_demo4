@@ -240,12 +240,12 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
 
             // Communication
-            R.id.nav_notify -> {
-                //TODO("help ?")
-                val intent = Intent(this, NotificationDemoActivity::class.java)
-                startActivity(intent)
-                true
-            }
+//            R.id.nav_notify -> {
+//                //TODO("help ?")
+//                val intent = Intent(this, NotificationDemoActivity::class.java)
+//                startActivity(intent)
+//                true
+//            }
 
             R.id.nav_feedback -> {
                 //TODO("info ?")

@@ -105,7 +105,7 @@ class User1Fragment : Fragment() {
 
         //set recyclerView layout and adapter
         rv_user?.layoutManager = linearLayoutManager
-        rv_user.adapter = adapter
+        rv_user?.adapter = adapter
     }
 
     private fun sendToProfile(userId: String) {

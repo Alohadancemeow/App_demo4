@@ -68,7 +68,7 @@
 
 
 <!--    AlarmManager-->
-<!--        <receiver android:name=".notification.AlarmReceiver" />-->
+        <receiver android:name=".notification.AlarmReceiver" />
 
 
 <!--&lt;!&ndash;        #My receiver &ndash;&gt;-->
@@ -84,7 +84,7 @@
 
 
 <!--     receiver of reminder -->
-        <receiver android:name=".notification.ReminderBroadcast" />
+<!--        <receiver android:name=".notification.ReminderBroadcast" />-->
 
 
     </application>
