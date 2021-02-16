@@ -1,14 +1,10 @@
 package com.example.app_demo4.activity
 
 import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -20,27 +16,26 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.example.app_demo4.R
 import com.example.app_demo4.fragment.EventFragment
 import com.example.app_demo4.fragment.HomeFragment
 import com.example.app_demo4.fragment.UsersFragment
 import com.example.app_demo4.notification.AlarmService
-import com.example.app_demo4.notification.NotificationDemoActivity
-import com.example.app_demo4.notification.ReminderBroadcast
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.ismaeldivita.chipnavigation.ChipNavigationBar.OnItemSelectedListener
 import kotlinx.android.synthetic.main.activity_home.*
-import java.security.Timestamp
-import java.text.DateFormat
-import java.time.LocalTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
 import kotlin.time.ExperimentalTime
-import com.ismaeldivita.chipnavigation.ChipNavigationBar as ChipNavigationBar
 
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -56,11 +51,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     // Nav-Drawer Properties
     private var drawerLayout: DrawerLayout? = null
     private var navigationView: NavigationView? = null
-    private var iconMenuHome: ImageView? = null
+    private lateinit var topAppBar: MaterialToolbar
 
     // bottom menu Properties
-    private var bottomMenuLayout: RelativeLayout? = null
-    private var bottomNavMenuHome: ChipNavigationBar? = null
+//    private var bottomMenuLayout: RelativeLayout? = null
+    private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var navController: NavController
+
 
     // FAB Properties
     private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim) }
@@ -87,44 +84,29 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         userId = mAuth.currentUser!!.uid
 
 
-
-
-//        val viewPager = view_pager
-//        viewPager.adapter = MyAdapter(supportFragmentManager)
-
-
         // Menu Hooks
         drawerLayout = drawer_layout
         navigationView = navigation_view
-        iconMenuHome = icon_menu_home
+        topAppBar = top_AppBar
 
         // bottom menu
-//        bottomMenuLayout = bottom_menu_layout
-        bottomNavMenuHome = bottom_nav_menu_home
-        supportFragmentManager.beginTransaction().replace(R.id.frame_layout, HomeFragment())
-            .commit()
+        bottomNavigationView = bottom_nav_menu_home
+        navController = findNavController(R.id.fragment)
 
-        bottomMenu()
+//        val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment, R.id.usersFragment, R.id.eventFragment))
+//        setupActionBarWithNavController(navController, appBarConfiguration)
+
+
+        bottomNavigationView.setupWithNavController(navController)
+
+
+
+
+//        supportFragmentManager.beginTransaction().replace(R.id.frame_layout, HomeFragment())
+//            .commit()
+
         navigationDrawer()
-
-
-        // fab menu
-        fab1.setOnClickListener {
-            onAddButtonClicked()
-        }
-        // event 2
-        fab2.setOnClickListener {
-//            Toast.makeText(this, "Event B", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, CreateEvent2Activity::class.java)
-            startActivity(intent)
-        }
-        //event 1
-        fab3.setOnClickListener {
-//            Toast.makeText(this, "Event A", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, CreateEvent1Activity::class.java)
-            startActivity(intent)
-        }
-
+        floatingActionBar()
 
     }
 
@@ -182,23 +164,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    // Bottom Menu Functions
-    private fun bottomMenu() {
-        bottomNavMenuHome!!.setOnItemSelectedListener(object : OnItemSelectedListener {
-            override fun onItemSelected(id: Int) {
-                var fragment: Fragment? = null
-                when (id) {
-                    R.id.bottom_nav_dashboard -> fragment = HomeFragment()
-                    R.id.bottom_nav_user -> fragment = UsersFragment()
-                    R.id.bottom_nav_event -> fragment = EventFragment()
-                }
-                supportFragmentManager.beginTransaction().replace(R.id.frame_layout, fragment!!)
-                    .commit()
-            }
-        })
-    }
-
-
     // Nav-Drawer Functions
     private fun navigationDrawer() {
 
@@ -208,11 +173,30 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView!!.setCheckedItem(R.id.nav_profile)
 
         // IconMenu active
-        iconMenuHome?.setOnClickListener {
+        topAppBar.setNavigationOnClickListener {
             if (drawerLayout?.isDrawerOpen(GravityCompat.START)!!) {
                 drawerLayout?.closeDrawer(GravityCompat.START)
             }
             drawerLayout?.openDrawer(GravityCompat.START)
+        }
+    }
+
+    private fun floatingActionBar() {
+        // fab menu
+        fab1.setOnClickListener {
+            onAddButtonClicked()
+        }
+        // event 2
+        fab2.setOnClickListener {
+//            Toast.makeText(this, "Event B", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, CreateEvent2Activity::class.java)
+            startActivity(intent)
+        }
+        //event 1
+        fab3.setOnClickListener {
+//            Toast.makeText(this, "Event A", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, CreateEvent1Activity::class.java)
+            startActivity(intent)
         }
     }
 

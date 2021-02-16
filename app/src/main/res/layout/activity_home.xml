@@ -8,6 +8,7 @@
     tools:context=".activity.HomeActivity">
 
 
+    <!--    Drawer menu -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="match_parent"
@@ -18,108 +19,114 @@
         app:headerLayout="@layout/menu_header"
         app:menu="@menu/main_menu" />
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20sp">
-
-            <ImageView
-                android:id="@+id/icon_menu_home"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_menu_setting" />
+        android:layout_height="match_parent">
 
 
-        </RelativeLayout>
-
-        <FrameLayout
-            android:id="@+id/frame_layout"
+        <!--    Top appbar menu -->
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </FrameLayout>
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liftOnScroll="true">
 
-        <!--        <androidx.viewpager.widget.ViewPager-->
-        <!--            android:id="@+id/view_pager"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content">-->
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/top_AppBar"
+                    style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:navigationIcon="@drawable/ic_menu_24"
+                    app:title="My Event" />
 
-        <!--        </androidx.viewpager.widget.ViewPager>-->
-
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-    <RelativeLayout
-        android:id="@+id/bottom_menu_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            </com.google.android.material.appbar.AppBarLayout>
 
 
-        <com.ismaeldivita.chipnavigation.ChipNavigationBar
+            <fragment
+                android:id="@+id/fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:navGraph="@navigation/my_nav_bottom"
+                android:layout_marginBottom="45dp"
+                android:layout_marginTop="10dp"/>
+
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+        <!--    Bottom appbar menu -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav_menu_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/round_corners"
-            android:elevation="8dp"
-            app:cnb_menuResource="@menu/bottom_nav_menu"
-            app:cnb_orientationMode="horizontal"
-            app:cnb_radius="8dp"
-            app:cnb_unselectedColor="@android:color/black"
-            app:hideOnScroll="true"/>
+            android:background="@android:color/white"
+            app:elevation="10dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/bottom_nav_menu" />
 
 
+        <!--    FAB menu -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/bottom_nav_menu_home"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="10dp"
             android:clickable="true"
+            android:contentDescription="TODO"
             android:focusable="true"
             android:src="@drawable/ic_add"
-            android:tint="@android:color/white" />
+            android:visibility="visible"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_nav_menu_home"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.89"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            tools:ignore="ContentDescription,HardcodedText" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/fab1"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
             android:clickable="true"
+            android:contentDescription="TODO"
             android:focusable="true"
-            android:src="@drawable/ic_event"
-            android:tint="@android:color/white"
-            app:hideOnScroll="true"
-            android:visibility="invisible" />
+            android:src="@drawable/ic_event_white"
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@+id/fab1"
+            app:layout_constraintEnd_toEndOf="@+id/fab1"
+            app:layout_constraintStart_toStartOf="@+id/fab1"
+            tools:ignore="ContentDescription,HardcodedText" />
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/fab2"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
             android:layout_marginBottom="10dp"
             android:clickable="true"
+            android:contentDescription="TODO"
             android:focusable="true"
             android:src="@drawable/ic_event1_white"
-            android:tint="@android:color/white"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@+id/fab2"
+            app:layout_constraintEnd_toEndOf="@+id/fab2"
+            app:layout_constraintStart_toStartOf="@+id/fab2"
+            tools:ignore="ContentDescription,HardcodedText" />
 
         <TextView
             android:id="@+id/tv_event_a"
@@ -127,20 +134,19 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/fab3"
             android:layout_alignBottom="@+id/fab3"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/fab_text_bg"
             android:fontFamily="@font/antic"
             android:paddingStart="16dp"
             android:paddingTop="8dp"
             android:paddingEnd="16dp"
             android:paddingBottom="6dp"
-            android:visibility="invisible"
+            android:text="General Event"
             android:textStyle="bold"
-            android:text="General Event" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/fab3"
+            app:layout_constraintEnd_toStartOf="@+id/fab3"
+            app:layout_constraintTop_toTopOf="@+id/fab3" />
 
         <TextView
             android:id="@+id/tv_event_b"
@@ -149,22 +155,21 @@
             android:layout_alignTop="@+id/fab2"
             android:layout_alignBottom="@+id/fab2"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="80dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="5dp"
             android:background="@drawable/fab_text_bg"
             android:fontFamily="@font/antic"
             android:paddingStart="16dp"
             android:paddingTop="8dp"
             android:paddingEnd="16dp"
             android:paddingBottom="6dp"
-            android:visibility="invisible"
+            android:text="Special Event"
             android:textStyle="bold"
-            android:text="Special Event" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/fab2"
+            app:layout_constraintEnd_toStartOf="@+id/fab2"
+            app:layout_constraintTop_toTopOf="@+id/fab2" />
 
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_dashboard"
+        android:title="Home"
+        android:contentDescription="This is home"
+        app:showAsAction="ifRoom"
+        tools:ignore="HardcodedText" />
+
+    <item
+        android:id="@+id/users"
+        android:icon="@drawable/ic_user"
+        android:title="Home"
+        android:contentDescription="This is users"
+        app:showAsAction="ifRoom"
+        tools:ignore="HardcodedText" />
+
+    <item
+        android:id="@+id/events"
+        android:icon="@drawable/ic_event_available"
+        android:title="Home"
+        android:contentDescription="This is event"
+        app:showAsAction="ifRoom"
+        tools:ignore="HardcodedText" />
+
+</menu>

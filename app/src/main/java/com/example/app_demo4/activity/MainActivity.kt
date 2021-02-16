@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(FLAG_FULLSCREEN)
+        actionBar?.hide()
         setContentView(R.layout.activity_main)
 
         // [START fcm_runtime_enable_auto_init]

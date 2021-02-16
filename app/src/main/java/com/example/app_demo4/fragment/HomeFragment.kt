@@ -22,7 +22,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_event_review.*
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.root_layout_home_fm
 import kotlinx.android.synthetic.main.recyclerview_home_row.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.view.*
 import java.text.DateFormat
@@ -183,9 +185,11 @@ class HomeFragment : Fragment() {
                             }
                         }
                     } else {
+
+                        Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show()
                         //Why always show ?
                         Snackbar.make(root_layout_home_fm,"You're joined already", Snackbar.LENGTH_LONG)
-                            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
                             .setAction("View") {
                                 val intent = Intent(context, EventReviewActivity::class.java)
                                 intent.putExtra("eventId", eventId)

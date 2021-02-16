@@ -100,8 +100,8 @@ class User2Fragment : Fragment() {
         }
 
         //set recyclerView layout and adapter
-        rv_user.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        rv_user.adapter = adapter
+        rv_user?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rv_user?.adapter = adapter
     }
 
     private fun sendToProfile(userId: String) {
