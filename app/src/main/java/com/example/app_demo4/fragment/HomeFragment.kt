@@ -159,7 +159,7 @@ class HomeFragment : Fragment() {
         }
 
         //Create Event-mem-list by event name
-        memberReference = mDatabase.collection("Event-mem-list").document(eventName)
+        memberReference = mDatabase.collection("Event-mem-list").document(eventId)
         memberReference.apply {
             addSnapshotListener { value, error ->
 
@@ -179,23 +179,28 @@ class HomeFragment : Fragment() {
                         set(mId, SetOptions.mergeFields(userId)).addOnCompleteListener {
                             if (it.isSuccessful) {
 
-                                Snackbar.make(root_layout_home_fm,"You're joined $eventName", Snackbar.LENGTH_LONG)
-                                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                                Toast.makeText(context, "You're joined $eventName", Toast.LENGTH_SHORT)
                                     .show()
+
+//                                Snackbar.make(root_layout_home_fm,"You're joined $eventName", Snackbar.LENGTH_LONG)
+//                                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+//                                    .show()
                             }
                         }
                     } else {
 
-                        Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show()
                         //Why always show ?
-                        Snackbar.make(root_layout_home_fm,"You're joined already", Snackbar.LENGTH_LONG)
-                            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
-                            .setAction("View") {
-                                val intent = Intent(context, EventReviewActivity::class.java)
-                                intent.putExtra("eventId", eventId)
-                                startActivity(intent)
-                            }
-                            .show()
+
+                        Toast.makeText(context, "You're joined already", Toast.LENGTH_SHORT).show()
+//
+//                        Snackbar.make(root_layout_home_fm,"You're joined already", Snackbar.LENGTH_LONG)
+//                            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
+//                            .setAction("View") {
+//                                val intent = Intent(context, EventReviewActivity::class.java)
+//                                intent.putExtra("eventId", eventId)
+//                                startActivity(intent)
+//                            }
+//                            .show()
                     }
                 }
             }

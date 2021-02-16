@@ -139,40 +139,27 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         // Button Create event
         btn_create_event.setOnClickListener {
 
-            val userRef = mDatabase.collection("Users").document(userId)
-            userRef.addSnapshotListener { value, _ ->
+            //set view properties
+            eventName = tv_event_name_create.editText?.text.toString().trim()
+            eventLocation = tv_location_create.text.toString().trim()
+            eventDate = tv_date_create.text.toString().trim()
+            eventTime = tv_time_create.text.toString().trim()
+            eventMeet = tv_meet_create.text.toString().trim()
+            eventMember = tv_member_create.text.toString().trim()
 
-                value.let {
+            eventCreator = userId
 
-                    //get username for event creator
-                    val userName = value?.get("display_name").toString()
-
-                    //set view properties
-                    eventName = tv_event_name_create.editText?.text.toString().trim()
-                    eventLocation = tv_location_create.text.toString().trim()
-                    eventDate = tv_date_create.text.toString().trim()
-                    eventTime = tv_time_create.text.toString().trim()
-                    eventMeet = tv_meet_create.text.toString().trim()
-                    eventMember = tv_member_create.text.toString().trim()
-
-                    eventCreator = userName
-
-                    createEvent(
-                        eventName,
-                        eventLocation,
-                        eventDate,
-                        eventTime,
-                        eventMeet,
-                        eventMember,
-                        eventCreator,
-                        timeInMillis
-                    )
-                }
-            }
-
-
+            createEvent(
+                eventName,
+                eventLocation,
+                eventDate,
+                eventTime,
+                eventMeet,
+                eventMember,
+                eventCreator,
+                timeInMillis
+            )
         }
-
     }
 
 
@@ -367,7 +354,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
 
         //check that current user is in ?
-        val eventMemListRef = mDatabase.collection("Event-mem-list").document(eventName)
+        val eventMemListRef = mDatabase.collection("Event-mem-list").document(eventId)
         eventMemListRef.addSnapshotListener { value, _ ->
 
             value.let {

@@ -1,16 +1,18 @@
 package com.example.app_demo4.activity
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.app_demo4.R
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_event_review.*
-import kotlinx.android.synthetic.main.activity_profile_review.*
 
 
 class EventReviewActivity : AppCompatActivity() {
@@ -18,6 +20,10 @@ class EventReviewActivity : AppCompatActivity() {
     //Firebase Property
     private lateinit var mDatabase: FirebaseFirestore
     private lateinit var memberReference: DocumentReference
+
+    //Top Appbar
+    private lateinit var topAppBar: MaterialToolbar
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +35,9 @@ class EventReviewActivity : AppCompatActivity() {
         mDatabase = FirebaseFirestore.getInstance()
 
 
-        // <-- Button Back
-        btn_back_event_review.setOnClickListener {
-            finish()
-        }
+        // set Top appbar
+        topAppBar = top_AppBar_event_preview
+
 
         // Button OK
         btn_ok_event_review.setOnClickListener {
@@ -40,23 +45,44 @@ class EventReviewActivity : AppCompatActivity() {
         }
 
         // Receive intent from Event 1/2 Fragments and HomeFragment
-        if (intent.extras != null) {
+        intent.let {
 
             val eventId = intent.extras!!.get("eventId").toString()
-            val eventRef = mDatabase.collection("Events").document(eventId)
+            Log.d("TAG", "onCreate: eventId $eventId")
 
-            eventRef.addSnapshotListener { value, error ->
 
-                if (error != null) finish()
+            //setup event's data
+            setUpEventData(eventId)
+
+
+            //Top appbar delete btn
+            topAppBarAction(eventId)
+
+
+        }
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setUpEventData(eventId: String) {
+
+        Log.d("TAG", "setUpEventData: eventId $eventId")
+
+        val eventRef = mDatabase.collection("Events").document(eventId)
+        eventRef.addSnapshotListener { value, _ ->
+
+            value.let {
 
                 val eventName = value?.get("event_name").toString()
+                Log.d("TAG", "setUpEventData: eventName $eventName")
+
 
                 //show event name
-
                 Toast.makeText(this, "${value?.get("event_name")}", Toast.LENGTH_SHORT).show()
 //                Snackbar.make(root_layout_event,"${value?.get("event_name")}", Snackbar.LENGTH_SHORT)
 //                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
 //                    .show()
+
 
                 //get event data from firestore
                 //Must be same name as firestore
@@ -69,19 +95,34 @@ class EventReviewActivity : AppCompatActivity() {
                 val event_member = value?.get("event_member").toString()
                 val event_creator = value?.get("event_creator").toString()
 
+                //get creator's name
+                Log.d("TAG", "setUpEventData: event_creator_id $event_creator")
+                val userRef = mDatabase.collection("Users").document(event_creator)
+                userRef.addSnapshotListener { value, _ ->
 
-                //set event data to view
-                tv_event_review_type.text = "$event_type Event"
-                tv_event_review_name.text = event_name
-                tv_event_review_date.text = event_date
-                event_review_location.text = event_location
-                event_review_meet.text = event_meet
-                event_review_time.text = event_time
-                event_review_member.text = event_member
-                tv_creator_review.text = event_creator
+                    value.let {
 
-                showAllMember(eventId, eventName)
+                        val creatorName = value?.get("display_name").toString()
+                        Log.d("TAG", "setUpEventData: creatorName $creatorName")
+
+
+                        //set event data to view
+                        tv_event_review_type.text = "$event_type Event"
+                        tv_event_review_name.text = event_name
+                        tv_event_review_date.text = event_date
+                        event_review_location.text = event_location
+                        event_review_meet.text = event_meet
+                        event_review_time.text = event_time
+                        event_review_member.text = event_member
+                        tv_creator_review.text = creatorName
+
+                        //show member list
+                        showAllMember(eventId, eventName)
+                    }
+                }
             }
+
+
         }
 
     }
@@ -110,4 +151,78 @@ class EventReviewActivity : AppCompatActivity() {
 
         }
     }
+
+
+    private fun topAppBarAction(eventId: String) {
+
+        Log.d("TAG", "topAppBarAction: eventId $eventId")
+
+        // <-- Back btn
+        topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+
+        topAppBar.setOnMenuItemClickListener {
+
+            when (it.itemId) {
+
+                R.id.delete -> {
+
+                    val mAuth = FirebaseAuth.getInstance()
+                    val currentUserId = mAuth.currentUser!!.uid
+                    Log.d("TAG", "topAppBarAction: UID $currentUserId")
+
+
+                    //get event's creator ID
+                    val eventRef = mDatabase.collection("Events").document(eventId)
+                    eventRef.addSnapshotListener { value, _ ->
+
+                        value.let {
+
+                            val eventCreatorId = value?.get("event_creator").toString()
+                            Log.d("TAG", "topAppBarAction: EID $eventCreatorId")
+
+                            //check
+                            Log.d("TAG", "topAppBarAction: UID == EID ${currentUserId == eventCreatorId}")
+
+                            if (currentUserId == eventCreatorId) {
+
+                                // Delete event
+
+                                MaterialAlertDialogBuilder(this)
+                                    .setTitle("Delete this event")
+                                    .setMessage("Are you sure you want to delete ?")
+                                    .setNegativeButton("Cancel") { _, _ ->
+                                        //Nothing on
+                                    }
+                                    .setPositiveButton("Delete") { _, _ ->
+                                        eventRef.delete().addOnSuccessListener {
+                                            Toast.makeText(this, "delete successful", Toast.LENGTH_SHORT).show()
+                                            finish()
+                                        }
+                                    }
+                                    .show()
+                            } else {
+
+                                MaterialAlertDialogBuilder(this)
+                                    .setTitle("Cannot delete")
+                                    .setMessage("You are not the creator of this event")
+                                    .setPositiveButton("Okay, I got it") { _, _ ->
+                                        //Nothing on
+                                    }
+                                    .show()
+                            }
+                        }
+                    }
+
+                    true
+                }
+
+                else -> false
+
+            }
+        }
+    }
+
+
 }
