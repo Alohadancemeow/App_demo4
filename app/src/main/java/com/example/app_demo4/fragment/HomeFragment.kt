@@ -42,7 +42,11 @@ class HomeFragment : Fragment() {
     private lateinit var userId: String
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
@@ -106,38 +110,55 @@ class HomeFragment : Fragment() {
                 Log.d("TAG", "onBindViewHolder: $eventId")
 
 
+                //new
                 holder.itemView.apply {
 
-                    val isExpandable: Boolean = snapshots[position].expandable
-                    holder.expandableLayout.visibility =
-                        if (isExpandable) View.VISIBLE else View.GONE
+                    // #Condition : if(expandable) false -> gone, true -> visible
+                    val isExpandable: Boolean = snapshots[position].expandable  //false
+//                    holder.expandableLayout.visibility = if (isExpandable) View.VISIBLE else View.GONE
 
-                    //Button expand
-                    this.expand_btn.setOnClickListener {
+                    if (isExpandable) {
+                        holder.expandableLayout.visibility = View.VISIBLE
+                        expand_btn.rotation = 180F
+                    } else {
+                        holder.expandableLayout.visibility = View.GONE
+                        expand_btn.rotation = 0F
+                    }
+
+
+                    //click on card view -->
+                    this.setOnClickListener {
+
                         val eventCardList = snapshots[position]
-                        eventCardList.expandable = !eventCardList.expandable
+                        eventCardList.expandable = !eventCardList.expandable // false -> true
                         notifyItemChanged(position)
-                    }
 
-                    //Button More Details
-                    this.details_btn.setOnClickListener {
-//                        val eventId = snapshots.getSnapshot(position).id
-                        val intent = Intent(context, EventReviewActivity::class.java)
-                        intent.putExtra("eventId", eventId)
-                        startActivity(intent)
-                    }
 
-                    //Button join
-                    this.join_btn.setOnClickListener {
+                        //click on join -->
+                        it.join_btn.setOnClickListener {
 
-                        //get userName
-                        getUserName {
-                            createEventMember(it, eventName, eventId)
+                            //get userName then send it to create
+                            getUserName { userName ->
+                                createEventMember(userName, eventName, eventId)
+                            }
+
                         }
 
-                    } //end join btn.
+                        //click on more details -->
+                        it.details_btn.setOnClickListener {
+
+//                        val eventId = snapshots.getSnapshot(position).id
+                            val intent = Intent(context, EventReviewActivity::class.java)
+                            intent.putExtra("eventId", eventId)
+                            startActivity(intent)
+
+                        }
+
+                    }
+
 
                 }
+
             }
         }
 
@@ -179,7 +200,11 @@ class HomeFragment : Fragment() {
                         set(mId, SetOptions.mergeFields(userId)).addOnCompleteListener {
                             if (it.isSuccessful) {
 
-                                Toast.makeText(context, "You're joined $eventName", Toast.LENGTH_SHORT)
+                                Toast.makeText(
+                                    context,
+                                    "You're joined $eventName",
+                                    Toast.LENGTH_SHORT
+                                )
                                     .show()
 
 //                                Snackbar.make(root_layout_home_fm,"You're joined $eventName", Snackbar.LENGTH_LONG)

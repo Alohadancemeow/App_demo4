@@ -133,10 +133,10 @@ class EventReviewActivity : AppCompatActivity() {
 
 //        Log.d("eventId", eventId)
 //        Log.d("eventName", eventName)
-        memberReference = mDatabase.collection("Event-mem-list").document(eventName)
-        memberReference.addSnapshotListener { value, error ->
+        memberReference = mDatabase.collection("Event-mem-list").document(eventId)
+        memberReference.addSnapshotListener { value, _ ->
 
-            error.let {
+            value.let {
 
                 value?.data?.values.apply {
 //                    Log.d("event-list-mem", this.toString())
@@ -162,6 +162,7 @@ class EventReviewActivity : AppCompatActivity() {
             finish()
         }
 
+        // Delete btn
         topAppBar.setOnMenuItemClickListener {
 
             when (it.itemId) {
@@ -185,33 +186,40 @@ class EventReviewActivity : AppCompatActivity() {
                             //check
                             Log.d("TAG", "topAppBarAction: UID == EID ${currentUserId == eventCreatorId}")
 
-                            if (currentUserId == eventCreatorId) {
+                            // Delete event
+                            //show dialog 1
+                            MaterialAlertDialogBuilder(this)
+                                .setTitle("Delete this event")
+                                .setMessage("Are you sure you want to delete ?")
+                                .setNegativeButton("Cancel") { _, _ ->
+                                    //Nothing on
+                                }
+                                .setPositiveButton("Delete") { _, _ ->
 
-                                // Delete event
+                                    if (currentUserId == eventCreatorId) {
 
-                                MaterialAlertDialogBuilder(this)
-                                    .setTitle("Delete this event")
-                                    .setMessage("Are you sure you want to delete ?")
-                                    .setNegativeButton("Cancel") { _, _ ->
-                                        //Nothing on
-                                    }
-                                    .setPositiveButton("Delete") { _, _ ->
                                         eventRef.delete().addOnSuccessListener {
-                                            Toast.makeText(this, "delete successful", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(
+                                                this,
+                                                "delete successful",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                             finish()
                                         }
-                                    }
-                                    .show()
-                            } else {
 
-                                MaterialAlertDialogBuilder(this)
-                                    .setTitle("Cannot delete")
-                                    .setMessage("You are not the creator of this event")
-                                    .setPositiveButton("Okay, I got it") { _, _ ->
-                                        //Nothing on
+                                    } else {
+
+                                        //show dialog 2
+                                        MaterialAlertDialogBuilder(this)
+                                            .setTitle("Cannot delete")
+                                            .setMessage("You are not the creator of this event")
+                                            .setPositiveButton("Okay, I got it") { _, _ ->
+                                                //Nothing on
+                                            }.show()
                                     }
-                                    .show()
-                            }
+
+                                }.show()
+
                         }
                     }
 

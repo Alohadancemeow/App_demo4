@@ -195,7 +195,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
                                 android:fontFamily="@font/antic"
-                                android:hint="Number Of Members"
+                                android:hint="All Of Members"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
