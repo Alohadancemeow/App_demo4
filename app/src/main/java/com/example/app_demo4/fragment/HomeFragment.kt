@@ -1,8 +1,10 @@
 package com.example.app_demo4.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,17 +17,14 @@ import com.example.app_demo4.R
 import com.example.app_demo4.activity.EventReviewActivity
 import com.example.app_demo4.model.HomeData
 import com.example.app_demo4.model.HomeHolder
+import com.example.app_demo4.model.ProgressButton
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
-import kotlinx.android.synthetic.main.activity_event_review.*
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.root_layout_home_fm
-import kotlinx.android.synthetic.main.recyclerview_home_row.*
+import kotlinx.android.synthetic.main.progress_btn_layout.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.view.*
 import java.text.DateFormat
 import java.util.*
@@ -51,6 +50,7 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //set properties
@@ -135,12 +135,25 @@ class HomeFragment : Fragment() {
 
 
                         //click on join -->
-                        it.join_btn.setOnClickListener {
+                        it.join_progressbar_button.setOnClickListener { view ->
 
-                            //get userName then send it to create
-                            getUserName { userName ->
-                                createEventMember(userName, eventName, eventId)
-                            }
+                            //call progressbar
+                            val progressButton = ProgressButton(view)
+                            progressButton.buttonActivated(8)
+
+                            //delay
+                            val handler = Handler()
+                            handler.postDelayed({
+
+                                //get userName then send it to create
+                                getUserName { userName ->
+                                    createEventMember(userName, eventName, eventId)
+                                }
+
+                                //end progressbar
+                                progressButton.buttonFinished(8)
+
+                            }, 2000)
 
                         }
 

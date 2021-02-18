@@ -1,18 +1,24 @@
 package com.example.app_demo4.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Patterns
+import android.view.View
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.example.app_demo4.model.ProgressButton
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_profile_setting.*
+import kotlinx.android.synthetic.main.progress_btn_layout.*
 
 class ProfileSettingActivity : AppCompatActivity() {
 
@@ -31,6 +37,9 @@ class ProfileSettingActivity : AppCompatActivity() {
     private lateinit var email: TextInputLayout
     private lateinit var phone: TextInputLayout
 
+    private lateinit var progressBarProfileSetting: View
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(FLAG_FULLSCREEN)
@@ -56,13 +65,38 @@ class ProfileSettingActivity : AppCompatActivity() {
         getCurrentUser()
 
 
-        // # Update data and send to home
-        btn_profile_update.setOnClickListener {
-
-            /** -> อัพเดตข้อมูลพร้อมโยน uid ไปด้วย */
-            updateData(userId)
-
+        //set text and icon on Button
+        val textViewButton: MaterialButton = textView_progress
+        textViewButton.apply {
+            this.text = "Update"
+            this.setIconResource(R.drawable.ic_verified_white)
         }
+
+
+        // # Update data and send to home
+        progressBarProfileSetting = profile_setting_progressbar_button.apply {
+
+            setOnClickListener {
+
+                //call progressbar
+                val progressButton = ProgressButton(it)
+                progressButton.buttonActivated(3)
+
+                //delay
+                val handle = Handler()
+                handle.postDelayed({
+
+                    /** -> อัพเดตข้อมูลพร้อมโยน uid ไปด้วย */
+                    updateData(userId)
+
+                    //end progressbar
+                    progressButton.buttonFinished(3)
+
+                }, 2000)
+
+            }
+        }
+
 
         // -> Edit name button
         iv_edit_setting.setOnClickListener {

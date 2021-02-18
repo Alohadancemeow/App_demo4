@@ -1,26 +1,33 @@
 package com.example.app_demo4.activity
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.example.app_demo4.model.ProgressButton
 import com.example.app_demo4.notification.AlarmService
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_event1.*
 import kotlinx.android.synthetic.main.activity_create_event2.*
+import kotlinx.android.synthetic.main.progress_btn_layout.*
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
+@SuppressLint("SetTextI18n")
 class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     //AlarmService
@@ -39,6 +46,8 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     private lateinit var eventMeet: String
     private lateinit var eventMember: String
     private lateinit var eventCreator: String
+
+    private lateinit var progressBarCreateEvent2: View
 
     // DateTime Properties
     private var day = 0
@@ -63,6 +72,16 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         mDatabase = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
         userId = mAuth.currentUser!!.uid
+
+        //set progressbar view
+        progressBarCreateEvent2 = create_event2_progressbar_button
+
+        //set text and icon on Button
+        val textViewButton: MaterialButton = textView_progress
+        textViewButton.apply {
+            this.text = "Create"
+            this.setIconResource(R.drawable.ic_event_white)
+        }
 
         //alarm
         alarmService = AlarmService(this)
@@ -131,7 +150,7 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     private fun clickToCreate(timeInMillis: Long) {
 
         // Button Create event
-        btn_create_event2.setOnClickListener {
+        progressBarCreateEvent2.setOnClickListener {
 
             //set view properties
             eventName = tv_event_name_create2.editText?.text.toString().trim()
@@ -143,16 +162,33 @@ class CreateEvent2Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
             eventCreator = userId
 
-            createEvent(
-                eventName,
-                eventLocation,
-                eventDate,
-                eventTime,
-                eventMeet,
-                eventMember,
-                eventCreator,
-                timeInMillis
-            )
+
+            //call progressbar
+            val progressButton = ProgressButton(it)
+            progressButton.buttonActivated(7)
+
+            //delay
+            val handler = Handler()
+            handler.postDelayed({
+
+                //create
+                createEvent(
+                    eventName,
+                    eventLocation,
+                    eventDate,
+                    eventTime,
+                    eventMeet,
+                    eventMember,
+                    eventCreator,
+                    timeInMillis
+                )
+
+                //end progressbar
+                progressButton.buttonFinished(7)
+
+            }, 2000)
+
+
         }
     }
 

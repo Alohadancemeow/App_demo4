@@ -1,18 +1,19 @@
 package com.example.app_demo4.activity
 
+import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Pair
 import android.util.Patterns
 import android.view.View
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.example.app_demo4.R
+import com.example.app_demo4.model.ProgressButton
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -20,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.progress_btn_layout.*
 
 class LoginActivity : AppCompatActivity() {
 
@@ -29,13 +31,16 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var title: TextView
     private lateinit var email: TextInputLayout
     private lateinit var password: TextInputLayout
-    private lateinit var signInButton: Button
+//    private lateinit var signInButton: Button
     private lateinit var signUpButton: Button
+
+    private lateinit var progressBarLogin: View
 
     // Firebase Properties
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mAuthStateListener: FirebaseAuth.AuthStateListener
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(FLAG_FULLSCREEN)
@@ -43,6 +48,14 @@ class LoginActivity : AppCompatActivity() {
 
         //set firebase property
         mAuth = FirebaseAuth.getInstance()
+
+        //set text and icon on Button
+        val textViewButton: MaterialButton = textView_progress
+        textViewButton.apply {
+            this.text = "Sign in"
+            this.setIconResource(R.drawable.ic_sign_in)
+        }
+
 
         /** Look that user is logging-in or not ? -> ดูผู้ใช้งานว่ากำลังล็อกอินอยู่หรือไม่ ? */
         mAuthStateListener = FirebaseAuth.AuthStateListener {
@@ -53,10 +66,9 @@ class LoginActivity : AppCompatActivity() {
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 finish()
-            }
-            else {
+            } else {
 //                Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show()
-                Snackbar.make(root_layout_login,"Please login", Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(root_layout_login, "Please login", Snackbar.LENGTH_INDEFINITE)
                     .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                     .setAction("Okay") {}
                     .show()
@@ -69,8 +81,10 @@ class LoginActivity : AppCompatActivity() {
         title = tv_log_in_title
         email = et_login_email
         password = et_login_password
-        signInButton = btn_sign_in
+//        signInButton = btn_sign_in
         signUpButton = btn_log_in_sign_up
+
+        progressBarLogin = login_progressbar_button
 
         // Send to sign up with animation
         signUpButton.setOnClickListener {
@@ -84,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
                 Pair.create(title, "logo_title"),
                 Pair.create(email, "email_log_in"),
                 Pair.create(password, "password_log_in"),
-                Pair.create(signInButton, "log_in_sign_in_btn"),
+                Pair.create(progressBarLogin, "log_in_sign_in_btn"),
                 Pair.create(signUpButton, "log_in_sign_up_btn")
             )
             startActivity(intent, options.toBundle())
@@ -92,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
 
 
         // Validate login & Send to Home
-        signInButton.setOnClickListener {
+        progressBarLogin.setOnClickListener {
 
             val valueOfEmail = email.editText?.text.toString().trim()
             val valueOfPassword = password.editText?.text.toString().trim()
@@ -100,10 +114,11 @@ class LoginActivity : AppCompatActivity() {
             /** -> โยน email & password ไป validate */
             if (!validateEmail(valueOfEmail) || !validatePassword(valueOfPassword)) {
                 return@setOnClickListener
-            }
-            else {
+            } else {
+
                 /** -> เมื่อ validate ถูกต้อง, โยนให้ฟังก์ชั่นล็อกอินด้วย email & password  */
-                isUser(valueOfEmail, valueOfPassword)
+                isUser(valueOfEmail, valueOfPassword, it)
+
             }
         }
     }
@@ -111,29 +126,44 @@ class LoginActivity : AppCompatActivity() {
 
     /** # Functions here */
     // Check email & password before send to home page
-    private fun isUser(valueOfEmail: String, valueOfPassword: String) {
+    private fun isUser(valueOfEmail: String, valueOfPassword: String, view: View) {
 
-        mAuth.signInWithEmailAndPassword(valueOfEmail, valueOfPassword)
-            .addOnCompleteListener {
+        //call progressbar
+        val progressButton = ProgressButton(view)
+        progressButton.buttonActivated(1)
 
-                if (it.isSuccessful) {
-                    Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
+        //delay
+        val handler = Handler()
+        handler.postDelayed({
+
+            mAuth.signInWithEmailAndPassword(valueOfEmail, valueOfPassword)
+                .addOnCompleteListener {
+
+                    if (it.isSuccessful) {
+
+                        Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT)
+                            .show()
 //                Snackbar.make(root_layout_login,"Login successful", Snackbar.LENGTH_SHORT).show()
 
-                    // send to Home page with uid*
-                    val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-                    intent.putExtra("userId", mAuth.currentUser!!.uid)
-                    startActivity(intent)
-                    finish()
+                        // send to Home page with uid*
+                        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                        intent.putExtra("userId", mAuth.currentUser!!.uid)
+                        startActivity(intent)
+                        finish()
 
-                }
-                else {
-                    email.error = "Wrong Email"
-                    password.error = "Wrong Password"
-                    email.requestFocus()
+                    } else {
+                        email.error = "Wrong Email"
+                        password.error = "Wrong Password"
+                        email.requestFocus()
 //                    password.requestFocus()
+                    }
                 }
-            }
+
+            //end progressbar
+            progressButton.buttonFinished(1)
+
+        }, 3000)
+
 
         // v.2 (test)
 //        val ref = FirebaseDatabase.getInstance().getReference("Users")

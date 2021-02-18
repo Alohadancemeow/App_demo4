@@ -135,17 +135,26 @@
 
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_sign_up_sign_up"
+
+            <include
+                android:id="@+id/sign_up_progressbar_button"
+                layout="@layout/progress_btn_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                android:text="Sign up"
-                app:icon="@drawable/ic_sign_up_white"
-                app:iconGravity="textStart"
-                app:iconTint="@android:color/black"
-                android:textColor="@android:color/black"
-                android:transitionName="log_in_sign_up_btn" />
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="5dp"
+                android:layout_height="wrap_content" />
+
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/btn_sign_up_sign_up"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@color/colorAccent"-->
+<!--                android:text="Sign up"-->
+<!--                app:icon="@drawable/ic_sign_up_white"-->
+<!--                app:iconGravity="textStart"-->
+<!--                app:iconTint="@android:color/black"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:transitionName="log_in_sign_up_btn" />-->
 
         </LinearLayout>
 

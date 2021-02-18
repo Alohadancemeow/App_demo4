@@ -4,11 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/delete"
+        android:id="@+id/feedback"
         android:icon="@drawable/ic_delete"
-        android:title="more"
-        android:contentDescription="This is home"
-        app:showAsAction="always"
+        android:title="Send Feedback"
+        android:contentDescription="feedback"
+        app:showAsAction="never"
         tools:ignore="HardcodedText" />
 
 

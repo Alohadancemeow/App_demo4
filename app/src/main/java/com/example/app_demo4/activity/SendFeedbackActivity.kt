@@ -1,11 +1,16 @@
 package com.example.app_demo4.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.example.app_demo4.model.ProgressButton
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -13,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_event1.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_send_feedback.*
+import kotlinx.android.synthetic.main.progress_btn_layout.*
 
 class SendFeedbackActivity : AppCompatActivity() {
 
@@ -24,6 +30,9 @@ class SendFeedbackActivity : AppCompatActivity() {
     private lateinit var subject: String
     private lateinit var details: String
 
+    private lateinit var progressBarSendFeedback: View
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -33,6 +42,13 @@ class SendFeedbackActivity : AppCompatActivity() {
         mDatabase = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
 
+        //set text and icon on Button
+        val textViewButton: MaterialButton = textView_progress
+        textViewButton.apply {
+            this.text = "Send feedback"
+            this.setIconResource(R.drawable.ic_send_white)
+        }
+
 
         //<- Back
         iv_cancel.setOnClickListener {
@@ -40,29 +56,47 @@ class SendFeedbackActivity : AppCompatActivity() {
         }
 
         //-> Send feedback
-        btn_send_feedback.setOnClickListener {
+        progressBarSendFeedback = send_feedback_progressbar_button.apply {
 
-            val userId = mAuth.currentUser!!.uid
-            val userRef = mDatabase.collection("Users").document(userId)
-            userRef.addSnapshotListener { value, error ->
+            setOnClickListener {
 
-                error.let {
+                //call progressbar
+                val progressButton = ProgressButton(it)
+                progressButton.buttonActivated(5)
 
-                    //get username
-                    val userName = value?.get("display_name").toString()
+                //delay
+                val handler = Handler()
+                handler.postDelayed({
 
-                    //set view
-                    subject = edt_subject.editText?.text.toString().trim()
-                    details = edt_details.editText?.text.toString().trim()
+                    //get username and validate feedback before send to firebase
+                    val userId = mAuth.currentUser!!.uid
+                    val userRef = mDatabase.collection("Users").document(userId)
+                    userRef.addSnapshotListener { value, _ ->
 
-                    if (!validate(subject,details)) return@addSnapshotListener
+                        value.let {
 
-                    //else
-                    sendFeedbackToFirebase(userName, subject, details)
+                            //get username
+                            val userName = value?.get("display_name").toString()
 
-                }
+                            //set view
+                            subject = edt_subject.editText?.text.toString().trim()
+                            details = edt_details.editText?.text.toString().trim()
+
+                            if (!validate(subject,details)) return@addSnapshotListener
+
+                            //else
+                            sendFeedbackToFirebase(userName, subject, details)
+
+                        }
+                    }
+
+                    //end progressbar
+                    progressButton.buttonFinished(5)
+
+                }, 2000)
+
+
             }
-
 
         }
     }

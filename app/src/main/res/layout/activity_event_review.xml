@@ -74,12 +74,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="15dp"
                             android:layout_toEndOf="@id/iv_icon_event2"
-                            android:fontFamily="@font/chicle"
-                            android:includeFontPadding="false"
+                            android:fontFamily="@font/acme"
+                            android:textAllCaps="true"
                             android:text="Event Name"
-                            android:textSize="25sp"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
                             app:layout_constraintStart_toEndOf="@+id/iv_icon_event2"
                             app:layout_constraintTop_toTopOf="@+id/iv_icon_event2" />
 
@@ -88,11 +89,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:fontFamily="@font/antic"
-                            android:includeFontPadding="false"
+                            android:fontFamily="@font/acme"
+                            android:textAllCaps="true"
                             android:text="Event type"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
+                            android:textSize="15sp"
                             app:layout_constraintBottom_toBottomOf="@+id/iv_icon_event2"
                             app:layout_constraintStart_toEndOf="@+id/iv_icon_event2"
                             app:layout_constraintTop_toBottomOf="@+id/tv_event_review_name"
@@ -195,7 +195,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
                                 android:fontFamily="@font/antic"
-                                android:hint="All Of Members"
+                                android:hint="Members"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
@@ -254,17 +254,26 @@
 
                         </LinearLayout>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_ok_event_review"
+
+                        <include
+                            android:id="@+id/event_review_progressbar_button"
+                            layout="@layout/progress_btn_layout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:layout_marginTop="25dp"
-                            android:background="@color/colorAccent"
-                            android:text="Ok"
-                            android:textColor="@android:color/black"
-                            app:icon="@drawable/ic_event_available"
-                            app:iconGravity="textStart"
-                            app:iconTint="@android:color/black" />
+                            android:layout_marginBottom="5dp"
+                            android:layout_height="wrap_content" />
+
+<!--                        <com.google.android.material.button.MaterialButton-->
+<!--                            android:id="@+id/btn_ok_event_review"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_marginTop="25dp"-->
+<!--                            android:background="@color/colorAccent"-->
+<!--                            android:text="Ok"-->
+<!--                            android:textColor="@android:color/black"-->
+<!--                            app:icon="@drawable/ic_event_available"-->
+<!--                            app:iconGravity="textStart"-->
+<!--                            app:iconTint="@android:color/black" />-->
 
                     </LinearLayout>
 

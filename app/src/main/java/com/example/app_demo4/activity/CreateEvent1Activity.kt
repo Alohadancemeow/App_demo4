@@ -1,5 +1,6 @@
 package com.example.app_demo4.activity
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.DatePickerDialog
 import android.app.PendingIntent
@@ -8,18 +9,23 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.widget.DatePicker
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.example.app_demo4.model.ProgressButton
 import com.example.app_demo4.notification.AlarmService
 import com.example.app_demo4.notification.ReminderBroadcast
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_create_event1.*
+import kotlinx.android.synthetic.main.progress_btn_layout.*
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -44,6 +50,8 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     private lateinit var eventMember: String
     private lateinit var eventCreator: String
 
+    private lateinit var progressBarCreateEvent1: View
+
     // DateTime Properties
     private var day = 0
     private var month = 0
@@ -58,6 +66,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 //    private var savedHour = 0
 //    private var savedMinute = 0
 
+    @SuppressLint("SetTextI18n")
     @ExperimentalTime
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +77,16 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
         mDatabase = FirebaseFirestore.getInstance()
         mAuth = FirebaseAuth.getInstance()
         userId = mAuth.currentUser!!.uid
+
+        //set text and icon on Button
+        val textViewButton: MaterialButton = textView_progress
+        textViewButton.apply {
+            this.text = "Create"
+            this.setIconResource(R.drawable.ic_event1_white)
+        }
+
+        //set progressbar view
+        progressBarCreateEvent1 = create_event1_progressbar_button
 
         //alarm
         alarmService = AlarmService(this)
@@ -137,7 +156,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
     private fun clickToCreate(timeInMillis: Long) {
 
         // Button Create event
-        btn_create_event.setOnClickListener {
+        progressBarCreateEvent1.setOnClickListener {
 
             //set view properties
             eventName = tv_event_name_create.editText?.text.toString().trim()
@@ -149,16 +168,33 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
 
             eventCreator = userId
 
-            createEvent(
-                eventName,
-                eventLocation,
-                eventDate,
-                eventTime,
-                eventMeet,
-                eventMember,
-                eventCreator,
-                timeInMillis
-            )
+
+            //call progressbar
+            val progressButton = ProgressButton(it)
+            progressButton.buttonActivated(6)
+
+            //delay
+            val handler = Handler()
+            handler.postDelayed({
+
+                //create
+                createEvent(
+                    eventName,
+                    eventLocation,
+                    eventDate,
+                    eventTime,
+                    eventMeet,
+                    eventMember,
+                    eventCreator,
+                    timeInMillis
+                )
+
+                //end progressbar
+                progressButton.buttonFinished(6)
+
+            },2000)
+
+
         }
     }
 

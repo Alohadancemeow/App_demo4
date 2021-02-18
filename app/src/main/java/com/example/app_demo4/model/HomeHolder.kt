@@ -5,7 +5,11 @@ import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.app_demo4.R
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.progress_btn_layout.*
+import kotlinx.android.synthetic.main.progress_btn_layout.view.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.view.*
 
 class HomeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -17,6 +21,18 @@ class HomeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     //Event card
     @SuppressLint("SetTextI18n")
     fun bind(homeData: HomeData) {
+
+        // At include layout button
+        itemView.join_progressbar_button.apply {
+
+            //set text and icon on Button
+            val textViewButton: MaterialButton = textView_progress
+            textViewButton.apply {
+                this.text = "Join"
+                this.setIconResource(R.drawable.ic_check_white)
+            }
+        }
+
 
         itemView.tv_card_event_type.text = homeData.event_type
         itemView.tv_event_name.text = homeData.event_name

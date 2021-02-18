@@ -1,18 +1,23 @@
 package com.example.app_demo4.activity
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.example.app_demo4.model.ProgressButton
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.activity_event_review.*
+import kotlinx.android.synthetic.main.progress_btn_layout.*
 
 
 class EventReviewActivity : AppCompatActivity() {
@@ -24,6 +29,9 @@ class EventReviewActivity : AppCompatActivity() {
     //Top Appbar
     private lateinit var topAppBar: MaterialToolbar
 
+    //progressbar view
+    private lateinit var progressBarEventReview: View
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,15 +42,20 @@ class EventReviewActivity : AppCompatActivity() {
         // set property
         mDatabase = FirebaseFirestore.getInstance()
 
-
         // set Top appbar
         topAppBar = top_AppBar_event_preview
 
+        // set progressbar view
+        progressBarEventReview = event_review_progressbar_button
 
-        // Button OK
-        btn_ok_event_review.setOnClickListener {
-            finish()
+
+        //set text and icon on Button
+        val textViewButton: MaterialButton = textView_progress
+        textViewButton.apply {
+            this.text = "Delete"
+            this.setIconResource(R.drawable.ic_delete)
         }
+
 
         // Receive intent from Event 1/2 Fragments and HomeFragment
         intent.let {
@@ -50,17 +63,97 @@ class EventReviewActivity : AppCompatActivity() {
             val eventId = intent.extras!!.get("eventId").toString()
             Log.d("TAG", "onCreate: eventId $eventId")
 
-
             //setup event's data
             setUpEventData(eventId)
-
 
             //Top appbar delete btn
             topAppBarAction(eventId)
 
+            progressBarEventReview.setOnClickListener {
+
+                //click on delete btn
+                deleteEvent(eventId, it)
+
+            }
 
         }
 
+    }
+
+    private fun deleteEvent(eventId: String, view: View) {
+
+        //get UID
+        val mAuth = FirebaseAuth.getInstance()
+        val currentUserId = mAuth.currentUser!!.uid
+        Log.d("TAG", "deleteEvent: UID $currentUserId")
+
+
+        //get event's creator ID
+        val eventRef = mDatabase.collection("Events").document(eventId)
+        eventRef.addSnapshotListener { value, _ ->
+
+            value.let {
+
+                //get CID
+                val eventCreatorId = value?.get("event_creator").toString()
+                Log.d("TAG", "deleteEvent: EID $eventCreatorId")
+
+                //UID == CID ?
+                Log.d("TAG", "deleteEvent: UID == EID ${currentUserId == eventCreatorId}")
+
+
+                //show dialog 1
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Delete this event")
+                    .setMessage("Are you sure you want to delete ?")
+                    .setNegativeButton("Cancel") { _, _ ->
+                        //Nothing on
+                    }
+                    .setPositiveButton("Delete") { _, _ ->
+
+                        //call progressbar
+                        val progressButton = ProgressButton(view)
+                        progressButton.buttonActivated(9)
+
+                        //delay
+                        val handler = Handler()
+                        handler.postDelayed({
+
+                            //check that UID == CID ?
+                            if (currentUserId == eventCreatorId) {
+
+                                // Delete event
+                                eventRef.delete().addOnSuccessListener {
+                                    Toast.makeText(
+                                        this,
+                                        "delete successful",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    finish()
+                                }
+
+                            } else {
+
+                                //UID != CID
+                                //show dialog 2
+                                MaterialAlertDialogBuilder(this)
+                                    .setTitle("Cannot delete")
+                                    .setMessage("You are not the creator of this event")
+                                    .setPositiveButton("Okay, I got it") { _, _ ->
+                                        //Nothing on
+                                    }.show()
+                            }
+
+                            //end progressbar
+                            progressButton.buttonFinished(9)
+
+                        }, 2000)
+
+                    }
+                    .show()
+
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -107,7 +200,7 @@ class EventReviewActivity : AppCompatActivity() {
 
 
                         //set event data to view
-                        tv_event_review_type.text = "$event_type Event"
+                        tv_event_review_type.text = "Type : $event_type"
                         tv_event_review_name.text = event_name
                         tv_event_review_date.text = event_date
                         event_review_location.text = event_location
@@ -117,7 +210,7 @@ class EventReviewActivity : AppCompatActivity() {
                         tv_creator_review.text = creatorName
 
                         //show member list
-                        showAllMember(eventId, eventName)
+                        showAllMember(eventId)
                     }
                 }
             }
@@ -129,7 +222,7 @@ class EventReviewActivity : AppCompatActivity() {
 
 
     @SuppressLint("SetTextI18n")
-    private fun showAllMember(eventId: String, eventName: String) {
+    private fun showAllMember(eventId: String) {
 
 //        Log.d("eventId", eventId)
 //        Log.d("eventName", eventName)
@@ -162,66 +255,16 @@ class EventReviewActivity : AppCompatActivity() {
             finish()
         }
 
-        // Delete btn
+        // setting btn
         topAppBar.setOnMenuItemClickListener {
 
             when (it.itemId) {
 
-                R.id.delete -> {
+                R.id.feedback -> {
 
-                    val mAuth = FirebaseAuth.getInstance()
-                    val currentUserId = mAuth.currentUser!!.uid
-                    Log.d("TAG", "topAppBarAction: UID $currentUserId")
-
-
-                    //get event's creator ID
-                    val eventRef = mDatabase.collection("Events").document(eventId)
-                    eventRef.addSnapshotListener { value, _ ->
-
-                        value.let {
-
-                            val eventCreatorId = value?.get("event_creator").toString()
-                            Log.d("TAG", "topAppBarAction: EID $eventCreatorId")
-
-                            //check
-                            Log.d("TAG", "topAppBarAction: UID == EID ${currentUserId == eventCreatorId}")
-
-                            // Delete event
-                            //show dialog 1
-                            MaterialAlertDialogBuilder(this)
-                                .setTitle("Delete this event")
-                                .setMessage("Are you sure you want to delete ?")
-                                .setNegativeButton("Cancel") { _, _ ->
-                                    //Nothing on
-                                }
-                                .setPositiveButton("Delete") { _, _ ->
-
-                                    if (currentUserId == eventCreatorId) {
-
-                                        eventRef.delete().addOnSuccessListener {
-                                            Toast.makeText(
-                                                this,
-                                                "delete successful",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            finish()
-                                        }
-
-                                    } else {
-
-                                        //show dialog 2
-                                        MaterialAlertDialogBuilder(this)
-                                            .setTitle("Cannot delete")
-                                            .setMessage("You are not the creator of this event")
-                                            .setPositiveButton("Okay, I got it") { _, _ ->
-                                                //Nothing on
-                                            }.show()
-                                    }
-
-                                }.show()
-
-                        }
-                    }
+                    val intent = Intent(this, SendFeedbackActivity::class.java)
+                    startActivity(intent)
+                    finish()
 
                     true
                 }

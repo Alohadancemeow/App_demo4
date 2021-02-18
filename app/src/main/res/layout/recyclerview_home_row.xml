@@ -36,11 +36,12 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="10dp"
-                    android:fontFamily="@font/antic"
+                    android:fontFamily="@font/acme"
                     android:text="Event A"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:textStyle="normal"
+                    android:textAllCaps="true"
                     android:drawablePadding="2dp"
                     app:drawableStartCompat="@drawable/ic_check_white" />
 
@@ -65,10 +66,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:fontFamily="@font/antic"
+                    android:fontFamily="@font/acme"
                     android:text="Event name"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textAllCaps="true"
+                    android:textSize="18sp"
+                    />
 
                 <TextView
                     android:id="@+id/tv_location"
@@ -166,17 +168,25 @@
                     android:layout_marginBottom="10dp"
                     android:background="#000" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/join_btn"
+                <include
+                    android:id="@+id/join_progressbar_button"
+                    layout="@layout/progress_btn_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/colorAccent"
-                    android:text="Join"
-                    android:textColor="@android:color/black"
-                    app:icon="@drawable/ic_check_white"
-                    app:iconGravity="textStart"
-                    app:iconTint="@android:color/black"/>
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content" />
+
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    android:id="@+id/join_btn"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:background="@color/colorAccent"-->
+<!--                    android:text="Join"-->
+<!--                    android:textColor="@android:color/black"-->
+<!--                    app:icon="@drawable/ic_check_white"-->
+<!--                    app:iconGravity="textStart"-->
+<!--                    app:iconTint="@android:color/black"/>-->
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/details_btn"

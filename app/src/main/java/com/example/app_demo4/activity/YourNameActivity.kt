@@ -1,13 +1,19 @@
 package com.example.app_demo4.activity
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.example.app_demo4.model.ProgressButton
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_your_name.*
+import kotlinx.android.synthetic.main.progress_btn_layout.*
 
 class YourNameActivity : AppCompatActivity() {
 
@@ -16,6 +22,9 @@ class YourNameActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var userId: String
 
+    private lateinit var progressBarYourName: View
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -28,8 +37,34 @@ class YourNameActivity : AppCompatActivity() {
 
         getCurrentUser()
 
-        btn_edit_save.setOnClickListener {
-            updateData(userId)
+        //set text and icon on Button
+        val textViewButton: MaterialButton = textView_progress
+        textViewButton.apply {
+            this.text = "Save"
+            this.setIconResource(R.drawable.ic_check_white)
+        }
+
+        progressBarYourName = your_name_progressbar_button.apply {
+
+            setOnClickListener {
+
+                //call progressbar
+                val progressButton = ProgressButton(it)
+                progressButton.buttonActivated(4)
+
+                //delay
+                val handler = Handler()
+                handler.postDelayed({
+
+                    //save
+                    updateData(userId)
+
+                    //end progressbar
+                    progressButton.buttonFinished(4)
+
+                }, 2000)
+
+            }
         }
 
 
@@ -79,8 +114,7 @@ class YourNameActivity : AppCompatActivity() {
                 if (it.isSuccessful) {
                     Toast.makeText(this, "Your name is saved", Toast.LENGTH_SHORT).show()
                     finish()
-                }
-                else {
+                } else {
                     Toast.makeText(this, "Your name is failed", Toast.LENGTH_SHORT).show()
                 }
             }

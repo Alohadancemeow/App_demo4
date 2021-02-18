@@ -80,19 +80,29 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:transitionName="log_in_sign_in_btn"
-            android:id="@+id/btn_sign_in"
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:transitionName="log_in_sign_in_btn"-->
+<!--            android:id="@+id/btn_sign_in"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="12dp"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:background="@color/colorAccent"-->
+<!--            android:text="Sign in"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            app:icon="@drawable/ic_sign_in"-->
+<!--            app:iconGravity="textStart"-->
+<!--            app:iconTint="@android:color/white" />-->
+
+
+        <include
+            android:id="@+id/login_progressbar_button"
+            layout="@layout/progress_btn_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="5dp"
-            android:background="@color/colorAccent"
-            android:text="Sign in"
-            android:textColor="@android:color/white"
-            app:icon="@drawable/ic_sign_in"
-            app:iconGravity="textStart"
-            app:iconTint="@android:color/white" />
+            android:layout_height="wrap_content" />
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:transitionName="log_in_sign_up_btn"

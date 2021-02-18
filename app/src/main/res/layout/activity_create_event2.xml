@@ -185,17 +185,25 @@
 
             </LinearLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_create_event2"
+            <include
+                android:id="@+id/create_event2_progressbar_button"
+                layout="@layout/progress_btn_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:background="@color/colorAccent"
-                android:text="Create"
-                android:textColor="@android:color/black"
-                app:icon="@drawable/ic_event"
-                app:iconGravity="textStart"
-                app:iconTint="@android:color/black" />
+                android:layout_marginBottom="5dp"
+                android:layout_height="wrap_content" />
+
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/btn_create_event2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="25dp"-->
+<!--                android:background="@color/colorAccent"-->
+<!--                android:text="Create"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                app:icon="@drawable/ic_event"-->
+<!--                app:iconGravity="textStart"-->
+<!--                app:iconTint="@android:color/black" />-->
 
         </LinearLayout>
 

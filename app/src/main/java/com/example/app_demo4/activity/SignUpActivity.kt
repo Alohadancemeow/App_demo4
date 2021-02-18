@@ -1,16 +1,23 @@
 package com.example.app_demo4.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Patterns
+import android.view.View
 import android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN
-import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.example.app_demo4.R
+import com.example.app_demo4.model.ProgressButton
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_sign_up.*
+import kotlinx.android.synthetic.main.progress_btn_layout.*
+import kotlinx.android.synthetic.main.progress_btn_layout.view.*
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -24,10 +31,13 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var reqEmail: String
     private lateinit var reqPhone: String
     private lateinit var reqPassword: String
-    private lateinit var signUpButton: Button
+//    private lateinit var signUpButton: Button
+
+    private lateinit var progressBarSignUp: View
 
     /** Main Here */
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.addFlags(FLAG_FULLSCREEN)
@@ -38,8 +48,16 @@ class SignUpActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
 
+        //set text and icon on Button
+        val textViewButton: MaterialButton = textView_progress
+        textViewButton.apply {
+            this.text = "Sign up"
+            this.setIconResource(R.drawable.ic_sign_up_white)
+        }
+
+
         // # Button Sign up
-        signUpButton = btn_sign_up_sign_up.apply {
+        progressBarSignUp = sign_up_progressbar_button.apply {
 
             setOnClickListener {
 
@@ -50,7 +68,7 @@ class SignUpActivity : AppCompatActivity() {
                 reqPhone = req_phone.editText?.text.toString().trim()
                 reqPassword = req_password.editText?.text.toString().trim()
 
-                createUser(reqDisplayName, reqFullName, reqEmail, reqPhone, reqPassword)
+                createUser(reqDisplayName, reqFullName, reqEmail, reqPhone, reqPassword, it)
 
             }
         }
@@ -59,7 +77,14 @@ class SignUpActivity : AppCompatActivity() {
     /** Functions Here */
 
     // # Create user
-    private fun createUser(reqDisplayName: String, reqFullName: String, reqEmail: String, reqPhone: String, reqPassword: String) {
+    private fun createUser(
+        reqDisplayName: String,
+        reqFullName: String,
+        reqEmail: String,
+        reqPhone: String,
+        reqPassword: String,
+        view: View
+    ) {
 
         /** # Check sign up --> validation -ส่งไปพิสูจน์อักษร */
         if (!validateDisplayName(reqDisplayName) || !validateFullName(reqFullName) ||
@@ -68,14 +93,30 @@ class SignUpActivity : AppCompatActivity() {
             return
         }
         else {
-            /** # เมื่อกรอกข้อมูลถูกต้องตามที่ validate ให้ทำการ create user */
-            mAuth.createUserWithEmailAndPassword(reqEmail, reqPassword)
-                .addOnCompleteListener { it ->
 
-                    if (it.isSuccessful) {
-                        sendUserdataToFirebase(reqDisplayName, reqFullName, reqEmail, reqPhone, reqPassword)
+            //call progressbar
+            val progressButton = ProgressButton(view)
+            progressButton.buttonActivated(2)
+
+            //delay
+            val handler = Handler()
+            handler.postDelayed({
+
+                /** # เมื่อกรอกข้อมูลถูกต้องตามที่ validate ให้ทำการ create user */
+                mAuth.createUserWithEmailAndPassword(reqEmail, reqPassword)
+                    .addOnCompleteListener { it ->
+
+                        if (it.isSuccessful) {
+                            sendUserdataToFirebase(reqDisplayName, reqFullName, reqEmail, reqPhone, reqPassword)
+                        }
                     }
-                }
+
+                //end progressbar
+                progressButton.buttonFinished(2)
+
+            }, 3000)
+
+
         }
     }
 
