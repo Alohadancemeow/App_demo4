@@ -64,25 +64,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:padding="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/antic"
-                    android:text="Subject : "
-                    android:textSize="18sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/edt_subject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Subject name"
                     app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:textSize="18sp"
+                        android:textSize="50sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edt_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/antic"
+                    android:hint="Have Feedback? Please tell me."
+                    app:endIconMode="clear_text">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -91,27 +100,13 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray" />
+<!--            <View-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0.5dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:background="@android:color/darker_gray" />-->
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edt_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/antic"
-                android:hint="Have Feedback? Please tell me."
-                app:endIconMode="clear_text">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
