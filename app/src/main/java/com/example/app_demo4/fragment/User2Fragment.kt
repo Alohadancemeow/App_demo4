@@ -30,7 +30,11 @@ class User2Fragment : Fragment() {
     private lateinit var userReference: CollectionReference
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user2, container, false)
     }
@@ -39,9 +43,9 @@ class User2Fragment : Fragment() {
 
         val me = FirebaseAuth.getInstance().currentUser!!.uid
         val userRef = FirebaseFirestore.getInstance().collection("Users").document(me)
-        userRef.addSnapshotListener { value, error ->
+        userRef.addSnapshotListener { value, _ ->
 
-            error.let {
+            value.let {
                 val userName = value?.get("display_name")
                 Log.d("name", userName.toString())
 
@@ -54,21 +58,28 @@ class User2Fragment : Fragment() {
     /** Functions here **/
     private fun setUpRecyclerView(userName: Any?) {
 
+        val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         //set properties
         mDatabase = FirebaseFirestore.getInstance()
         userReference = mDatabase.collection("Users")
 
         /** # ดึง user ทั้งหมดที่มี status = novice */
-        val query  = userReference.whereNotEqualTo("display_name", userName).whereEqualTo("status", "Novice").orderBy("display_name")
+        val query =
+            userReference.whereNotEqualTo("display_name", userName).whereEqualTo("status", "Novice")
+                .orderBy("display_name")
         val options = FirestoreRecyclerOptions.Builder<UserData>()
             .setQuery(query, UserData::class.java)
             .setLifecycleOwner(this)
             .build()
 
-        val adapter = object : FirestoreRecyclerAdapter<UserData, UserHolder>(options){
+        val adapter = object : FirestoreRecyclerAdapter<UserData, UserHolder>(options) {
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserHolder {
-                return UserHolder(LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_user, parent, false))
+                return UserHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.recyclerview_user, parent, false)
+                )
             }
 
             override fun onBindViewHolder(holder: UserHolder, position: Int, model: UserData) {
@@ -78,15 +89,13 @@ class User2Fragment : Fragment() {
                 val userId = snapshots.getSnapshot(position).id
 
                 holder.itemView.apply {
-                    this.iv_user_contact.setOnClickListener {
+
+                    this.setOnClickListener {
+
                         sendToProfile(userId)
+
                     }
-                    this.tv_user_name_contact.setOnClickListener {
-                        sendToProfile(userId)
-                    }
-                    this.tv_user_full_name_contact.setOnClickListener {
-                        sendToProfile(userId)
-                    }
+
                     this.iv_user_icon.setOnClickListener {
                         //get phone number
                         val phone = snapshots.getSnapshot(position)["phone"]
@@ -100,7 +109,7 @@ class User2Fragment : Fragment() {
         }
 
         //set recyclerView layout and adapter
-        rv_user?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rv_user?.layoutManager = linearLayoutManager
         rv_user?.adapter = adapter
     }
 

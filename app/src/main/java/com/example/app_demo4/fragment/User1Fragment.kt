@@ -29,7 +29,11 @@ class User1Fragment : Fragment() {
     private lateinit var userReference: CollectionReference
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_user1, container, false)
     }
 
@@ -37,9 +41,9 @@ class User1Fragment : Fragment() {
 
         val me = FirebaseAuth.getInstance().currentUser!!.uid
         val userRef = FirebaseFirestore.getInstance().collection("Users").document(me)
-        userRef.addSnapshotListener { value, error ->
+        userRef.addSnapshotListener { value, _ ->
 
-            error.let {
+            value.let {
                 val userName = value?.get("display_name")
                 Log.d("name", userName.toString())
 
@@ -61,7 +65,9 @@ class User1Fragment : Fragment() {
 
 
         /** # ดึง user ทั้งหมดที่มี status = monk */
-        val query = userReference.whereNotEqualTo("display_name", userName).whereEqualTo("status", "Monk").orderBy("display_name")
+        val query =
+            userReference.whereNotEqualTo("display_name", userName).whereEqualTo("status", "Monk")
+                .orderBy("display_name")
         val options = FirestoreRecyclerOptions.Builder<UserData>()
             .setQuery(query, UserData::class.java)
             .setLifecycleOwner(this)
@@ -69,8 +75,11 @@ class User1Fragment : Fragment() {
 
         val adapter = object : FirestoreRecyclerAdapter<UserData, UserHolder>(options) {
 
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserHolder{
-                return UserHolder(LayoutInflater.from(parent.context).inflate(R.layout.recyclerview_user, parent, false))
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserHolder {
+                return UserHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.recyclerview_user, parent, false)
+                )
             }
 
             override fun onBindViewHolder(holder: UserHolder, position: Int, model: UserData) {
@@ -81,15 +90,13 @@ class User1Fragment : Fragment() {
                 val userId = snapshots.getSnapshot(position).id
 
                 holder.itemView.apply {
-                    this.iv_user_contact.setOnClickListener {
+
+                    this.setOnClickListener {
+
                         sendToProfile(userId)
+
                     }
-                    this.tv_user_name_contact.setOnClickListener {
-                        sendToProfile(userId)
-                    }
-                    this.tv_user_full_name_contact.setOnClickListener {
-                        sendToProfile(userId)
-                    }
+
                     this.iv_user_icon.setOnClickListener {
                         //get phone number
                         val phone = snapshots.getSnapshot(position)["phone"]

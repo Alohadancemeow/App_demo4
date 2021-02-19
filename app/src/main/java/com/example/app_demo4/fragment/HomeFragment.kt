@@ -133,42 +133,40 @@ class HomeFragment : Fragment() {
                         eventCardList.expandable = !eventCardList.expandable // false -> true
                         notifyItemChanged(position)
 
+                    }
 
-                        //click on join -->
-                        it.join_progressbar_button.setOnClickListener { view ->
+                    //click on join -->
+                    this.join_progressbar_button.setOnClickListener { view ->
 
-                            //call progressbar
-                            val progressButton = ProgressButton(view)
-                            progressButton.buttonActivated(8)
+                        //call progressbar
+                        val progressButton = ProgressButton(view)
+                        progressButton.buttonActivated(8)
 
-                            //delay
-                            val handler = Handler()
-                            handler.postDelayed({
+                        //delay
+                        val handler = Handler()
+                        handler.postDelayed({
 
-                                //get userName then send it to create
-                                getUserName { userName ->
-                                    createEventMember(userName, eventName, eventId)
-                                }
+                            //get userName then send it to create
+                            getUserName { userName ->
+                                createEventMember(userName, eventName, eventId)
+                            }
 
-                                //end progressbar
-                                progressButton.buttonFinished(8)
+                            //end progressbar
+                            progressButton.buttonFinished(8)
 
-                            }, 2000)
-
-                        }
-
-                        //click on more details -->
-                        it.details_btn.setOnClickListener {
-
-//                        val eventId = snapshots.getSnapshot(position).id
-                            val intent = Intent(context, EventReviewActivity::class.java)
-                            intent.putExtra("eventId", eventId)
-                            startActivity(intent)
-
-                        }
+                        }, 2000)
 
                     }
 
+                    //click on more details -->
+                    this.details_btn.setOnClickListener {
+
+//                        val eventId = snapshots.getSnapshot(position).id
+                        val intent = Intent(context, EventReviewActivity::class.java)
+                        intent.putExtra("eventId", eventId)
+                        startActivity(intent)
+
+                    }
 
                 }
 
