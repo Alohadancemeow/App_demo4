@@ -1,367 +1,411 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.ProfileSettingActivity">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="#FFC400"
-            android:padding="20dp">
-
-            <ImageView
-                android:id="@+id/btn_back_setting"
-                android:background="@color/colorAccent"
-                android:layout_width="30dp"
-                android:layout_height="40dp"
-                android:clickable="true"
-                android:src="@drawable/ic_back_24"
-                android:focusable="true" />
-
-            <ImageView
-                android:id="@+id/iv_profile_setting"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_user_white" />
-
-            <TextView
-                android:id="@+id/tv_display_name_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/iv_profile_setting"
-                android:fontFamily="@font/chicle"
-                android:includeFontPadding="false"
-                android:text="Yukko"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/tv_full_name_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_display_name_setting"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/iv_profile_setting"
-                android:fontFamily="@font/antic"
-                android:includeFontPadding="false"
-                android:text="Yukko the B-rabbit"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/iv_edit_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:clickable="true"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/tv_display_name_setting"
-                android:src="@drawable/ic_edit_24"
-                android:focusable="true" />
-
-        </RelativeLayout>
-
-        <LinearLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-100dp"
-            android:padding="20dp">
+            app:liftOnScroll="true">
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="125dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#FFC400"
-                app:cardElevation="10dp">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_AppBar_profile_setting"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:menu="@menu/top_app_bar_setting_menu"
+                app:navigationIcon="@drawable/ic_back_24"
+                app:title="Profile Setting" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="5dp">
+        </com.google.android.material.appbar.AppBarLayout>
 
-                    <ImageView
-                        android:layout_marginTop="5dp"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_event1_white" />
-
-                    <TextView
-                        android:id="@+id/tv_card_event1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="General"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/tv_card_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_card_event1"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="100"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_card_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_card_num"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="times"
-                        android:textSize="14sp" />
-
-                </RelativeLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="125dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#FFC400"
-                app:cardElevation="10dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="5dp">
-
-                    <ImageView
-                        android:layout_marginTop="5dp"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_event_white" />
-
-                    <TextView
-                        android:id="@+id/tv_card_event2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="Special"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/tv_card_num2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_card_event2"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="100"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_card_time2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_card_num2"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="times"
-                        android:textSize="14sp" />
-
-                </RelativeLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <!-- Note: A RecyclerView can also be used -->
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/status_setting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                app:endIconMode="dropdown_menu"
-                app:boxBackgroundMode="outline"
-                android:hint="Status">
-
-                <AutoCompleteTextView
-                    android:id="@+id/dropdown_text"
-                    android:drawableStart="@drawable/ic_user_status_yellow"
-                    android:drawablePadding="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-<!--                <com.google.android.material.textfield.TextInputEditText-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:drawableStart="@drawable/ic_user_status_yellow"-->
-<!--                    android:drawablePadding="10dp"-->
-<!--                    android:inputType="textEmailAddress"-->
-<!--                    android:text="Monk" />-->
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/temple_setting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Temple">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_location_yellow"
-                    android:drawablePadding="10dp"
-                    android:text="Chana Songkram" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            <!-- Scrollable content -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/kana_setting"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:background="#FFC400"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:id="@+id/iv_profile_setting"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_user_white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.13" />
+
+                    <TextView
+                        android:id="@+id/tv_display_name_setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/chicle"
+                        android:includeFontPadding="false"
+                        android:text="Yukko"
+                        android:textSize="30sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_profile_setting"
+                        app:layout_constraintStart_toEndOf="@+id/iv_profile_setting"
+                        app:layout_constraintTop_toTopOf="@+id/iv_profile_setting" />
+
+                    <TextView
+                        android:id="@+id/tv_full_name_setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/antic"
+                        android:includeFontPadding="false"
+                        android:text="Yukko the B-rabbit"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_profile_setting"
+                        app:layout_constraintStart_toEndOf="@+id/iv_profile_setting"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_display_name_setting"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <ImageView
+                        android:id="@+id/iv_edit_setting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_toEndOf="@id/tv_display_name_setting"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/ic_edit_24"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_display_name_setting"
+                        app:layout_constraintStart_toEndOf="@+id/tv_display_name_setting"
+                        app:layout_constraintTop_toTopOf="@+id/tv_display_name_setting" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:hint="Kana">
+                    android:layout_marginTop="-100dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_location_drop_yellow"
-                        android:drawablePadding="10dp"
-                        android:inputType="number"
-                        android:text="12" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="125dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="#FFC400"
+                        app:cardElevation="10dp">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="5dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/age_setting"
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/ic_event1_white" />
+
+                            <TextView
+                                android:id="@+id/tv_card_event1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/acme"
+                                android:includeFontPadding="false"
+                                android:text="General"
+                                android:textAllCaps="true"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tv_card_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_card_event1"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/chicle"
+                                android:includeFontPadding="false"
+                                android:text="100"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_card_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_card_num"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/acme"
+                                android:includeFontPadding="false"
+                                android:text="times"
+                                android:textAllCaps="true"
+                                android:textSize="12sp" />
+
+                        </RelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="125dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="#FFC400"
+                        app:cardElevation="10dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="5dp">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/ic_event_white" />
+
+                            <TextView
+                                android:id="@+id/tv_card_event2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/acme"
+                                android:includeFontPadding="false"
+                                android:text="Special"
+                                android:textAllCaps="true"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tv_card_num2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_card_event2"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/acme"
+                                android:includeFontPadding="false"
+                                android:text="100"
+                                android:textAllCaps="true"
+                                android:textColor="@android:color/white"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tv_card_time2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_card_num2"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/chicle"
+                                android:includeFontPadding="false"
+                                android:text="times"
+                                android:textSize="14sp" />
+
+                        </RelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:hint="Age">
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/status_setting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_person_age_yellow"
-                        android:drawablePadding="10dp"
-                        android:inputType="number"
-                        android:text="20" />
+                        android:layout_marginBottom="5dp"
+                        android:hint="Status"
+                        app:boxBackgroundMode="outline"
+                        app:endIconMode="dropdown_menu"
+                        tools:ignore="HardcodedText">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <AutoCompleteTextView
+                            android:id="@+id/dropdown_text"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:drawableStart="@drawable/ic_user_status_yellow"
+                            android:drawablePadding="10dp" />
+
+                        <!--                <com.google.android.material.textfield.TextInputEditText-->
+                        <!--                    android:layout_width="match_parent"-->
+                        <!--                    android:layout_height="wrap_content"-->
+                        <!--                    android:drawableStart="@drawable/ic_user_status_yellow"-->
+                        <!--                    android:drawablePadding="10dp"-->
+                        <!--                    android:inputType="textEmailAddress"-->
+                        <!--                    android:text="Monk" />-->
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/temple_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:hint="Temple">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_location_yellow"
+                            android:drawablePadding="10dp"
+                            android:text="Chana Songkram" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/kana_setting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:hint="Kana">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_location_drop_yellow"
+                                android:drawablePadding="10dp"
+                                android:inputType="number"
+                                android:text="12" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/age_setting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:hint="Age">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_person_age_yellow"
+                                android:drawablePadding="10dp"
+                                android:inputType="number"
+                                android:text="20" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <!--            <com.google.android.material.textfield.TextInputLayout-->
+                    <!--                android:layout_width="match_parent"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:layout_marginBottom="10dp"-->
+                    <!--                android:hint="Kana">-->
+
+                    <!--                <com.google.android.material.textfield.TextInputEditText-->
+                    <!--                    android:layout_width="match_parent"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:drawableLeft="@drawable/ic_info"-->
+                    <!--                    android:drawablePadding="10dp"-->
+                    <!--                    android:text="12" />-->
+
+                    <!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/email_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:hint="Email">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_email_yellow"
+                            android:drawablePadding="10dp"
+                            android:inputType="textEmailAddress"
+                            android:text="rabbit@gmail.com" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/phone_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:hint="Phone Number">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_phone_yellow"
+                            android:drawablePadding="10dp"
+                            android:inputType="number"
+                            android:text="1234567890" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <include
+                        android:id="@+id/profile_setting_progressbar_button"
+                        layout="@layout/progress_btn_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp" />
+
+
+                    <!--            <com.google.android.material.button.MaterialButton-->
+                    <!--                android:id="@+id/btn_profile_update"-->
+                    <!--                android:layout_width="match_parent"-->
+                    <!--                android:layout_height="wrap_content"-->
+                    <!--                android:layout_marginBottom="5dp"-->
+                    <!--                android:background="@color/colorAccent"-->
+                    <!--                android:text="Update"-->
+                    <!--                android:textColor="@android:color/black"-->
+                    <!--                app:icon="@drawable/ic_verified_white"-->
+                    <!--                app:iconGravity="textStart"-->
+                    <!--                app:iconTint="@android:color/black"/>-->
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!--            <com.google.android.material.textfield.TextInputLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginBottom="10dp"-->
-            <!--                android:hint="Kana">-->
+        </androidx.core.widget.NestedScrollView>
 
-            <!--                <com.google.android.material.textfield.TextInputEditText-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:drawableLeft="@drawable/ic_info"-->
-            <!--                    android:drawablePadding="10dp"-->
-            <!--                    android:text="12" />-->
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <!--            </com.google.android.material.textfield.TextInputLayout>-->
-
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/email_setting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Email">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_email_yellow"
-                    android:drawablePadding="10dp"
-                    android:inputType="textEmailAddress"
-                    android:text="rabbit@gmail.com" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/phone_setting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Phone Number">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_phone_yellow"
-                    android:drawablePadding="10dp"
-                    android:inputType="number"
-                    android:text="1234567890" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <include
-                android:id="@+id/profile_setting_progressbar_button"
-                layout="@layout/progress_btn_layout"
-                android:layout_width="match_parent"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="5dp"
-                android:layout_height="wrap_content" />
-
-
-<!--            <com.google.android.material.button.MaterialButton-->
-<!--                android:id="@+id/btn_profile_update"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginBottom="5dp"-->
-<!--                android:background="@color/colorAccent"-->
-<!--                android:text="Update"-->
-<!--                android:textColor="@android:color/black"-->
-<!--                app:icon="@drawable/ic_verified_white"-->
-<!--                app:iconGravity="textStart"-->
-<!--                app:iconTint="@android:color/black"/>-->
-
-        </LinearLayout>
-
-    </LinearLayout>
 
 </ScrollView>

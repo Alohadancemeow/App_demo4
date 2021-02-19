@@ -1,6 +1,7 @@
 package com.example.app_demo4.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +10,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.example.app_demo4.R
 import com.example.app_demo4.model.ProgressButton
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,6 +26,9 @@ class YourNameActivity : AppCompatActivity() {
 
     private lateinit var progressBarYourName: View
 
+    //Top Appbar
+    private lateinit var topAppBar: MaterialToolbar
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +39,11 @@ class YourNameActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseFirestore.getInstance()
         userId = mAuth.currentUser!!.uid
+
+        // set Top appbar
+        topAppBar = top_AppBar_your_name.apply {
+            topAppBarAction(this)
+        }
 
         getCurrentUser()
 
@@ -67,13 +77,33 @@ class YourNameActivity : AppCompatActivity() {
             }
         }
 
-
-        // <- Back button
-        btn_back_edit.setOnClickListener {
-            finish()
-        }
     }
 
+
+    private fun topAppBarAction(materialToolbar: MaterialToolbar) {
+
+        // <-- Back btn
+        materialToolbar.setNavigationOnClickListener {
+            finish()
+        }
+
+        // setting btn
+        materialToolbar.setOnMenuItemClickListener {
+
+            when (it.itemId) {
+
+                R.id.feedback -> {
+
+                    val intent = Intent(this, SendFeedbackActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
+                else -> false
+
+            }
+        }
+    }
 
     private fun getCurrentUser() {
         val userRef = mDatabase.collection("Users").document(userId)

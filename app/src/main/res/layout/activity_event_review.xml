@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_scrollFlags="scroll|enterAlways|snap"
-                    app:menu="@menu/top_app_bar_event_preview"
+                    app:menu="@menu/top_app_bar_setting_menu"
                     app:navigationIcon="@drawable/ic_back_24"
                     app:title="Event Preview" />
 
@@ -105,16 +105,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:padding="20dp">
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:orientation="vertical"
                             android:padding="5dp">
 
                             <TextView
+                                android:layout_marginTop="10dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10dp"
@@ -127,7 +130,7 @@
                                 android:id="@+id/tv_event_review_date"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="5dp"
                                 android:clickable="false"
                                 android:drawablePadding="10dp"
                                 android:hint="Date"
@@ -137,7 +140,7 @@
                                 android:id="@+id/event_review_time"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="5dp"
                                 android:drawablePadding="10dp"
                                 android:hint="Time"
                                 app:drawableStartCompat="@drawable/custom_time_icon" />
@@ -147,7 +150,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:orientation="vertical"
                             android:padding="5dp">
 
@@ -164,7 +166,7 @@
                                 android:id="@+id/event_review_location"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="5dp"
                                 android:clickable="false"
                                 android:drawablePadding="10dp"
                                 android:hint="Location"
@@ -175,7 +177,7 @@
                                 android:id="@+id/event_review_meet"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="5dp"
                                 android:drawablePadding="10dp"
                                 android:hint="Meet at"
                                 android:textSize="16sp"
@@ -186,7 +188,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:orientation="vertical"
                             android:padding="5dp">
 
@@ -203,7 +204,7 @@
                                 android:id="@+id/event_review_member"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="5dp"
                                 android:drawablePadding="10dp"
                                 android:hint="Members"
                                 android:textSize="16sp"
@@ -224,14 +225,13 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:orientation="vertical"
                             android:padding="5dp">
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="5dp"
                                 android:fontFamily="@font/antic"
                                 android:hint="Creator"
                                 android:textSize="18sp"
@@ -241,8 +241,7 @@
                                 android:id="@+id/tv_creator_review"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginBottom="5dp"
                                 android:drawablePadding="5dp"
                                 android:fontFamily="@font/antic"
                                 android:gravity="center_vertical"
@@ -259,7 +258,7 @@
                             android:id="@+id/event_review_progressbar_button"
                             layout="@layout/progress_btn_layout"
                             android:layout_width="match_parent"
-                            android:layout_marginTop="25dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="5dp"
                             android:layout_height="wrap_content" />
 

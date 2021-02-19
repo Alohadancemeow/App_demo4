@@ -264,8 +264,6 @@ class EventReviewActivity : AppCompatActivity() {
 
                     val intent = Intent(this, SendFeedbackActivity::class.java)
                     startActivity(intent)
-                    finish()
-
                     true
                 }
 

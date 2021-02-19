@@ -2,339 +2,385 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/root_layout_profile"
     tools:context=".activity.ProfileReviewActivity">
 
-    <LinearLayout
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="#FFC400"
-            android:padding="20dp">
-
-            <ImageView
-                android:id="@+id/btn_back_profile"
-                android:layout_width="30dp"
-                android:layout_height="40dp"
-                android:background="@color/colorAccent"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@drawable/ic_back_24" />
-
-            <ImageView
-                android:id="@+id/iv_profile_review"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_user_white" />
-
-            <TextView
-                android:id="@+id/tv_display_name_review"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/iv_profile_review"
-                android:fontFamily="@font/chicle"
-                android:includeFontPadding="false"
-                android:text="Yukko"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/tv_full_name_review"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_display_name_review"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/iv_profile_review"
-                android:fontFamily="@font/antic"
-                android:includeFontPadding="false"
-                android:text="Yukko the B-rabbit"
-                android:textSize="15sp" />
-
-        </RelativeLayout>
-
-        <LinearLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-100dp"
-            android:padding="20dp">
+            app:liftOnScroll="true">
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="125dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#FFC400"
-                app:cardElevation="10dp">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_AppBar_profile_preview"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:menu="@menu/top_app_bar_setting_menu"
+                app:navigationIcon="@drawable/ic_back_24"
+                app:title="Profile Preview" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="5dp">
+        </com.google.android.material.appbar.AppBarLayout>
 
-                    <ImageView
-                        android:layout_marginTop="5dp"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_event1_white" />
-
-                    <TextView
-                        android:id="@+id/tv_card_event1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="General"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/tv_card_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_card_event1"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="100"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_card_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_card_num"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="times"
-                        android:textSize="14sp" />
-
-                </RelativeLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="125dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="#FFC400"
-                app:cardElevation="10dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="5dp">
-
-                    <ImageView
-                        android:layout_marginTop="5dp"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_event_white" />
-
-                    <TextView
-                        android:id="@+id/tv_card_event2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="Special"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/tv_card_num2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_card_event2"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="100"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_card_time2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_card_num2"
-                        android:layout_centerHorizontal="true"
-                        android:fontFamily="@font/chicle"
-                        android:includeFontPadding="false"
-                        android:text="times"
-                        android:textSize="14sp" />
-
-                </RelativeLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <!-- Note: A RecyclerView can also be used -->
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/status_review"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Status">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_user_status_yellow"
-                    android:drawablePadding="10dp"
-                    android:focusable="false"
-                    android:textStyle="normal"
-                    android:enabled="false"
-                    android:textColor="@android:color/black"
-                    android:text="Monk" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/temple_review"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Temple">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_location_yellow"
-                    android:drawablePadding="10dp"
-                    android:focusable="false"
-                    android:textStyle="normal"
-                    android:enabled="false"
-                    android:textColor="@android:color/black"
-                    android:text="Chana Songkram" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+            <!-- Scrollable content -->
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/kana_review"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:background="#FFC400"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:id="@+id/iv_profile_review"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_user_white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.13" />
+
+                    <TextView
+                        android:id="@+id/tv_display_name_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/chicle"
+                        android:includeFontPadding="false"
+                        android:text="Yukko"
+                        android:textSize="30sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_profile_review"
+                        app:layout_constraintStart_toEndOf="@+id/iv_profile_review"
+                        app:layout_constraintTop_toTopOf="@+id/iv_profile_review" />
+
+                    <TextView
+                        android:id="@+id/tv_full_name_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/antic"
+                        android:includeFontPadding="false"
+                        android:text="Yukko the B-rabbit"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/iv_profile_review"
+                        app:layout_constraintStart_toEndOf="@+id/iv_profile_review"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_display_name_review"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:hint="Kana">
+                    android:layout_marginTop="-100dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_location_drop_yellow"
-                        android:drawablePadding="10dp"
-                        android:focusable="false"
-                        android:textStyle="normal"
-                        android:enabled="false"
-                        android:textColor="@android:color/black"
-                        android:text="12" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="125dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="#FFC400"
+                        app:cardElevation="10dp">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="5dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/age_review"
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/ic_event1_white" />
+
+                            <TextView
+                                android:id="@+id/tv_card_event1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/acme"
+                                android:includeFontPadding="false"
+                                android:text="General"
+                                android:textAllCaps="true"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tv_card_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_card_event1"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/chicle"
+                                android:includeFontPadding="false"
+                                android:text="100"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_card_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_card_num"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/acme"
+                                android:includeFontPadding="false"
+                                android:text="times"
+                                android:textAllCaps="true"
+                                android:textSize="12sp" />
+
+                        </RelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="125dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="#FFC400"
+                        app:cardElevation="10dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="5dp">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="5dp"
+                                android:src="@drawable/ic_event_white" />
+
+                            <TextView
+                                android:id="@+id/tv_card_event2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/acme"
+                                android:includeFontPadding="false"
+                                android:text="Special"
+                                android:textAllCaps="true"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/tv_card_num2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_card_event2"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/chicle"
+                                android:includeFontPadding="false"
+                                android:text="100"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_card_time2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tv_card_num2"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/acme"
+                                android:includeFontPadding="false"
+                                android:text="times"
+                                android:textAllCaps="true"
+                                android:textSize="12sp" />
+
+                        </RelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:hint="Age">
+                    android:orientation="vertical"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/status_review"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_person_age_yellow"
-                        android:drawablePadding="10dp"
-                        android:focusable="false"
-                        android:textStyle="normal"
-                        android:enabled="false"
-                        android:textColor="@android:color/black"
-                        android:text="20" />
+                        android:layout_marginBottom="5dp"
+                        android:hint="Status">
 
-                </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_user_status_yellow"
+                            android:drawablePadding="10dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:text="Monk"
+                            android:textColor="@android:color/black"
+                            android:textStyle="normal" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/temple_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:hint="Temple">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_location_yellow"
+                            android:drawablePadding="10dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:text="Chana Songkram"
+                            android:textColor="@android:color/black"
+                            android:textStyle="normal" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/kana_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:layout_weight="1"
+                            android:hint="Kana">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_location_drop_yellow"
+                                android:drawablePadding="10dp"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:text="12"
+                                android:textColor="@android:color/black"
+                                android:textStyle="normal" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/age_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:hint="Age">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_person_age_yellow"
+                                android:drawablePadding="10dp"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:text="20"
+                                android:textColor="@android:color/black"
+                                android:textStyle="normal" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/email_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:hint="Email">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_email_yellow"
+                            android:drawablePadding="10dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:text="rabbit@gmail.com"
+                            android:textColor="@android:color/black"
+                            android:textStyle="normal" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/phone_review"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:hint="Phone Number">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_phone_yellow"
+                            android:drawablePadding="10dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:text="1234567890"
+                            android:textColor="@android:color/black"
+                            android:textStyle="normal" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_profile_call"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/colorAccent"
+                        android:text="Call Now"
+                        android:textColor="@android:color/white"
+                        app:icon="@drawable/ic_phone_yellow"
+                        app:iconGravity="textStart"
+                        app:iconTint="@android:color/white" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/email_review"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Email">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_email_yellow"
-                    android:drawablePadding="10dp"
-                    android:focusable="false"
-                    android:textStyle="normal"
-                    android:enabled="false"
-                    android:textColor="@android:color/black"
-                    android:text="rabbit@gmail.com" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/phone_review"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:hint="Phone Number">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_phone_yellow"
-                    android:drawablePadding="10dp"
-                    android:focusable="false"
-                    android:textStyle="normal"
-                    android:enabled="false"
-                    android:textColor="@android:color/black"
-                    android:text="1234567890" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.core.widget.NestedScrollView>
 
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_profile_call"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:background="@color/colorAccent"
-                app:icon="@drawable/ic_phone_yellow"
-                app:iconGravity="textStart"
-                app:iconTint="@android:color/black"
-                android:textColor="@android:color/black"
-                android:text="Call Now" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        </LinearLayout>
-
-    </LinearLayout>
 
 </ScrollView>

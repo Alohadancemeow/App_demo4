@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.app_demo4.R
 import com.example.app_demo4.model.ProgressButton
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -39,6 +40,9 @@ class ProfileSettingActivity : AppCompatActivity() {
 
     private lateinit var progressBarProfileSetting: View
 
+    //Top Appbar
+    private lateinit var topAppBar: MaterialToolbar
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +53,12 @@ class ProfileSettingActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseFirestore.getInstance()
         userId = mAuth.currentUser!!.uid
+
+        // set Top appbar
+        topAppBar = top_AppBar_profile_setting.apply {
+            topAppBarAction(this)
+        }
+
 
         //set view properties
         displayName = tv_display_name_setting
@@ -104,14 +114,35 @@ class ProfileSettingActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // <- Back button
-        btn_back_setting.setOnClickListener {
-            finish()
-        }
     }
 
 
     /** # Functions here */
+
+    private fun topAppBarAction(materialToolbar: MaterialToolbar) {
+
+        // <-- Back btn
+        materialToolbar.setNavigationOnClickListener {
+            finish()
+        }
+
+        // setting btn
+        materialToolbar.setOnMenuItemClickListener {
+
+            when (it.itemId) {
+
+                R.id.feedback -> {
+
+                    val intent = Intent(this, SendFeedbackActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+
+                else -> false
+
+            }
+        }
+    }
 
     private fun dropDownOptions() {
         //dropdown options
@@ -124,11 +155,9 @@ class ProfileSettingActivity : AppCompatActivity() {
     private fun getCurrentUser() {
         //get current user
         val userRef = mDatabase.collection("Users").document(userId)
-        userRef.addSnapshotListener { value, error ->
+        userRef.addSnapshotListener { value, _ ->
 
-            if (error != null) {
-                finish()
-            } else {
+           value.let {
 
                 /** -> ดึงข้อมูลของผู้ใช้ที่กำลัง login */
                 val displayNameFromDB = value?.get("display_name").toString()
