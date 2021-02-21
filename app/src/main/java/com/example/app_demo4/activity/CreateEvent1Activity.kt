@@ -351,6 +351,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             this["event_member"] = eventMember
             this["event_type"] = "General"  //type A
             this["event_creator"] = eventCreator  //creator name
+            this["timeInMillis"] = timeInMillis.toString() //timestamp
         }
 
         // #use add() to collection, #use set() to document
@@ -366,7 +367,7 @@ class CreateEvent1Activity : AppCompatActivity(), DatePickerDialog.OnDateSetList
             Log.d("TAG", "sendEventDataToFirebase: ID $eventId")
 
             //startAlarm
-            startAlarm(timeInMillis, eventId)
+//            startAlarm(timeInMillis, eventId)
 
             finish()
 

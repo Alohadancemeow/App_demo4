@@ -18,19 +18,24 @@ import com.example.app_demo4.activity.EventReviewActivity
 import com.example.app_demo4.model.HomeData
 import com.example.app_demo4.model.HomeHolder
 import com.example.app_demo4.model.ProgressButton
+import com.example.app_demo4.notification.AlarmService
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.progress_btn_layout.*
 import kotlinx.android.synthetic.main.recyclerview_home_row.view.*
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.time.ExperimentalTime
+import kotlin.time.hours
+import kotlin.time.minutes
+import kotlin.time.seconds
 
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HomeFragment : Fragment() {
 
     //Firebase Properties
@@ -39,6 +44,9 @@ class HomeFragment : Fragment() {
     private lateinit var eventReference: CollectionReference
     private lateinit var memberReference: DocumentReference
     private lateinit var userId: String
+
+    //AlarmService
+    lateinit var alarmService: AlarmService
 
 
     override fun onCreateView(
@@ -50,6 +58,7 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    @ExperimentalTime
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -58,11 +67,15 @@ class HomeFragment : Fragment() {
         mAuth = FirebaseAuth.getInstance()
         userId = mAuth.currentUser!!.uid
 
+        //alarm
+        alarmService = AlarmService(requireContext())
+
         setUpRecyclerView()
 
     }
 
 
+    @ExperimentalTime
     private fun setUpRecyclerView() {
 
         val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -180,6 +193,7 @@ class HomeFragment : Fragment() {
 
     }
 
+    @ExperimentalTime
     private fun createEventMember(userName: String, eventName: String, eventId: String) {
 
         Log.d("TAG", "createEventMember: userName $userName")
@@ -204,30 +218,72 @@ class HomeFragment : Fragment() {
                     val memId = value?.data?.keys //userId in eventId
                     Log.d("TAG", "createEventMember: memID $memId")
 
-                    //check that memId contains userId (current user) ?
-                    if (memId == null || !memId.contains(userId)) {
+                    //get current time -> Sun Feb 21 16:43:41
+                    val currentTime = Calendar.getInstance().time
+                    Log.d("TAG", "startAlarm: currentTime $currentTime")
 
-                        //set data(mId) to Event-mem-list
-                        set(mId, SetOptions.mergeFields(userId)).addOnCompleteListener {
-                            if (it.isSuccessful) {
+                    val eventRef = mDatabase.collection("Events").document(eventId)
+                    eventRef.addSnapshotListener { value, _ ->
 
-                                Toast.makeText(
-                                    context,
-                                    "You're joined $eventName",
-                                    Toast.LENGTH_SHORT
-                                )
-                                    .show()
+                        value.let {
+
+                            val eventDate = value?.get("event_date").toString()
+                            val eventTime = value?.get("event_time").toString()
+
+                            //format to Sun Feb 21 15:54:00
+                            val format = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
+                            val parsedTime = format.parse("$eventDate $eventTime")
+                            Log.d("TAG", "createEventMember: parsed time $parsedTime")
+
+                            if (currentTime > parsedTime) {
+
+//                                val timeOut = "${currentTime.hours.minutes - parsedTime!!.hours.minutes}"
+//                                Log.d("TAG", "createEventMember: timeout $timeOut")
+
+//                                val fm = DateFormat.getTimeInstance(DateFormat.MINUTE_FIELD)
+//                                Log.d("TAG", "createEventMember: fm $fm")
+//
+//                                val parse = fm.parse(timeOut)
+//                                Log.d("TAG", "createEventMember: parse $parse")
+
+                                //show dialog
+                                MaterialAlertDialogBuilder(requireContext())
+                                    .setTitle("Cannot Join")
+                                    .setMessage("The event has started")
+                                    .setPositiveButton("Okay") { _, _ ->
+                                        //Nothing on
+                                    }.show()
+
+                            }
+                            else {
+
+                                //check that memId contains userId (current user) ?
+                                if (memId == null || !memId.contains(userId)) {
+
+                                    //set data(mId) to Event-mem-list
+                                    set(mId, SetOptions.mergeFields(userId)).addOnCompleteListener {
+                                        if (it.isSuccessful) {
+
+                                            //get timeInMillis then send to notify
+                                            startAlarm(eventId)
+
+                                            Toast.makeText(
+                                                context,
+                                                "You're joined $eventName",
+                                                Toast.LENGTH_SHORT
+                                            )
+                                                .show()
 
 //                                Snackbar.make(root_layout_home_fm,"You're joined $eventName", Snackbar.LENGTH_LONG)
 //                                    .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
 //                                    .show()
-                            }
-                        }
-                    } else {
+                                        }
+                                    }
+                                } else {
 
-                        //Why always show ?
+                                    //Why always show ?
 
-                        Toast.makeText(context, "You're joined already", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "You're joined already", Toast.LENGTH_SHORT).show()
 //
 //                        Snackbar.make(root_layout_home_fm,"You're joined already", Snackbar.LENGTH_LONG)
 //                            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_FADE)
@@ -237,7 +293,13 @@ class HomeFragment : Fragment() {
 //                                startActivity(intent)
 //                            }
 //                            .show()
+                                }
+
+                            }
+                        }
                     }
+
+
                 }
             }
         } //end apply.
@@ -255,6 +317,72 @@ class HomeFragment : Fragment() {
                 callback(userName)
             }
         }
+    }
+
+
+    private fun startAlarm(eventId: String) {
+
+        Log.d("TAG", "startAlarm:eventId $eventId")
+
+        val eventRef = mDatabase.collection("Events").document(eventId)
+        eventRef.addSnapshotListener { value, _ ->
+
+            value.let {
+
+                //How to check timeInMillis == parsed date&time ?
+                //get timeInMills
+                val timeInMillis = value?.get("timeInMillis")
+                Log.d("TAG", "startAlarm: timeInMillis $timeInMillis")
+
+                //get eventDate
+                val eventDate = value?.get("event_date").toString()
+                Log.d("TAG", "startAlarm: eventDate $eventDate")
+
+                //get eventTime
+                val eventTime = value?.get("event_time").toString()
+                Log.d("TAG", "startAlarm: eventTime $eventTime ")
+
+
+                //parse date&time to timeInMillis
+                val dateTimeFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT)
+                Log.d("TAG", "startAlarm: dateFM $dateTimeFormat")
+
+                // -> Sun Feb 21 16:45:00
+                val dateTimeParse = dateTimeFormat.parse("$eventDate $eventTime")
+                Log.d("TAG", "startAlarm: dateParse $dateTimeParse")
+
+                // -> 1613900700000
+                val dateTimeInMillis = dateTimeParse!!.time
+                Log.d("TAG", "startAlarm: dateTimeInMillis $dateTimeInMillis")
+
+
+                //check that current user is in ?
+                val eventMemListRef = mDatabase.collection("Event-mem-list").document(eventId)
+                eventMemListRef.addSnapshotListener { value, _ ->
+
+                    value.let {
+
+                        val memId = value?.data?.keys
+                        Log.d("TAG", "startAlarm: memIdOf($eventId) $memId")
+
+                        if (memId?.contains(userId) == true) {
+                            Log.d("TAG", "startAlarm: true")
+
+                            //new
+                            alarmService.setExactAlarm(dateTimeInMillis, eventId)
+
+
+                        } else {
+                            Log.d("TAG", "startAlarm: else")
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
     }
 
 

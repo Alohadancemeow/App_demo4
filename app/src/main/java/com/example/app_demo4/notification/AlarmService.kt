@@ -18,6 +18,8 @@ class AlarmService(private val context: Context) {
 
     fun setExactAlarm(timeInMillis: Long, eventId: String){
 
+        Log.d("TAG", "setExactAlarm: timeInMillis $timeInMillis")
+
         mDatabase = FirebaseFirestore.getInstance()
         val eventRef = mDatabase.collection("Events").document(eventId)
         eventRef.addSnapshotListener { value, _ ->

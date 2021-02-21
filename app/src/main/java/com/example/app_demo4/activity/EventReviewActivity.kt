@@ -92,7 +92,7 @@ class EventReviewActivity : AppCompatActivity() {
         val eventRef = mDatabase.collection("Events").document(eventId)
         eventRef.addSnapshotListener { value, _ ->
 
-            value.let {
+            value.let { it: DocumentSnapshot? ->
 
                 //get CID
                 val eventCreatorId = value?.get("event_creator").toString()
