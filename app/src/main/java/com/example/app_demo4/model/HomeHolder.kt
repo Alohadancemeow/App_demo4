@@ -53,7 +53,7 @@ class HomeHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 Log.d("TAG", "bind: creatorName $creatorName")
 
                 //set to view
-                itemView.tv_creator.text = "Create by : $creatorName"
+                itemView.tv_creator.text = "Created by : $creatorName"
             }
         }
 
